@@ -6,6 +6,8 @@
 #include "utils.h"
 
 void fifo(std::vector<Process>& processes);
+void sjf(std::vector<Process>& processes);
+
 void displayGanttChart(const std::vector<Process>& processes);
 
 

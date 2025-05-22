@@ -10,7 +10,6 @@
 #include <chrono>
 #include <algorithm>
 #include <iomanip>
-#include <iostream>
 #include "loader.h"
 #include "scheduler.h"
 #include "gui.h"
@@ -33,23 +32,44 @@ void mainMenu() {
         cin >> option;
 
         if (option == 1) {
-            auto processes = loadProcesses("../data/processes_5.txt");
-            if (processes.empty()) {
-                cout << "[ERROR] No processes found in 'processes_5.txt'.\n";
-                continue;
+        int schedOption;
+        do {
+            cout << "\n-- SCHEDULING ALGORITHMS --\n";
+            cout << "1. FIFO\n";
+            cout << "2. SJF (Shortest Job First)\n";
+            cout << "0. Back to main menu\n";
+            cout << "Select an algorithm: ";
+            cin >> schedOption;
+
+            if (schedOption == 1) {
+                auto processes = loadProcesses("../data/processes_5.txt");
+                if (processes.empty()) {
+                    cout << "[ERROR] No processes found.\n";
+                    continue;
+                }
+                fifo(processes);
+                drawTimelineSDL(processes);
+            }
+            else if (schedOption == 2) {
+                auto processes = loadProcesses("../data/processes_5.txt");
+                if (processes.empty()) {
+                    cout << "[ERROR] No processes found.\n";
+                    continue;
+                }
+                sjf(processes);
+                drawTimelineSDL(processes);
             }
 
-            fifo(processes);
-            drawTimelineSDL(processes);
+        } while (schedOption != 0);
+    }
 
-        }
-        else if (option == 2) {
-            cout << "[!] Synchronization module not yet implemented.\n";
-        }
+    else if (option == 2) {
+        cout << "[!] Synchronization module not yet implemented.\n";
+    }
 
-    } while (option != 0);
+} while (option != 0);
+
 }
-
 
 // ==============================
 // EXECUTE MAIN
