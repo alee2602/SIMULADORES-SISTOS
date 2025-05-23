@@ -4,6 +4,9 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
+#include <queue>
+#include <map>
+#include <string>
 #include <algorithm>
 
 using namespace std;
@@ -138,6 +141,106 @@ void sjf(vector<Process> &processes)
 
     processes = executed;
 }
+
+void roundRobin(vector<Process>& processes, int quantum, vector<ExecutionSlice>& timeline)
+{
+    if (processes.empty()) {
+        cout << "[ERROR] No processes loaded.\n";
+        return;
+    }
+
+    int current_time = 0;
+    queue<Process> ready_queue;
+    vector<Process> remaining = processes;
+    map<string, int> remaining_bt;
+    map<string, int> start_times;
+
+    for (auto& p : processes) {
+        remaining_bt[p.pid] = p.burst_time;
+    }
+
+    vector<Process> executed;
+
+    while (!ready_queue.empty() || !remaining.empty())
+    {
+        // Add arrived processes to the queue
+        for (auto it = remaining.begin(); it != remaining.end(); )
+        {
+            if (it->arrival_time <= current_time) {
+                ready_queue.push(*it);
+                it = remaining.erase(it);
+            } else {
+                ++it;
+            }
+        }
+
+        if (!ready_queue.empty())
+        {
+            Process current = ready_queue.front();
+            ready_queue.pop();
+
+            // Register first time this process executes
+            if (start_times.find(current.pid) == start_times.end()) {
+                start_times[current.pid] = current_time;
+            }
+
+            int exec_time = std::min(quantum, remaining_bt[current.pid]);
+
+            // Add to timeline for graphical output
+            timeline.push_back({current.pid, current_time, exec_time});
+
+            current_time += exec_time;
+            remaining_bt[current.pid] -= exec_time;
+
+            // Add any new arrivals after executing
+            for (auto it = remaining.begin(); it != remaining.end(); ) {
+                if (it->arrival_time <= current_time) {
+                    ready_queue.push(*it);
+                    it = remaining.erase(it);
+                } else {
+                    ++it;
+                }
+            }
+
+            if (remaining_bt[current.pid] > 0) {
+                ready_queue.push(current);
+            } else {
+                current.finish_time = current_time;
+                current.waiting_time = (current.finish_time - current.arrival_time) - current.burst_time;
+                current.start_time = start_times[current.pid]; // ✅ set actual first execution
+                executed.push_back(current);
+            }
+        }
+        else {
+            current_time++;
+        }
+    }
+
+    processes = executed;
+
+    // Summary
+    double total_waiting = 0;
+    for (const auto& p : executed) {
+        total_waiting += p.waiting_time;
+    }
+
+    cout << "\nAverage Waiting Time: " << fixed << setprecision(2)
+        << total_waiting / executed.size() << endl;
+
+    cout << "\nProcess Summary:\n";
+    cout << left << setw(8) << "PID"
+        << setw(12) << "Start"
+        << setw(12) << "Finish"
+        << setw(12) << "Waiting" << endl;
+
+    for (const auto& p : executed) {
+        cout << left << setw(8) << p.pid
+            << setw(12) << p.start_time
+            << setw(12) << p.finish_time
+            << setw(12) << p.waiting_time << endl;
+    }
+}
+
 
 // ==============================
 // GANTT CHART (terminal-only)

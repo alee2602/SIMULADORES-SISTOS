@@ -14,7 +14,7 @@ struct Process {
     int burst_time;
     int arrival_time;
     int priority;
-    
+
     //Metrics
     int start_time = -1;
     int finish_time = -1;
@@ -32,6 +32,13 @@ struct Action {
     std::string resource;
     int cycle;
 };
+
+struct ExecutionSlice {
+    std::string pid;
+    int start;
+    int duration;
+};
+
 
 // Obtener colores para los distintos procesos
 SDL_Color getColor(int index);

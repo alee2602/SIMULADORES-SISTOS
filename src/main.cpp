@@ -37,6 +37,7 @@ void mainMenu() {
             cout << "\n-- SCHEDULING ALGORITHMS --\n";
             cout << "1. FIFO\n";
             cout << "2. SJF (Shortest Job First)\n";
+            cout << "3. Round Robin\n";
             cout << "0. Back to main menu\n";
             cout << "Select an algorithm: ";
             cin >> schedOption;
@@ -58,6 +59,21 @@ void mainMenu() {
                 }
                 sjf(processes);
                 drawTimelineSDL(processes);
+            }
+            else if (schedOption == 3) {
+                int quantum;
+                cout << "Enter quantum (e.g. 2 or 4): ";
+                cin >> quantum;
+
+                auto processes = loadProcesses("../data/processes_5.txt");
+                if (processes.empty()) {
+                    cout << "[ERROR] No processes found.\n";
+                    continue;
+                }
+
+                vector<ExecutionSlice> timeline;
+                roundRobin(processes, quantum, timeline);
+                drawTimelineSDL(timeline);
             }
 
         } while (schedOption != 0);
