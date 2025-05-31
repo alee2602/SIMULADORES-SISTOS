@@ -292,6 +292,12 @@
 			null
 		],
 		[
+			"/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.h",
+			"Mu",
+			"EWIEGA46WW/moc_synchronizer.cpp",
+			null
+		],
+		[
 			"/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/utils.h",
 			"Mu",
 			"EWIEGA46WW/moc_utils.cpp",
@@ -360,6 +366,11 @@
 		],
 		[
 			"/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.cpp",
+			"Mu",
+			null
+		],
+		[
+			"/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.cpp",
 			"Mu",
 			null
 		]

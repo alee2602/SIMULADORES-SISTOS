@@ -13,6 +13,7 @@ set(CMAKE_AUTOMOC ON)
 # Source files
 set(SOURCES
     main.cpp
+    synchronizer.cpp
     loader.cpp
     scheduler.cpp
 )
@@ -22,6 +23,7 @@ set(HEADERS
     utils.h
     loader.h
     scheduler.h
+    synchronizer.h
 )
 
 # Create executable

@@ -28,43 +28,9 @@
 #include <algorithm>
 #include <queue>
 #include <map>
+#include "synchronizer.h"
 
 using namespace std;
-
-// ==============================
-// DATA STRUCTURES
-// ==============================
-struct Process {
-    QString pid;
-    int burst_time;
-    int arrival_time;
-    int priority;
-    int start_time = -1;
-    int finish_time = -1;
-    int waiting_time = -1;
-    int remaining_time = -1;
-    QColor color;
-};
-
-struct ExecutionSlice {
-    QString pid;
-    int start_time;
-    int duration;
-    QColor color;
-};
-
-struct Resource {
-    QString name;
-    int count;
-    int available;
-};
-
-struct Action {
-    QString pid;
-    QString type; // READ, WRITE
-    QString resource;
-    int cycle;
-};
 
 // ==============================
 // GANTT CHART WIDGET
@@ -359,10 +325,18 @@ private:
     QTableWidget* metricsTable;
     QLabel* statusLabel;
 
+    SynchronizationMechanism* syncMechanism; // Mecanismo de sincronización
+
 public:
-    ProcessSimulator(QWidget* parent = nullptr) : QWidget(parent) {
+    ProcessSimulator(QWidget* parent = nullptr) : QWidget(parent), syncMechanism(nullptr) {
         setupUI();
-        generateSampleProcesses(); // For testing
+        generateSampleProcesses(); // Para pruebas
+        generateSampleResources(); // Recursos de prueba
+        generateSampleActions();   // Acciones de prueba
+    }
+
+    ~ProcessSimulator() {
+        delete syncMechanism;
     }
 
 private:
@@ -389,11 +363,13 @@ private:
         QPushButton* fifoBtn = createButton("Run FIFO", "#70a1a8");
         QPushButton* sjfBtn = createButton("Run SJF", "#9ca3af");
         QPushButton* rrBtn = createButton("Run Round Robin", "#a8d5ba");
+        QPushButton* syncBtn = createButton("Run Synchronization", "#f39c12");
 
         controlLayout->addWidget(loadBtn);
         controlLayout->addWidget(fifoBtn);
         controlLayout->addWidget(sjfBtn);
         controlLayout->addWidget(rrBtn);
+        controlLayout->addWidget(syncBtn);
 
         // Gantt Chart
         ganttChart = new GanttChartWidget();
@@ -435,6 +411,13 @@ private:
         statusLabel = new QLabel("Ready to simulate processes");
         statusLabel->setStyleSheet("color: #6c757d; padding: 10px;");
 
+        // Synchronization Table
+        QTableWidget* syncTable = new QTableWidget();
+        syncTable->setColumnCount(5);
+        syncTable->setHorizontalHeaderLabels({"PID", "State", "Waiting For", "Cycles Waiting", "Color"});
+        syncTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+        syncTable->setStyleSheet("background-color: #f8f9fa; border: 1px solid #ddd; font-size: 14px;");
+
         // Add all to main layout
         mainLayout->addWidget(title);
         mainLayout->addLayout(controlLayout);
@@ -442,6 +425,7 @@ private:
         mainLayout->addLayout(animLayout);
         mainLayout->addLayout(tablesLayout);
         mainLayout->addWidget(statusLabel);
+        mainLayout->addWidget(syncTable);
 
         // Connect signals
         connect(loadBtn, &QPushButton::clicked, this, &ProcessSimulator::loadProcesses);
@@ -452,6 +436,7 @@ private:
         connect(stopBtn, &QPushButton::clicked, ganttChart, &GanttChartWidget::stopAnimation);
         connect(speedSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), 
                 ganttChart, &GanttChartWidget::setAnimationSpeed);
+        connect(syncBtn, &QPushButton::clicked, this, &ProcessSimulator::runSynchronization);
     }
 
     QPushButton* createButton(const QString& text, const QString& color) {
@@ -470,13 +455,13 @@ private:
         QStringList colors = {"#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7"};
         
         processes = {
-            {"P1", 8, 0, 1, -1, -1, -1, -1, QColor(colors[0])},
-            {"P2", 4, 1, 2, -1, -1, -1, -1, QColor(colors[1])},
-            {"P3", 9, 2, 3, -1, -1, -1, -1, QColor(colors[2])},
-            {"P4", 5, 3, 1, -1, -1, -1, -1, QColor(colors[3])},
-            {"P5", 2, 4, 2, -1, -1, -1, -1, QColor(colors[4])}
+            Process("P1", 8, 0, 1, -1, -1, -1, -1, QColor(colors[0])),
+            Process("P2", 4, 1, 2, -1, -1, -1, -1, QColor(colors[1])),
+            Process("P3", 9, 2, 3, -1, -1, -1, -1, QColor(colors[2])),
+            Process("P4", 5, 3, 1, -1, -1, -1, -1, QColor(colors[3])),
+            Process("P5", 2, 4, 2, -1, -1, -1, -1, QColor(colors[4]))
         };
-        
+
         updateProcessTable();
         statusLabel->setText("Sample processes loaded. Ready to simulate.");
     }
@@ -511,63 +496,86 @@ private:
         statusLabel->setText(QString("Average Waiting Time: %1").arg(avgWaiting, 0, 'f', 2));
     }
 
-private slots:
-    void loadProcesses() {
-        QString filename = QFileDialog::getOpenFileName(this, "Load Processes", "", "Text Files (*.txt)");
-        if (!filename.isEmpty()) {
-            // Implementation for loading from file
-            statusLabel->setText("File loading functionality - implement based on your format");
+    void generateSampleResources() {
+        resources = {
+            {"Resource1", 2, 2},
+            {"Resource2", 1, 1}
+        };
+    }
+
+    void generateSampleActions() {
+        actions = {
+            {"P1", "READ", "Resource1", 0},
+            {"P2", "WRITE", "Resource1", 1},
+            {"P3", "READ", "Resource2", 2},
+            {"P4", "WRITE", "Resource2", 3}
+        };
+    }
+
+    void runSynchronization() {
+        if (processes.empty() || resources.empty() || actions.empty()) {
+            QMessageBox::warning(this, "Warning", "No processes, resources, or actions loaded!");
+            return;
         }
+
+        // Seleccionar el mecanismo de sincronización
+        QStringList mechanisms = {"Mutex Lock", "Semaphore"};
+        bool ok;
+        QString selectedMechanism = QInputDialog::getItem(this, "Select Synchronization Mechanism",
+                                                          "Mechanism:", mechanisms, 0, false, &ok);
+        if (!ok) return;
+
+        delete syncMechanism; // Eliminar el mecanismo anterior si existe
+        if (selectedMechanism == "Mutex Lock") {
+            syncMechanism = new MutexLock(resources);
+        } else if (selectedMechanism == "Semaphore") {
+            syncMechanism = new Semaphore(resources);
+        }
+
+        // Ejecutar la simulación de sincronización
+        vector<SyncEvent> events = SynchronizationSimulator::simulateSynchronization(
+            processes, resources, actions, syncMechanism);
+
+        QString result = "Synchronization Events:\n";
+        for (const auto& event : events) {
+            result += QString("Cycle %1: Process %2 %3 %4 (%5)\n")
+                          .arg(event.cycle)
+                          .arg(event.pid)
+                          .arg(event.action_type)
+                          .arg(event.resource)
+                          .arg(event.state == ProcessState::ACCESSED ? "ACCESSED" : "WAITING");
+        }
+
+        QMessageBox::information(this, "Synchronization Results", result);
+    }
+
+    void loadProcesses() {
+        // Implementación para cargar procesos (puedes personalizar esto)
+        generateSampleProcesses();
+        updateProcessTable();
+        statusLabel->setText("Processes loaded successfully.");
     }
 
     void runFIFO() {
-        if (processes.empty()) {
-            QMessageBox::warning(this, "Warning", "No processes loaded!");
-            return;
-        }
-        
-        vector<Process> processCopy = processes;
-        vector<ExecutionSlice> timeline = SchedulingAlgorithms::runFIFO(processCopy);
-        processes = processCopy;
-        
+        auto timeline = SchedulingAlgorithms::runFIFO(processes);
         ganttChart->setTimeline(timeline);
         updateMetricsTable();
-        statusLabel->setText("FIFO Algorithm executed successfully");
     }
 
     void runSJF() {
-        if (processes.empty()) {
-            QMessageBox::warning(this, "Warning", "No processes loaded!");
-            return;
-        }
-        
-        vector<Process> processCopy = processes;
-        vector<ExecutionSlice> timeline = SchedulingAlgorithms::runSJF(processCopy);
-        processes = processCopy;
-        
+        auto timeline = SchedulingAlgorithms::runSJF(processes);
         ganttChart->setTimeline(timeline);
         updateMetricsTable();
-        statusLabel->setText("SJF Algorithm executed successfully");
     }
 
     void runRoundRobin() {
         bool ok;
-        int quantum = QInputDialog::getInt(this, "Round Robin Configuration", 
-                                         "Enter quantum value:", 2, 1, 20, 1, &ok);
+        int quantum = QInputDialog::getInt(this, "Round Robin Quantum", "Enter quantum:", 2, 1, 100, 1, &ok);
         if (!ok) return;
-        
-        if (processes.empty()) {
-            QMessageBox::warning(this, "Warning", "No processes loaded!");
-            return;
-        }
-        
-        vector<Process> processCopy = processes;
-        vector<ExecutionSlice> timeline = SchedulingAlgorithms::runRoundRobin(processCopy, quantum);
-        processes = processCopy;
-        
+
+        auto timeline = SchedulingAlgorithms::runRoundRobin(processes, quantum);
         ganttChart->setTimeline(timeline);
         updateMetricsTable();
-        statusLabel->setText(QString("Round Robin (quantum=%1) executed successfully").arg(quantum));
     }
 };
 

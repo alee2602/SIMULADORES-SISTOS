@@ -97,10 +97,24 @@ CMakeFiles/ProcessSimulator.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ProcessSimulator.dir/main.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/main.cpp -o CMakeFiles/ProcessSimulator.dir/main.cpp.s
 
+CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
+CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: ../synchronizer.cpp
+CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o -MF CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.cpp
+
+CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.cpp > CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.i
+
+CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.cpp -o CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.s
+
 CMakeFiles/ProcessSimulator.dir/loader.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/loader.cpp.o: ../loader.cpp
 CMakeFiles/ProcessSimulator.dir/loader.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ProcessSimulator.dir/loader.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ProcessSimulator.dir/loader.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/loader.cpp.o -MF CMakeFiles/ProcessSimulator.dir/loader.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/loader.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/loader.cpp
 
 CMakeFiles/ProcessSimulator.dir/loader.cpp.i: cmake_force
@@ -114,7 +128,7 @@ CMakeFiles/ProcessSimulator.dir/loader.cpp.s: cmake_force
 CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o: ../scheduler.cpp
 CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o -MF CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.cpp
 
 CMakeFiles/ProcessSimulator.dir/scheduler.cpp.i: cmake_force
@@ -129,6 +143,7 @@ CMakeFiles/ProcessSimulator.dir/scheduler.cpp.s: cmake_force
 ProcessSimulator_OBJECTS = \
 "CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o" \
 "CMakeFiles/ProcessSimulator.dir/main.cpp.o" \
+"CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o" \
 "CMakeFiles/ProcessSimulator.dir/loader.cpp.o" \
 "CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o"
 
@@ -137,6 +152,7 @@ ProcessSimulator_EXTERNAL_OBJECTS =
 
 bin/ProcessSimulator: CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o
 bin/ProcessSimulator: CMakeFiles/ProcessSimulator.dir/main.cpp.o
+bin/ProcessSimulator: CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o
 bin/ProcessSimulator: CMakeFiles/ProcessSimulator.dir/loader.cpp.o
 bin/ProcessSimulator: CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o
 bin/ProcessSimulator: CMakeFiles/ProcessSimulator.dir/build.make
@@ -146,7 +162,7 @@ bin/ProcessSimulator: /usr/lib/x86_64-linux-gnu/libQt6Core.so.6.2.4
 bin/ProcessSimulator: /usr/lib/x86_64-linux-gnu/libGLX.so
 bin/ProcessSimulator: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 bin/ProcessSimulator: CMakeFiles/ProcessSimulator.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable bin/ProcessSimulator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable bin/ProcessSimulator"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ProcessSimulator.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -283,6 +283,30 @@ scheduler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/scheduler.cpp.s
 .PHONY : scheduler.cpp.s
 
+synchronizer.o: synchronizer.cpp.o
+.PHONY : synchronizer.o
+
+# target to build an object file
+synchronizer.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o
+.PHONY : synchronizer.cpp.o
+
+synchronizer.i: synchronizer.cpp.i
+.PHONY : synchronizer.i
+
+# target to preprocess a source file
+synchronizer.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.i
+.PHONY : synchronizer.cpp.i
+
+synchronizer.s: synchronizer.cpp.s
+.PHONY : synchronizer.s
+
+# target to generate assembly for a file
+synchronizer.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.s
+.PHONY : synchronizer.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -309,6 +333,9 @@ help:
 	@echo "... scheduler.o"
 	@echo "... scheduler.i"
 	@echo "... scheduler.s"
+	@echo "... synchronizer.o"
+	@echo "... synchronizer.i"
+	@echo "... synchronizer.s"
 .PHONY : help
 
 

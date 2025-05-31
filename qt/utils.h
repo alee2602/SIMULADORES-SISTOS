@@ -10,17 +10,22 @@ struct Process {
     int burst_time;
     int arrival_time;
     int priority;
-    int start_time = -1;
-    int finish_time = -1;
-    int waiting_time = -1;
-    int remaining_time = -1;
+    int start_time;
+    int finish_time;
+    int waiting_time;
+    int turnaround_time;
+    int remaining_time; // Agregar este miembro
     QColor color;
-    
-    Process() = default;
-    Process(QString p, int bt, int at, int prio) 
-        : pid(p), burst_time(bt), arrival_time(at), priority(prio) {
-        remaining_time = burst_time;
-    }
+
+    // Constructor predeterminado
+    Process() : burst_time(0), arrival_time(0), priority(0), start_time(-1),
+                finish_time(-1), waiting_time(-1), turnaround_time(-1), remaining_time(0), color(Qt::white) {}
+
+    // Constructor con parámetros
+    Process(QString p, int bt, int at, int pr, int st, int ft, int wt, int tat, QColor c)
+        : pid(p), burst_time(bt), arrival_time(at), priority(pr),
+          start_time(st), finish_time(ft), waiting_time(wt), turnaround_time(tat),
+          remaining_time(bt), color(c) {}
 };
 
 struct ExecutionSlice {
@@ -37,8 +42,10 @@ struct Resource {
     QString name;
     int count;
     int available;
+    
     Resource() : name(""), count(0), available(0) {}
     Resource(QString n, int c) : name(n), count(c), available(c) {}
+    Resource(QString n, int c, int a) : name(n), count(c), available(a) {}
 };
 
 struct Action {
@@ -48,9 +55,8 @@ struct Action {
     int cycle;      
 
     Action() : pid(""), type(""), resource(""), cycle(0) {}
-
     Action(QString p, QString t, QString r, int c)
         : pid(p), type(t), resource(r), cycle(c) {}
 };
 
-#endif 
+#endif

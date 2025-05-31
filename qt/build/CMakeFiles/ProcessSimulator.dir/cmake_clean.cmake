@@ -10,6 +10,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ProcessSimulator.dir/main.cpp.o.d"
   "CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o"
   "CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o.d"
+  "CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o"
+  "CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o.d"
   "bin/ProcessSimulator"
   "bin/ProcessSimulator.pdb"
 )
