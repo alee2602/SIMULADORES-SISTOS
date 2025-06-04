@@ -414,7 +414,6 @@ void ProcessSimulator::setupMultiSelectionWidget() {
     mainStack->addWidget(multiSelectionWidget);
 }
 
-
 void ProcessSimulator::setupSchedulingWidget()
 {
     schedulingWidget = new QWidget();
@@ -436,7 +435,9 @@ void ProcessSimulator::setupSchedulingWidget()
     processLayout->addWidget(generateBtn);
     processLayout->addStretch();
 
+    // CAMBIO AQUÍ: Crear el ganttChart y su scroll area
     ganttChart = new GanttChartWidget();
+    ganttScrollArea = ganttChart->createScrollArea();  // Usar el método que ya tienes
 
     QHBoxLayout *animLayout = new QHBoxLayout();
     QPushButton *startBtn = createButton("▶ Start Animation", "#30c752");
@@ -473,13 +474,12 @@ void ProcessSimulator::setupSchedulingWidget()
     layout->addLayout(headerLayout);
     layout->addLayout(processLayout);
     setupAlgorithmSelection(layout);
-    layout->addWidget(ganttChart);
+    layout->addWidget(ganttScrollArea);  // CAMBIO: Agregar el scroll area en lugar del ganttChart directamente
     layout->addLayout(animLayout);
     layout->addLayout(tablesLayout);
     layout->addWidget(statusLabel);
 
-    connect(backBtn, &QPushButton::clicked, [this]()
-            { mainStack->setCurrentWidget(menuWidget); });
+    connect(backBtn, &QPushButton::clicked, [this]() { mainStack->setCurrentWidget(menuWidget); });
     connect(loadBtn, &QPushButton::clicked, this, &ProcessSimulator::loadProcessesFromDialog);
     connect(generateBtn, &QPushButton::clicked, this, &ProcessSimulator::generateSampleProcesses);
     connect(startBtn, &QPushButton::clicked, ganttChart, &GanttChartWidget::startAnimation);
@@ -489,6 +489,7 @@ void ProcessSimulator::setupSchedulingWidget()
     mainStack->addWidget(schedulingWidget);
 }
 
+
 void ProcessSimulator::setupSequentialSimWidget() {
     sequentialSimWidget = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(sequentialSimWidget);
@@ -497,9 +498,11 @@ void ProcessSimulator::setupSequentialSimWidget() {
     simTitleLabel->setFont(QFont("Arial", 16, QFont::Bold));
     layout->addWidget(simTitleLabel);
 
+    // CAMBIO AQUÍ TAMBIÉN: Crear scroll area para la simulación secuencial
     ganttChart = new GanttChartWidget();
-    ganttChart->setFixedHeight(200);
-    layout->addWidget(ganttChart);
+    QScrollArea *seqGanttScrollArea = ganttChart->createScrollArea();
+    seqGanttScrollArea->setFixedHeight(220);  // Mantener altura fija
+    layout->addWidget(seqGanttScrollArea);
 
     metricsLabel = new QLabel("Esperando métricas...");
     metricsLabel->setFont(QFont("Arial", 12));

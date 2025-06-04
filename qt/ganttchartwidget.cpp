@@ -82,7 +82,7 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
     int margin = 40;
     int chartHeight = height() - 2 * margin;
     int chartWidth = width() - 2 * margin;
-    int timeUnit = 40; // Fijo para que el scroll funcione bien
+    int timeUnit = std::max(40, std::min(80, chartWidth / maxTime));
 
     painter.setPen(QPen(Qt::black, 2));
     painter.drawLine(margin, height() - margin, width() - margin, height() - margin);

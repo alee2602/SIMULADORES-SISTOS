@@ -26,7 +26,7 @@ public:
     ~ProcessSimulator();
 
 private:
-    QScrollArea* mainGanttScrollArea;
+     QScrollArea *ganttScrollArea; 
 
     struct AlgorithmConfig {
         QString name;
