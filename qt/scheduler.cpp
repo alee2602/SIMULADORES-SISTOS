@@ -197,7 +197,7 @@ std::vector<ExecutionSlice> SchedulingAlgorithms::runRoundRobin(std::vector<Proc
     return timeline;
 }
 
-std::vector<ExecutionSlice> SchedulingAlgorithms::runPriority(std::vector<Process>& processes, bool aging) {
+std::vector<ExecutionSlice> SchedulingAlgorithms::runPriority(std::vector<Process>& processes, bool agingEnabled, int agingInterval) {
     std::vector<ExecutionSlice> timeline;
     std::vector<Process> remaining = processes;
     std::vector<Process> ready_queue;
@@ -223,11 +223,11 @@ std::vector<ExecutionSlice> SchedulingAlgorithms::runPriority(std::vector<Proces
 
         if (!ready_queue.empty()) {
             // Apply aging if enabled
-            if (aging) {
+            if (agingEnabled) {
                 for (auto& p : ready_queue) {
                     wait_time[p.pid]++;
                     // Decrease priority number (higher priority) every 5 time units of waiting
-                    if (wait_time[p.pid] % 5 == 0 && p.priority > 1) {
+                    if (wait_time[p.pid] % agingInterval == 0 && p.priority > 1) {
                         p.priority--;
                     }
                 }

@@ -1,5 +1,5 @@
 /****************************************************************************
-** Meta object code from reading C++ file 'main.cpp'
+** Meta object code from reading C++ file 'ganttchartwidget.h'
 **
 ** Created by: The Qt Meta Object Compiler version 68 (Qt 6.2.4)
 **
@@ -7,10 +7,11 @@
 *****************************************************************************/
 
 #include <memory>
+#include "../../../ganttchartwidget.h"
 #include <QtCore/qbytearray.h>
 #include <QtCore/qmetatype.h>
 #if !defined(Q_MOC_OUTPUT_REVISION)
-#error "The header file 'main.cpp' doesn't include <QObject>."
+#error "The header file 'ganttchartwidget.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 68
 #error "This file was generated using the moc from 6.2.4. It"
 #error "cannot be used with the include files from this version of Qt."
@@ -115,79 +116,6 @@ int GanttChartWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
         _id -= 1;
     }
-    return _id;
-}
-struct qt_meta_stringdata_ProcessSimulator_t {
-    const uint offsetsAndSize[2];
-    char stringdata0[17];
-};
-#define QT_MOC_LITERAL(ofs, len) \
-    uint(offsetof(qt_meta_stringdata_ProcessSimulator_t, stringdata0) + ofs), len 
-static const qt_meta_stringdata_ProcessSimulator_t qt_meta_stringdata_ProcessSimulator = {
-    {
-QT_MOC_LITERAL(0, 16) // "ProcessSimulator"
-
-    },
-    "ProcessSimulator"
-};
-#undef QT_MOC_LITERAL
-
-static const uint qt_meta_data_ProcessSimulator[] = {
-
- // content:
-      10,       // revision
-       0,       // classname
-       0,    0, // classinfo
-       0,    0, // methods
-       0,    0, // properties
-       0,    0, // enums/sets
-       0,    0, // constructors
-       0,       // flags
-       0,       // signalCount
-
-       0        // eod
-};
-
-void ProcessSimulator::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
-{
-    (void)_o;
-    (void)_id;
-    (void)_c;
-    (void)_a;
-}
-
-const QMetaObject ProcessSimulator::staticMetaObject = { {
-    QMetaObject::SuperData::link<QWidget::staticMetaObject>(),
-    qt_meta_stringdata_ProcessSimulator.offsetsAndSize,
-    qt_meta_data_ProcessSimulator,
-    qt_static_metacall,
-    nullptr,
-qt_incomplete_metaTypeArray<qt_meta_stringdata_ProcessSimulator_t
-, QtPrivate::TypeAndForceComplete<ProcessSimulator, std::true_type>
-
-
-
->,
-    nullptr
-} };
-
-
-const QMetaObject *ProcessSimulator::metaObject() const
-{
-    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
-}
-
-void *ProcessSimulator::qt_metacast(const char *_clname)
-{
-    if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_ProcessSimulator.stringdata0))
-        return static_cast<void*>(this);
-    return QWidget::qt_metacast(_clname);
-}
-
-int ProcessSimulator::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
-{
-    _id = QWidget::qt_metacall(_c, _id, _a);
     return _id;
 }
 QT_WARNING_POP

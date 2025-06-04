@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt
+CMAKE_SOURCE_DIR = "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build
+CMAKE_BINARY_DIR = "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build"
 
 # Utility rule file for ProcessSimulator_autogen.
 
@@ -67,8 +67,8 @@ include CMakeFiles/ProcessSimulator_autogen.dir/compiler_depend.make
 include CMakeFiles/ProcessSimulator_autogen.dir/progress.make
 
 CMakeFiles/ProcessSimulator_autogen:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target ProcessSimulator"
-	/usr/bin/cmake -E cmake_autogen /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator_autogen.dir/AutogenInfo.json ""
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir="/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC for target ProcessSimulator"
+	/usr/bin/cmake -E cmake_autogen "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator_autogen.dir/AutogenInfo.json" ""
 
 ProcessSimulator_autogen: CMakeFiles/ProcessSimulator_autogen
 ProcessSimulator_autogen: CMakeFiles/ProcessSimulator_autogen.dir/build.make
@@ -83,6 +83,6 @@ CMakeFiles/ProcessSimulator_autogen.dir/clean:
 .PHONY : CMakeFiles/ProcessSimulator_autogen.dir/clean
 
 CMakeFiles/ProcessSimulator_autogen.dir/depend:
-	cd /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator_autogen.dir/DependInfo.cmake --color=$(COLOR)
+	cd "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator_autogen.dir/DependInfo.cmake" --color=$(COLOR)
 .PHONY : CMakeFiles/ProcessSimulator_autogen.dir/depend
 

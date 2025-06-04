@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt
+CMAKE_SOURCE_DIR = "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build
+CMAKE_BINARY_DIR = "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -132,9 +132,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build//CMakeFiles/progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
@@ -211,6 +211,30 @@ ProcessSimulator_autogen/mocs_compilation.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.s
 .PHONY : ProcessSimulator_autogen/mocs_compilation.cpp.s
 
+ganttchartwidget.o: ganttchartwidget.cpp.o
+.PHONY : ganttchartwidget.o
+
+# target to build an object file
+ganttchartwidget.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o
+.PHONY : ganttchartwidget.cpp.o
+
+ganttchartwidget.i: ganttchartwidget.cpp.i
+.PHONY : ganttchartwidget.i
+
+# target to preprocess a source file
+ganttchartwidget.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.i
+.PHONY : ganttchartwidget.cpp.i
+
+ganttchartwidget.s: ganttchartwidget.cpp.s
+.PHONY : ganttchartwidget.s
+
+# target to generate assembly for a file
+ganttchartwidget.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.s
+.PHONY : ganttchartwidget.cpp.s
+
 loader.o: loader.cpp.o
 .PHONY : loader.o
 
@@ -258,6 +282,30 @@ main.s: main.cpp.s
 main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/main.cpp.s
 .PHONY : main.cpp.s
+
+processsimulator.o: processsimulator.cpp.o
+.PHONY : processsimulator.o
+
+# target to build an object file
+processsimulator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o
+.PHONY : processsimulator.cpp.o
+
+processsimulator.i: processsimulator.cpp.i
+.PHONY : processsimulator.i
+
+# target to preprocess a source file
+processsimulator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.i
+.PHONY : processsimulator.cpp.i
+
+processsimulator.s: processsimulator.cpp.s
+.PHONY : processsimulator.s
+
+# target to generate assembly for a file
+processsimulator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.s
+.PHONY : processsimulator.cpp.s
 
 scheduler.o: scheduler.cpp.o
 .PHONY : scheduler.o
@@ -324,12 +372,18 @@ help:
 	@echo "... ProcessSimulator_autogen/mocs_compilation.o"
 	@echo "... ProcessSimulator_autogen/mocs_compilation.i"
 	@echo "... ProcessSimulator_autogen/mocs_compilation.s"
+	@echo "... ganttchartwidget.o"
+	@echo "... ganttchartwidget.i"
+	@echo "... ganttchartwidget.s"
 	@echo "... loader.o"
 	@echo "... loader.i"
 	@echo "... loader.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... processsimulator.o"
+	@echo "... processsimulator.i"
+	@echo "... processsimulator.s"
 	@echo "... scheduler.o"
 	@echo "... scheduler.i"
 	@echo "... scheduler.s"
