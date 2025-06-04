@@ -20,6 +20,7 @@ public:
     void stopAnimation();
     void setAnimationSpeed(int speed);
     QScrollArea* createScrollArea();
+    bool hasTimeline() const;
 
 protected:
     void paintEvent(QPaintEvent* event) override;

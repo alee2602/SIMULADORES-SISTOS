@@ -163,6 +163,9 @@ QScrollArea* GanttChartWidget::createScrollArea() {
 }
 
 QSize GanttChartWidget::sizeHint() const {
-    // Ajusta el tamaño sugerido según tus necesidades
     return QSize(800, 200);
+}
+
+bool GanttChartWidget::hasTimeline() const {
+    return !timeline.empty();
 }

@@ -27,6 +27,9 @@ public:
 
 private:
      QScrollArea *ganttScrollArea; 
+     void displayAlgorithmResultInList(const QString& title, 
+                                 const std::vector<ExecutionSlice>& timeline, 
+                                 const std::vector<Process>& processResults);
 
     struct AlgorithmConfig {
         QString name;
@@ -71,7 +74,9 @@ QTimer *simulationTimer;
     QWidget* schedulingWidget;
     QWidget* synchronizationWidget;
 
-    GanttChartWidget* ganttChart;
+    GanttChartWidget* mainGanttChart;        // Para la pantalla principal de scheduling
+    GanttChartWidget* sequentialGanttChart;  // Para la simulación secuencial
+
     QTableWidget* processTable;
     QTableWidget* metricsTable;
     QTableWidget* syncTable;
@@ -112,6 +117,7 @@ QTimer *simulationTimer;
 
     // Synchronization
     void runSynchronization(const QString& mechanism);
+    void startMainAnimation();
 };
 
 #endif
