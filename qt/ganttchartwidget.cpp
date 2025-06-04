@@ -17,13 +17,16 @@ void GanttChartWidget::updateSize() {
     if (timeline.empty()) return;
 
     int maxTime = 0;
+    int maxLane = 0;
     for (const auto& slice : timeline) {
         maxTime = std::max(maxTime, slice.start_time + slice.duration);
+        maxLane = std::max(maxLane, slice.lane);
     }
 
     int minWidth = maxTime * 40 + 100;
-    setMinimumWidth(minWidth); // Esto permite que el widget crezca
-    setMinimumHeight(200);
+    int minHeight = 80 + (maxLane + 1) * 60; // Ajusta altura por lanes
+    setMinimumWidth(minWidth);
+    setMinimumHeight(minHeight);
 
     update();
 }
@@ -130,31 +133,33 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
 QScrollArea* GanttChartWidget::createScrollArea() {
     QScrollArea* ganttScrollArea = new QScrollArea();
     ganttScrollArea->setWidget(this);
-    ganttScrollArea->setWidgetResizable(false);  // Volver a false
-    ganttScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);  // Cambiar a AlwaysOn
-    ganttScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ganttScrollArea->setFixedHeight(220);
+    ganttScrollArea->setWidgetResizable(false);
+    ganttScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    ganttScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn); // Cambia a AlwaysOn
+    ganttScrollArea->setMinimumHeight(220);
+    ganttScrollArea->setMinimumWidth(800);
     ganttScrollArea->setStyleSheet(
         "QScrollArea {"
         "    border: 2px solid #e0e0e0;"
         "    border-radius: 8px;"
         "    background-color: white;"
         "}"
-        "QScrollBar:horizontal {"
+        "QScrollBar:horizontal, QScrollBar:vertical {"
         "    background: #f8f9fa;"
-        "    height: 14px;"
         "    border-radius: 7px;"
         "    margin: 2px;"
         "}"
-        "QScrollBar::handle:horizontal {"
+        "QScrollBar::handle:horizontal, QScrollBar::handle:vertical {"
         "    background: #6c757d;"
         "    border-radius: 7px;"
         "    min-width: 30px;"
+        "    min-height: 30px;"
         "}"
-        "QScrollBar::handle:horizontal:hover {"
+        "QScrollBar::handle:horizontal:hover, QScrollBar::handle:vertical:hover {"
         "    background: #495057;"
         "}"
-        "QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {"
+        "QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal,"
+        "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
         "    border: none;"
         "    background: none;"
         "}"

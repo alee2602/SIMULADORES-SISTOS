@@ -139,7 +139,6 @@ void ProcessSimulator::setupAlgorithmSelection(QVBoxLayout* layout) {
 }
 
 void ProcessSimulator::runSelectedAlgorithms() {
-    // Limpiar resultados anteriores
     QLayoutItem* item;
     while ((item = resultsLayout->takeAt(0)) != nullptr) {
         delete item->widget();
@@ -147,52 +146,97 @@ void ProcessSimulator::runSelectedAlgorithms() {
     }
 
     std::vector<Process> originalProcessesCopy = originalProcesses;
-    std::vector<ExecutionSlice> lastTimeline;
+    QStringList selectedAlgorithmNames;
+    std::vector<std::vector<ExecutionSlice>> algorithmTimelines;
+    int laneIndex = 0;
 
     if (fifoCheck->isChecked()) {
         processes = originalProcessesCopy;
-        lastTimeline = SchedulingAlgorithms::runFIFO(processes);
-        displayAlgorithmResultInList("FIFO", lastTimeline, processes);
+        auto timeline = SchedulingAlgorithms::runFIFO(processes);
+        for (auto& slice : timeline) {
+            slice.algorithm = "FIFO";
+            slice.lane = laneIndex;
+        }
+        algorithmTimelines.push_back(timeline);
+        selectedAlgorithmNames.append("FIFO");
+        laneIndex++;
     }
     if (sjfCheck->isChecked()) {
         processes = originalProcessesCopy;
-        lastTimeline = SchedulingAlgorithms::runSJF(processes);
-        displayAlgorithmResultInList("SJF", lastTimeline, processes);
+        auto timeline = SchedulingAlgorithms::runSJF(processes);
+        for (auto& slice : timeline) {
+            slice.algorithm = "SJF";
+            slice.lane = laneIndex;
+        }
+        algorithmTimelines.push_back(timeline);
+        selectedAlgorithmNames.append("SJF");
+        laneIndex++;
     }
     if (srtfCheck->isChecked()) {
         processes = originalProcessesCopy;
-        lastTimeline = SchedulingAlgorithms::runSRT(processes);  
-        displayAlgorithmResultInList("SRTF", lastTimeline, processes);
+        auto timeline = SchedulingAlgorithms::runSRT(processes);
+        for (auto& slice : timeline) {
+            slice.algorithm = "SRTF";
+            slice.lane = laneIndex;
+        }
+        algorithmTimelines.push_back(timeline);
+        selectedAlgorithmNames.append("SRTF");
+        laneIndex++;
     }
     if (rrCheck->isChecked()) {
         processes = originalProcessesCopy;
-        lastTimeline = SchedulingAlgorithms::runRoundRobin(processes, 2);
-        displayAlgorithmResultInList("Round Robin", lastTimeline, processes);
+        auto timeline = SchedulingAlgorithms::runRoundRobin(processes, 2);
+        for (auto& slice : timeline) {
+            slice.algorithm = "Round Robin";
+            slice.lane = laneIndex;
+        }
+        algorithmTimelines.push_back(timeline);
+        selectedAlgorithmNames.append("Round Robin");
+        laneIndex++;
     }
     if (priorityCheck->isChecked()) {
         processes = originalProcessesCopy;
-        lastTimeline = SchedulingAlgorithms::runPriority(processes, true);
-        displayAlgorithmResultInList("Priority", lastTimeline, processes);
+        auto timeline = SchedulingAlgorithms::runPriority(processes, true);
+        for (auto& slice : timeline) {
+            slice.algorithm = "Priority";
+            slice.lane = laneIndex;
+        }
+        algorithmTimelines.push_back(timeline);
+        selectedAlgorithmNames.append("Priority");
+        laneIndex++;
     }
 
-    // CAMBIO 3: Actualizar el chart principal con el último timeline
-    if (!lastTimeline.empty() && mainGanttChart) {
-        mainGanttChart->setTimeline(lastTimeline);
-
-        // CAMBIO 4: Calcular y mostrar métricas en el chart principal
-        double totalWaiting = 0;
-        double totalTurnaround = 0;
-        for (const auto& process : processes) {
-            totalWaiting += process.waiting_time;
-            totalTurnaround += (process.finish_time - process.arrival_time);
+    // Mostrar todos los algoritmos seleccionados en el Gantt principal (mainGanttChart)
+    if (!algorithmTimelines.empty() && mainGanttChart) {
+        std::vector<ExecutionSlice> combinedTimeline;
+        for (const auto& timeline : algorithmTimelines) {
+            combinedTimeline.insert(combinedTimeline.end(), timeline.begin(), timeline.end());
         }
+        mainGanttChart->setComparisonMode(true);
+        mainGanttChart->setAlgorithmNames(selectedAlgorithmNames);
+        mainGanttChart->setTimeline(combinedTimeline);
 
-        double avgWaiting = processes.empty() ? 0 : totalWaiting / processes.size();
-        double avgTurnaround = processes.empty() ? 0 : totalTurnaround / processes.size();
-
-        statusLabel->setText(QString("Main Chart - Avg Waiting Time: %1 | Avg Turnaround Time: %2")
-                            .arg(avgWaiting, 0, 'f', 2)
-                            .arg(avgTurnaround, 0, 'f', 2));
+        // Calcular promedios y mostrar título
+        QString title = "Comparación: " + selectedAlgorithmNames.join(", ");
+        double totalWaiting = 0, totalTurnaround = 0;
+        int totalCount = 0;
+        for (int i = 0; i < selectedAlgorithmNames.size(); ++i) {
+            processes = originalProcessesCopy;
+            if (selectedAlgorithmNames[i] == "FIFO") SchedulingAlgorithms::runFIFO(processes);
+            else if (selectedAlgorithmNames[i] == "SJF") SchedulingAlgorithms::runSJF(processes);
+            else if (selectedAlgorithmNames[i] == "SRTF") SchedulingAlgorithms::runSRT(processes);
+            else if (selectedAlgorithmNames[i] == "Round Robin") SchedulingAlgorithms::runRoundRobin(processes, 2);
+            else if (selectedAlgorithmNames[i] == "Priority") SchedulingAlgorithms::runPriority(processes, true);
+            for (const auto& p : processes) {
+                totalWaiting += p.waiting_time;
+                totalTurnaround += (p.finish_time - p.arrival_time);
+                totalCount++;
+            }
+        }
+        double avgWaiting = totalCount ? totalWaiting / totalCount : 0;
+        double avgTurnaround = totalCount ? totalTurnaround / totalCount : 0;
+        statusLabel->setText(title + QString(" | Avg Waiting: %1 | Avg Completion: %2")
+            .arg(avgWaiting, 0, 'f', 2).arg(avgTurnaround, 0, 'f', 2));
     } else if (mainGanttChart) {
         mainGanttChart->setTimeline(std::vector<ExecutionSlice>());
         statusLabel->setText("Selecciona al menos un algoritmo para ver resultados en el chart principal");
