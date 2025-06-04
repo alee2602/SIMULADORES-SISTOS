@@ -1,13 +1,31 @@
 #include "GanttChartWidget.h"
 #include <QPainter>
 #include <QFont>
+#include <QScrollArea>
+#include <QSize>
 
 GanttChartWidget::GanttChartWidget(QWidget* parent)
     : QWidget(parent), currentTime(0), maxTime(0), isAnimating(false), animationSpeed(500) {
     setMinimumHeight(200);
+    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed); // <-- Agrega esto
     animationTimer = new QTimer(this);
     connect(animationTimer, &QTimer::timeout, this, &GanttChartWidget::updateAnimation);
     setStyleSheet("background-color: white; border: 2px solid #e9ecef; border-radius: 10px;");
+}
+
+void GanttChartWidget::updateSize() {
+    if (timeline.empty()) return;
+
+    int maxTime = 0;
+    for (const auto& slice : timeline) {
+        maxTime = std::max(maxTime, slice.start_time + slice.duration);
+    }
+
+    int minWidth = maxTime * 40 + 100;
+    setMinimumWidth(minWidth); // Esto permite que el widget crezca
+    setMinimumHeight(200);
+
+    update();
 }
 
 void GanttChartWidget::setTimeline(const std::vector<ExecutionSlice>& newTimeline) {
@@ -17,6 +35,7 @@ void GanttChartWidget::setTimeline(const std::vector<ExecutionSlice>& newTimelin
         maxTime = std::max(maxTime, slice.start_time + slice.duration);
     }
     currentTime = 0;
+    updateSize(); // <-- Llama aquí
     update();
 }
 
@@ -63,7 +82,7 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
     int margin = 40;
     int chartHeight = height() - 2 * margin;
     int chartWidth = width() - 2 * margin;
-    int timeUnit = std::max(1, chartWidth / std::max(1, maxTime));
+    int timeUnit = 40; // Fijo para que el scroll funcione bien
 
     painter.setPen(QPen(Qt::black, 2));
     painter.drawLine(margin, height() - margin, width() - margin, height() - margin);
@@ -106,4 +125,44 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 10));
     painter.drawText(10, 20, QString("Current Time: %1").arg(currentTime));
+}
+
+QScrollArea* GanttChartWidget::createScrollArea() {
+    QScrollArea* ganttScrollArea = new QScrollArea();
+    ganttScrollArea->setWidget(this);
+    ganttScrollArea->setWidgetResizable(false);  // Volver a false
+    ganttScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);  // Cambiar a AlwaysOn
+    ganttScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ganttScrollArea->setFixedHeight(220);
+    ganttScrollArea->setStyleSheet(
+        "QScrollArea {"
+        "    border: 2px solid #e0e0e0;"
+        "    border-radius: 8px;"
+        "    background-color: white;"
+        "}"
+        "QScrollBar:horizontal {"
+        "    background: #f8f9fa;"
+        "    height: 14px;"
+        "    border-radius: 7px;"
+        "    margin: 2px;"
+        "}"
+        "QScrollBar::handle:horizontal {"
+        "    background: #6c757d;"
+        "    border-radius: 7px;"
+        "    min-width: 30px;"
+        "}"
+        "QScrollBar::handle:horizontal:hover {"
+        "    background: #495057;"
+        "}"
+        "QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {"
+        "    border: none;"
+        "    background: none;"
+        "}"
+    );
+    return ganttScrollArea;
+}
+
+QSize GanttChartWidget::sizeHint() const {
+    // Ajusta el tamaño sugerido según tus necesidades
+    return QSize(800, 200);
 }

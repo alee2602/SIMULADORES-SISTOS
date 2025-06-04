@@ -1,10 +1,10 @@
-/mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp: /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/processsimulator.h \
-  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/moc_predefs.h \
-  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/GanttChartWidget.h \
-  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/loader.h \
-  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/scheduler.h \
-  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/synchronizer.h \
-  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/utils.h \
+/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp: /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/processsimulator.h \
+  /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/moc_predefs.h \
+  /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/GanttChartWidget.h \
+  /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/loader.h \
+  /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.h \
+  /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.h \
+  /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/utils.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -404,6 +404,7 @@
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHeaderView \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLabel \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QPushButton \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QSpinBox \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QStackedWidget \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTableWidget \
@@ -425,6 +426,7 @@
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlayoutitem.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qpushbutton.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qrubberband.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qsizepolicy.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qslider.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qspinbox.h \

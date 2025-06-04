@@ -1,6 +1,6 @@
-/mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_ganttchartwidget.cpp: /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/ganttchartwidget.h \
-  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/moc_predefs.h \
-  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/utils.h \
+/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_ganttchartwidget.cpp: /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/ganttchartwidget.h \
+  /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/moc_predefs.h \
+  /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/utils.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -366,7 +366,11 @@
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qtguiglobal.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qtransform.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qwindowdefs.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qsizepolicy.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtwidgets-config.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtwidgetsglobal.h \

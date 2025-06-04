@@ -14,7 +14,7 @@ struct Process {
     int finish_time;
     int waiting_time;
     int turnaround_time;
-    int remaining_time; // Agregar este miembro
+    int remaining_time;
     QColor color;
 
     // Constructor predeterminado

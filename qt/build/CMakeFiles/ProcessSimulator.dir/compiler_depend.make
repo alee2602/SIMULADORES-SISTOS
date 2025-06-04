@@ -371,20 +371,22 @@ CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o:
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qbasictimer.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/QColor \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qcolor.h \
-  ../utils.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qstring.h \
+  ../utils.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qwidget.h \
   ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp \
   ../processsimulator.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QStackedWidget \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qstackedwidget.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qwidget.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTableWidget \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtablewidget.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtableview.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractitemview.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qabstractitemmodel.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qhash.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qvariant.h \
@@ -813,15 +815,22 @@ CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o: ../ganttchartwidget.cpp 
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qbasictimer.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/QColor \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qcolor.h \
-  ../utils.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qstring.h \
+  ../utils.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qwidget.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/QPainter \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainter.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextoption.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/QFont \
-  /usr/include/x86_64-linux-gnu/qt6/QtGui/qfont.h
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qfont.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QSize \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qsize.h
 
 CMakeFiles/ProcessSimulator.dir/loader.cpp.o: ../loader.cpp \
   /usr/include/stdc-predef.h \
@@ -2165,6 +2174,8 @@ CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o: ../processsimulator.cpp 
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QTimer \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qtimer.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qbasictimer.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h \
   ../synchronizer.h \
   /usr/include/c++/11/queue \
   /usr/include/c++/11/deque \
@@ -2974,8 +2985,6 @@ CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: ../synchronizer.cpp \
 
 /usr/include/c++/11/fstream:
 
-/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea:
-
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qdatetime.h:
 
 /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsDropShadowEffect:
@@ -3050,6 +3059,8 @@ CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: ../synchronizer.cpp \
 
 /usr/include/c++/11/deque:
 
+/usr/include/x86_64-linux-gnu/qt6/QtCore/QSize:
+
 ../GanttChartWidget.h:
 
 /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgridlayout.h:
@@ -3105,6 +3116,8 @@ CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: ../synchronizer.cpp \
 /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QStackedWidget:
 
 ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea:
 
 ../utils.h:
 
@@ -3582,9 +3595,9 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 
 /usr/include/c++/11/pstl/glue_algorithm_defs.h:
 
-/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h:
-
 /usr/include/x86_64-linux-gnu/qt6/QtCore/QDebug:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitflags.h:
 

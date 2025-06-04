@@ -1,4 +1,3 @@
-// ProcessSimulator.cpp
 #include "processsimulator.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -109,11 +108,11 @@ void ProcessSimulator::setupAlgorithmSelection(QVBoxLayout* layout) {
 
     QHBoxLayout* checkboxLayout = new QHBoxLayout();
 
-    fifoCheck = new QCheckBox("FIFO");
-    sjfCheck = new QCheckBox("SJF");
-    srtfCheck = new QCheckBox("SRTF");
-    rrCheck = new QCheckBox("Round Robin");
-    priorityCheck = new QCheckBox("Priority");
+    fifoCheck = createStyledCheckBox("FIFO", "#FFE4E1");       
+    sjfCheck = createStyledCheckBox("SJF", "#E0F6FF");         
+    srtfCheck = createStyledCheckBox("SRTF", "#F0FFF0");       
+    rrCheck = createStyledCheckBox("Round Robin", "#FFF8DC");   
+    priorityCheck = createStyledCheckBox("Priority", "#F0E68C");
 
     checkboxLayout->addWidget(fifoCheck);
     checkboxLayout->addWidget(sjfCheck);
@@ -342,11 +341,11 @@ void ProcessSimulator::setupMultiSelectionWidget() {
     layout->addWidget(title);
 
     // Checkboxes de algoritmos
-    fifoCheckMulti = new QCheckBox("FIFO");
-    sjfCheckMulti = new QCheckBox("SJF");
-    srtfCheckMulti = new QCheckBox("SRTF");
-    rrCheckMulti = new QCheckBox("Round Robin");
-    priorityCheckMulti = new QCheckBox("Priority");
+    fifoCheckMulti = createStyledCheckBox("FIFO", "#FFE4E1");        // Rosa pastel
+    sjfCheckMulti = createStyledCheckBox("SJF", "#E0F6FF");          // Azul pastel
+    srtfCheckMulti = createStyledCheckBox("SRTF", "#F0FFF0");        // Verde pastel
+    rrCheckMulti = createStyledCheckBox("Round Robin", "#FFF8DC");    // Amarillo pastel
+    priorityCheckMulti = createStyledCheckBox("Priority", "#F0E68C"); // Dorado pastel
 
     QHBoxLayout *checksLayout = new QHBoxLayout();
     checksLayout->addWidget(fifoCheckMulti);
@@ -369,7 +368,7 @@ void ProcessSimulator::setupMultiSelectionWidget() {
     agingSpinBox->setRange(1, 10);
     agingSpinBox->setValue(5);
 
-    agingEnabledCheck = new QCheckBox("Habilitar envejecimiento (Priority)");
+    agingEnabledCheck = createStyledCheckBox("Habilitar envejecimiento (Priority)", "#E6E6FA"); // Lavanda pastel
     agingSpinBox->setEnabled(false);
 
     connect(agingEnabledCheck, &QCheckBox::toggled, agingSpinBox, &QWidget::setEnabled);
@@ -430,8 +429,6 @@ void ProcessSimulator::setupSchedulingWidget()
     headerLayout->addWidget(title, 1, Qt::AlignCenter);
     headerLayout->addStretch();
 
-    QHBoxLayout *algoLayout = new QHBoxLayout();
-    
     QHBoxLayout *processLayout = new QHBoxLayout();
     QPushButton *loadBtn = createButton("Load Processes", "#6c85bd");
     QPushButton *generateBtn = createButton("Generate Sample", "#70a1a8");
@@ -474,7 +471,6 @@ void ProcessSimulator::setupSchedulingWidget()
     statusLabel->setStyleSheet("color: #6c757d; padding: 10px; font-size: 14px;");
 
     layout->addLayout(headerLayout);
-    layout->addLayout(algoLayout);
     layout->addLayout(processLayout);
     setupAlgorithmSelection(layout);
     layout->addWidget(ganttChart);
@@ -630,4 +626,38 @@ void ProcessSimulator::setupSynchronizationWidget()
         QMessageBox::information(this, "Success", "Sample resources and actions generated!"); });
 
     mainStack->addWidget(synchronizationWidget);
+}
+
+// AGREGAR ESTE MÉTODO en la clase ProcessSimulator
+QCheckBox* ProcessSimulator::createStyledCheckBox(const QString &text, const QString &color) {
+    QCheckBox *checkbox = new QCheckBox(text);
+    checkbox->setStyleSheet(QString(
+        "QCheckBox {"
+        "    font-size: 14px;"
+        "    font-weight: bold;"
+        "    color: #2c3e50;"
+        "    padding: 8px;"
+        "    border-radius: 8px;"
+        "    background-color: %1;"
+        "    margin: 4px;"
+        "}"
+        "QCheckBox:hover {"
+        "    background-color: %2;"
+        "}"
+        "QCheckBox::indicator {"
+        "    width: 20px;"
+        "    height: 20px;"
+        "    border-radius: 10px;"
+        "    border: 2px solid #bdc3c7;"
+        "    background-color: white;"
+        "}"
+        "QCheckBox::indicator:checked {"
+        "    background-color: %3;"
+        "    border: 2px solid %4;"
+        "}"
+    ).arg(color)
+     .arg(lightenColor(color))
+     .arg(darkenColor(color))
+     .arg(darkenColor(color)));
+    return checkbox;
 }

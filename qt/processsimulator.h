@@ -26,6 +26,7 @@ public:
     ~ProcessSimulator();
 
 private:
+    QScrollArea* mainGanttScrollArea;
 
     struct AlgorithmConfig {
         QString name;
@@ -51,6 +52,8 @@ QTimer *simulationTimer;
     void displayAlgorithmResult(const QString& title, const std::vector<ExecutionSlice>& timeline);
 
     QCheckBox *fifoCheck, *sjfCheck, *srtfCheck, *rrCheck, *priorityCheck;
+    QCheckBox* createStyledCheckBox(const QString &text, const QString &color);
+    void setupTableWithScroll(QTableWidget* table);
     QCheckBox *fifoCheckMulti, *sjfCheckMulti, *srtfCheckMulti, *rrCheckMulti, *priorityCheckMulti;
     QCheckBox *agingEnabledCheck;
     QVBoxLayout *resultsLayout;
@@ -111,4 +114,4 @@ QTimer *simulationTimer;
     void runSynchronization(const QString& mechanism);
 };
 
-#endif 
+#endif
