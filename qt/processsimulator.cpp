@@ -124,13 +124,18 @@ void ProcessSimulator::setupAlgorithmSelection(QVBoxLayout* layout) {
     layout->addLayout(checkboxLayout);
 
     QPushButton* runAllBtn = createButton("Simular Algoritmos Seleccionados", "#28a745");
-    layout->addWidget(runAllBtn);
+    QPushButton* compareBtn = createButton("Comparar Algoritmos", "#17a2b8");
+    QHBoxLayout* buttonLayout = new QHBoxLayout();
+    buttonLayout->addWidget(runAllBtn);
+    buttonLayout->addWidget(compareBtn);
+    layout->addLayout(buttonLayout);
 
     resultsArea = new QWidget();
     resultsLayout = new QVBoxLayout(resultsArea);
     layout->addWidget(resultsArea);
 
     connect(runAllBtn, &QPushButton::clicked, this, &ProcessSimulator::runSelectedAlgorithms);
+    connect(compareBtn, &QPushButton::clicked, this, &ProcessSimulator::runSelectedAlgorithmsComparison);
 }
 
 void ProcessSimulator::runSelectedAlgorithms() {
@@ -750,4 +755,124 @@ void ProcessSimulator::startMainAnimation() {
         QMessageBox::information(this, "No Animation Data", 
             "Primero selecciona y simula un algoritmo para ver la animación.");
     }
+}
+
+void ProcessSimulator::runSelectedAlgorithmsComparison() {
+    QLayoutItem* item;
+    while ((item = resultsLayout->takeAt(0)) != nullptr) {
+        delete item->widget();
+        delete item;
+    }
+    algorithmTimelines.clear();
+    algorithmNames.clear();
+    std::vector<Process> originalProcessesCopy = originalProcesses;
+    int laneIndex = 0;
+    if (fifoCheck->isChecked()) {
+        processes = originalProcessesCopy;
+        auto timeline = SchedulingAlgorithms::runFIFO(processes);
+        for (auto& slice : timeline) { slice.algorithm = "FIFO"; slice.lane = laneIndex; }
+        algorithmTimelines.push_back(timeline);
+        algorithmNames.append("FIFO");
+        laneIndex++;
+    }
+    if (sjfCheck->isChecked()) {
+        processes = originalProcessesCopy;
+        auto timeline = SchedulingAlgorithms::runSJF(processes);
+        for (auto& slice : timeline) { slice.algorithm = "SJF"; slice.lane = laneIndex; }
+        algorithmTimelines.push_back(timeline);
+        algorithmNames.append("SJF");
+        laneIndex++;
+    }
+    if (srtfCheck->isChecked()) {
+        processes = originalProcessesCopy;
+        auto timeline = SchedulingAlgorithms::runSRT(processes);
+        for (auto& slice : timeline) { slice.algorithm = "SRTF"; slice.lane = laneIndex; }
+        algorithmTimelines.push_back(timeline);
+        algorithmNames.append("SRTF");
+        laneIndex++;
+    }
+    if (rrCheck->isChecked()) {
+        processes = originalProcessesCopy;
+        auto timeline = SchedulingAlgorithms::runRoundRobin(processes, 2);
+        for (auto& slice : timeline) { slice.algorithm = "Round Robin"; slice.lane = laneIndex; }
+        algorithmTimelines.push_back(timeline);
+        algorithmNames.append("Round Robin");
+        laneIndex++;
+    }
+    if (priorityCheck->isChecked()) {
+        processes = originalProcessesCopy;
+        auto timeline = SchedulingAlgorithms::runPriority(processes, true);
+        for (auto& slice : timeline) { slice.algorithm = "Priority"; slice.lane = laneIndex; }
+        algorithmTimelines.push_back(timeline);
+        algorithmNames.append("Priority");
+        laneIndex++;
+    }
+    if (!algorithmTimelines.empty()) {
+        displayComparisonResult(algorithmNames, algorithmTimelines);
+    }
+    processes = originalProcessesCopy;
+    updateProcessTable();
+}
+
+void ProcessSimulator::displayComparisonResult(const QStringList& algorithms, const std::vector<std::vector<ExecutionSlice>>& timelines) {
+    QLabel* header = new QLabel("Comparación de Algoritmos");
+    header->setFont(QFont("Arial", 18, QFont::Bold));
+    header->setStyleSheet("color: #2c3e50; margin: 20px 0;");
+    header->setAlignment(Qt::AlignCenter);
+    resultsLayout->addWidget(header);
+
+    std::vector<ExecutionSlice> combinedTimeline;
+    for (const auto& timeline : timelines) {
+        combinedTimeline.insert(combinedTimeline.end(), timeline.begin(), timeline.end());
+    }
+
+    GanttChartWidget* comparisonChart = new GanttChartWidget();
+    comparisonChart->setComparisonMode(true);
+    comparisonChart->setAlgorithmNames(algorithms);
+    comparisonChart->setTimeline(combinedTimeline);
+    comparisonChart->setFixedHeight(100 + algorithms.size() * 60);
+    resultsLayout->addWidget(comparisonChart);
+
+    QTableWidget* comparisonTable = new QTableWidget();
+    comparisonTable->setRowCount(algorithms.size());
+    comparisonTable->setColumnCount(3);
+    comparisonTable->setHorizontalHeaderLabels({"Algoritmo", "Tiempo Promedio de Espera", "Tiempo Promedio de Retorno"});
+
+    for (int i = 0; i < algorithms.size(); i++) {
+        processes = originalProcesses;
+        if (algorithms[i] == "FIFO") {
+            SchedulingAlgorithms::runFIFO(processes);
+        } else if (algorithms[i] == "SJF") {
+            SchedulingAlgorithms::runSJF(processes);
+        } else if (algorithms[i] == "SRTF") {
+            SchedulingAlgorithms::runSRT(processes);
+        } else if (algorithms[i] == "Round Robin") {
+            SchedulingAlgorithms::runRoundRobin(processes, 2);
+        } else if (algorithms[i] == "Priority") {
+            SchedulingAlgorithms::runPriority(processes, true);
+        }
+        double totalWaiting = 0;
+        double totalTurnaround = 0;
+        for (const auto& process : processes) {
+            totalWaiting += process.waiting_time;
+            totalTurnaround += (process.finish_time - process.arrival_time);
+        }
+        double avgWaiting = processes.empty() ? 0 : totalWaiting / processes.size();
+        double avgTurnaround = processes.empty() ? 0 : totalTurnaround / processes.size();
+        comparisonTable->setItem(i, 0, new QTableWidgetItem(algorithms[i]));
+        comparisonTable->setItem(i, 1, new QTableWidgetItem(QString::number(avgWaiting, 'f', 2)));
+        comparisonTable->setItem(i, 2, new QTableWidgetItem(QString::number(avgTurnaround, 'f', 2)));
+        QColor rowColor;
+        if (algorithms[i] == "FIFO") rowColor = QColor("#FFE4E1");
+        else if (algorithms[i] == "SJF") rowColor = QColor("#E0F6FF");
+        else if (algorithms[i] == "SRTF") rowColor = QColor("#F0FFF0");
+        else if (algorithms[i] == "Round Robin") rowColor = QColor("#FFF8DC");
+        else if (algorithms[i] == "Priority") rowColor = QColor("#F0E68C");
+        for (int j = 0; j < 3; j++) {
+            comparisonTable->item(i, j)->setBackground(rowColor);
+        }
+    }
+    comparisonTable->resizeColumnsToContents();
+    comparisonTable->setMaximumHeight(150);
+    resultsLayout->addWidget(comparisonTable);
 }

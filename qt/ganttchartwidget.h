@@ -38,6 +38,12 @@ private:
     bool isAnimating;
     QTimer* animationTimer;
     int animationSpeed;
+    bool comparisonMode = false;
+    QStringList algorithmNames;
+public:
+    void setComparisonMode(bool enabled) { comparisonMode = enabled; }
+    void setAlgorithmNames(const QStringList& names) { algorithmNames = names; }
+    bool isComparisonMode() const { return comparisonMode; }
 };
 
 #endif

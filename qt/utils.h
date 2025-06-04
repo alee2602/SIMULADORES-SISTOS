@@ -33,9 +33,13 @@ struct ExecutionSlice {
     int start_time;
     int duration;
     QColor color;
-    
-    ExecutionSlice(QString p, int start, int dur, QColor c)
-        : pid(p), start_time(start), duration(dur), color(c) {}
+    QString algorithm;
+    int lane;
+
+    ExecutionSlice() : start_time(0), duration(0), lane(0) {}
+    ExecutionSlice(const QString& pid, int start_time, int duration, const QColor& color,
+                   const QString& algorithm = "", int lane = 0)
+        : pid(pid), start_time(start_time), duration(duration), color(color), algorithm(algorithm), lane(lane) {}
 };
 
 struct Resource {

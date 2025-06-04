@@ -118,6 +118,12 @@ QTimer *simulationTimer;
     // Synchronization
     void runSynchronization(const QString& mechanism);
     void startMainAnimation();
+
+    std::vector<std::vector<ExecutionSlice>> algorithmTimelines;
+    QStringList algorithmNames;
+public:
+    void runSelectedAlgorithmsComparison();
+    void displayComparisonResult(const QStringList& algorithms, const std::vector<std::vector<ExecutionSlice>>& timelines);
 };
 
 #endif
