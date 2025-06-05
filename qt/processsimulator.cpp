@@ -22,8 +22,8 @@ ProcessSimulator::ProcessSimulator(QWidget *parent)
     // generateSampleProcesses();
     generateSampleResources();
     generateSampleActions();
-    // originalProcesses = processes; // Solo si hay procesos
-    sequentialResults.clear(); // Limpiar resultados previos
+    // originalProcesses = processes; 
+    sequentialResults.clear(); 
 }
 
 ProcessSimulator::~ProcessSimulator()
@@ -211,6 +211,10 @@ void ProcessSimulator::runNextAlgorithmInSequence() {
     processes = originalProcesses;
     std::vector<ExecutionSlice> timeline;
 
+    if (mainGanttChart) {
+        mainGanttChart->setAlgorithmTitle(algorithmName);
+    }
+
     if (algorithmName == "FIFO") {
         timeline = SchedulingAlgorithms::runFIFO(processes);
     } else if (algorithmName == "SJF") {
@@ -248,12 +252,11 @@ void ProcessSimulator::runNextAlgorithmInSequence() {
     }
 
     currentAlgorithmIndex++;
-    QTimer::singleShot(3000, this, &ProcessSimulator::runNextAlgorithmInSequence);
 }
 
 void ProcessSimulator::displayAlgorithmResultInList(const QString& title, 
-                                                   const std::vector<ExecutionSlice>& timeline, 
-                                                   const std::vector<Process>& processResults) {
+                                                const std::vector<ExecutionSlice>& timeline, 
+                                                const std::vector<Process>& processResults) {
     // Limpiar resultados previos antes de mostrar el nuevo
     QLayoutItem* item;
     while ((item = resultsLayout->takeAt(0)) != nullptr) {
@@ -439,12 +442,6 @@ void ProcessSimulator::setupMenuWidget()
 
     QPushButton *schedulingBtn = createMenuButton("Simulador de Algoritmos de Calendarización", "#c4dafa", "Simulate process scheduling algorithms like FIFO, SJF, Round Robin, and Priority");
     QPushButton *syncBtn = createMenuButton("Simulador de Mecanismos de Sincronización", "#c4e5fb", "Simulate synchronization mechanisms like Mutex Locks and Semaphores");
-    QPushButton *multiSimBtn = createMenuButton("Simulación Secuencial (con Checkboxes)", "#c2f0c2", "Selecciona múltiples algoritmos y simúlalos uno por uno");
-buttonLayout->addWidget(multiSimBtn);
-
-connect(multiSimBtn, &QPushButton::clicked, [this]() {
-    mainStack->setCurrentWidget(multiSelectionWidget);
-});
 
     buttonLayout->addWidget(schedulingBtn);
     buttonLayout->addWidget(syncBtn);
@@ -557,19 +554,21 @@ void ProcessSimulator::setupSchedulingWidget()
     headerLayout->addWidget(title, 1, Qt::AlignCenter);
     headerLayout->addStretch();
 
-    // MODIFICACIÓN: Agregar botón Clean junto a Load y Generate
     QHBoxLayout *processLayout = new QHBoxLayout();
     QPushButton *loadBtn = createButton("Load Processes", "#6c85bd");
     QPushButton *generateBtn = createButton("Generate Sample", "#70a1a8");
-    QPushButton *cleanBtn = createButton("Clean", "#dc3545"); // Nuevo botón Clean
+    QPushButton *cleanBtn = createButton("Clear", "#dc3545"); 
     processLayout->addWidget(loadBtn);
     processLayout->addWidget(generateBtn);
-    processLayout->addWidget(cleanBtn); // Agregar el botón Clean
+    processLayout->addWidget(cleanBtn); 
     processLayout->addStretch();
 
     mainGanttChart = new GanttChartWidget();  
     QScrollArea *mainGanttScrollArea = mainGanttChart->createScrollArea();
 
+    connect(mainGanttChart, &GanttChartWidget::animationFinished,
+        this, &ProcessSimulator::runNextAlgorithmInSequence);
+    
     QHBoxLayout *animLayout = new QHBoxLayout();
     QPushButton *startBtn = createButton("▶ Start Animation", "#30c752");
     QPushButton *stopBtn = createButton("Stop Animation", "#dc3545");
@@ -1091,6 +1090,7 @@ void ProcessSimulator::cleanProcesses()
     statusLabel->setText("Processes cleared. Ready to load new processes.");
 }
 
+// SINCRONIZACIÓN
 void ProcessSimulator::setupSynchronizationWidget() {
     synchronizationWidget = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(synchronizationWidget);
@@ -1104,8 +1104,8 @@ void ProcessSimulator::setupSynchronizationWidget() {
 
     // Botones para cargar recursos y acciones
     QHBoxLayout *loadLayout = new QHBoxLayout();
-    QPushButton *loadResourcesBtn = createButton("Cargar Recursos", "#5a68a5");
-    QPushButton *loadActionsBtn = createButton("Cargar Acciones", "#70a1a8");
+    QPushButton *loadResourcesBtn = createButton("Load Resources", "#5a68a5");
+    QPushButton *loadActionsBtn = createButton("Load Actions", "#70a1a8");
     loadLayout->addWidget(loadResourcesBtn);
     loadLayout->addWidget(loadActionsBtn);
     loadLayout->addStretch();
@@ -1113,8 +1113,8 @@ void ProcessSimulator::setupSynchronizationWidget() {
 
     // Botones para simular mecanismos
     QHBoxLayout *syncBtnLayout = new QHBoxLayout();
-    QPushButton *mutexBtn = createButton("Simular Mutex Lock", "#28a745");
-    QPushButton *semaphoreBtn = createButton("Simular Semaphore", "#17a2b8");
+    QPushButton *mutexBtn = createButton("Simulate Mutex", "#28a745");
+    QPushButton *semaphoreBtn = createButton("Simulate Semaphore", "#17a2b8");
     syncBtnLayout->addWidget(mutexBtn);
     syncBtnLayout->addWidget(semaphoreBtn);
     syncBtnLayout->addStretch();
@@ -1129,7 +1129,7 @@ void ProcessSimulator::setupSynchronizationWidget() {
     layout->addWidget(syncTable);
 
     // Botón para volver al menú principal
-    QPushButton *backBtn = createButton("← Volver al Menú", "#6c757d");
+    QPushButton *backBtn = createButton("← Back to Menu", "#6c757d");
     layout->addWidget(backBtn);
 
     // Conexiones

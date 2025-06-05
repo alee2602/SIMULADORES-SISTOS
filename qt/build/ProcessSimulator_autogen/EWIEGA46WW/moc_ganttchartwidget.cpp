@@ -22,23 +22,25 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_GanttChartWidget_t {
-    const uint offsetsAndSize[12];
-    char stringdata0[70];
+    const uint offsetsAndSize[14];
+    char stringdata0[88];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_GanttChartWidget_t, stringdata0) + ofs), len 
 static const qt_meta_stringdata_GanttChartWidget_t qt_meta_stringdata_GanttChartWidget = {
     {
 QT_MOC_LITERAL(0, 16), // "GanttChartWidget"
-QT_MOC_LITERAL(17, 10), // "setMetrics"
-QT_MOC_LITERAL(28, 0), // ""
-QT_MOC_LITERAL(29, 10), // "avgWaiting"
-QT_MOC_LITERAL(40, 13), // "avgTurnaround"
-QT_MOC_LITERAL(54, 15) // "updateAnimation"
+QT_MOC_LITERAL(17, 17), // "animationFinished"
+QT_MOC_LITERAL(35, 0), // ""
+QT_MOC_LITERAL(36, 10), // "setMetrics"
+QT_MOC_LITERAL(47, 10), // "avgWaiting"
+QT_MOC_LITERAL(58, 13), // "avgTurnaround"
+QT_MOC_LITERAL(72, 15) // "updateAnimation"
 
     },
-    "GanttChartWidget\0setMetrics\0\0avgWaiting\0"
-    "avgTurnaround\0updateAnimation"
+    "GanttChartWidget\0animationFinished\0\0"
+    "setMetrics\0avgWaiting\0avgTurnaround\0"
+    "updateAnimation"
 };
 #undef QT_MOC_LITERAL
 
@@ -48,19 +50,25 @@ static const uint qt_meta_data_GanttChartWidget[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       3,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       1,       // signalCount
+
+ // signals: name, argc, parameters, tag, flags, initial metatype offsets
+       1,    0,   32,    2, 0x06,    1 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    2,   26,    2, 0x0a,    1 /* Public */,
-       5,    0,   31,    2, 0x08,    4 /* Private */,
+       3,    2,   33,    2, 0x0a,    2 /* Public */,
+       6,    0,   38,    2, 0x08,    5 /* Private */,
+
+ // signals: parameters
+    QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::Double, QMetaType::Double,    3,    4,
+    QMetaType::Void, QMetaType::Double, QMetaType::Double,    4,    5,
     QMetaType::Void,
 
        0        // eod
@@ -72,9 +80,19 @@ void GanttChartWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         auto *_t = static_cast<GanttChartWidget *>(_o);
         (void)_t;
         switch (_id) {
-        case 0: _t->setMetrics((*reinterpret_cast< std::add_pointer_t<double>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<double>>(_a[2]))); break;
-        case 1: _t->updateAnimation(); break;
+        case 0: _t->animationFinished(); break;
+        case 1: _t->setMetrics((*reinterpret_cast< std::add_pointer_t<double>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<double>>(_a[2]))); break;
+        case 2: _t->updateAnimation(); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::IndexOfMethod) {
+        int *result = reinterpret_cast<int *>(_a[0]);
+        {
+            using _t = void (GanttChartWidget::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&GanttChartWidget::animationFinished)) {
+                *result = 0;
+                return;
+            }
         }
     }
 }
@@ -86,7 +104,7 @@ const QMetaObject GanttChartWidget::staticMetaObject = { {
     qt_static_metacall,
     nullptr,
 qt_incomplete_metaTypeArray<qt_meta_stringdata_GanttChartWidget_t
-, QtPrivate::TypeAndForceComplete<GanttChartWidget, std::true_type>
+, QtPrivate::TypeAndForceComplete<GanttChartWidget, std::true_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
 , QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<double, std::false_type>, QtPrivate::TypeAndForceComplete<double, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
 
 
@@ -114,15 +132,21 @@ int GanttChartWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 3;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
+        if (_id < 3)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 2;
+        _id -= 3;
     }
     return _id;
+}
+
+// SIGNAL 0
+void GanttChartWidget::animationFinished()
+{
+    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
 }
 QT_WARNING_POP
 QT_END_MOC_NAMESPACE

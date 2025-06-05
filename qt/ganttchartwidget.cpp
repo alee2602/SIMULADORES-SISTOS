@@ -14,6 +14,12 @@ GanttChartWidget::GanttChartWidget(QWidget* parent)
     setStyleSheet("background-color: white; border: 2px solid #e9ecef; border-radius: 10px;");
 }
 
+void GanttChartWidget::setAlgorithmTitle(const QString& title) {
+    algorithmTitle = title;
+    update();  
+}
+
+
 void GanttChartWidget::updateSize() {
     if (timeline.empty()) return;
 
@@ -67,6 +73,7 @@ void GanttChartWidget::setAnimationSpeed(int speed) {
 void GanttChartWidget::updateAnimation() {
     if (currentTime >= maxTime) {
         stopAnimation();
+        emit animationFinished();
         return;
     }
     currentTime++;
@@ -81,6 +88,13 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
         painter.setFont(QFont("Arial", 14));
         painter.drawText(rect(), Qt::AlignCenter, "No processes to display");
         return;
+    }
+
+    if (!algorithmTitle.isEmpty()) {
+    painter.setFont(QFont("Arial", 16, QFont::Bold));
+    painter.setPen(QColor("#2c3e50"));
+    QRect titleRect(0, 10, width(), 30);
+    painter.drawText(titleRect, Qt::AlignCenter, algorithmTitle);
     }
 
     // painter.setFont(QFont("Arial", 16, QFont::Bold));

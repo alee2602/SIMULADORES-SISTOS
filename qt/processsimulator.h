@@ -26,10 +26,11 @@ public:
     ~ProcessSimulator();
 
 private:
-     QScrollArea *ganttScrollArea; 
-     void displayAlgorithmResultInList(const QString& title, 
-                                 const std::vector<ExecutionSlice>& timeline, 
-                                 const std::vector<Process>& processResults);
+
+    QScrollArea *ganttScrollArea; 
+    void displayAlgorithmResultInList(const QString& title, 
+                                const std::vector<ExecutionSlice>& timeline, 
+                                const std::vector<Process>& processResults);
 
     struct AlgorithmConfig {
         QString name;
@@ -43,13 +44,10 @@ private:
     QWidget *multiSelectionWidget;
     QWidget *sequentialSimWidget;
 
-    QSpinBox *quantumSpinBox;
-    QSpinBox *agingSpinBox;
-
     QLabel *simTitleLabel;
     QLabel *metricsLabel;
 
-QTimer *simulationTimer;
+    QTimer *simulationTimer;
     void setupAlgorithmSelection(QVBoxLayout* layout);
     void runSelectedAlgorithms();
     void displayAlgorithmResult(const QString& title, const std::vector<ExecutionSlice>& timeline);
@@ -61,6 +59,13 @@ QTimer *simulationTimer;
     QCheckBox *agingEnabledCheck;
     QVBoxLayout *resultsLayout;
     QWidget *resultsArea;
+
+    // Labels y SpinBoxes para parámetros de Round Robin y Priority
+    QLabel *quantumLabel;
+    QSpinBox *quantumSpinBox;
+
+    QLabel *agingLabel;
+    QSpinBox *agingSpinBox;
 
     // Data
     std::vector<Process> processes;
@@ -127,10 +132,10 @@ public:
 
 private slots:
     void runNextAlgorithmInSequence();
-    void cleanProcesses(); // Nueva función para limpiar procesos
+    void cleanProcesses(); 
     void displayComparisonTableOnly(const QStringList& algorithms, 
-                                   const std::vector<double>& waitingTimes,
-                                   const std::vector<double>& turnaroundTimes);
+                                const std::vector<double>& waitingTimes,
+                                const std::vector<double>& turnaroundTimes);
 
 private:
     QStringList selectedAlgorithmsForSequential;

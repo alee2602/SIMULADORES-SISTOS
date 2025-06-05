@@ -21,6 +21,7 @@ public:
     void setAnimationSpeed(int speed);
     QScrollArea* createScrollArea();
     bool hasTimeline() const;
+    void setAlgorithmTitle(const QString& title);
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -32,9 +33,12 @@ public slots:
 private slots:
     void updateAnimation();
 
+signals:
+    void animationFinished();
 
 private:
     void updateSize();
+    QString algorithmTitle;
     
     std::vector<ExecutionSlice> timeline;
     int currentTime;
