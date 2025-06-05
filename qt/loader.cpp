@@ -21,7 +21,7 @@ std::vector<Process> loadProcesses(const QString& filename) {
     
     while (!in.atEnd()) {
         QString line = in.readLine().trimmed();
-        if (line.isEmpty() || line.startsWith("#")) continue; // Skip empty lines and comments
+        if (line.isEmpty() || line.startsWith("#")) continue; 
         
         QStringList parts = line.split(",");
         if (parts.size() >= 4) {

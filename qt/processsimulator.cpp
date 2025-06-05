@@ -206,7 +206,6 @@ void ProcessSimulator::runSelectedAlgorithms() {
         laneIndex++;
     }
 
-    // Mostrar todos los algoritmos seleccionados en el Gantt principal (mainGanttChart)
     if (!algorithmTimelines.empty() && mainGanttChart) {
         std::vector<ExecutionSlice> combinedTimeline;
         for (const auto& timeline : algorithmTimelines) {
@@ -216,7 +215,6 @@ void ProcessSimulator::runSelectedAlgorithms() {
         mainGanttChart->setAlgorithmNames(selectedAlgorithmNames);
         mainGanttChart->setTimeline(combinedTimeline);
 
-        // Calcular promedios y mostrar título
         QString title = "Comparación: " + selectedAlgorithmNames.join(", ");
         double totalWaiting = 0, totalTurnaround = 0;
         int totalCount = 0;
@@ -507,7 +505,6 @@ void ProcessSimulator::setupMultiSelectionWidget() {
     layout->addLayout(paramLayout);
     layout->addWidget(agingEnabledCheck);
 
-    // Botón para cargar procesos
     QPushButton *loadBtn = createButton("Cargar Procesos", "#5a68a5");
     connect(loadBtn, &QPushButton::clicked, this, [this]() {
         loadProcessesFromDialog();
@@ -515,8 +512,6 @@ void ProcessSimulator::setupMultiSelectionWidget() {
         QMessageBox::information(this, "Carga Exitosa", "Procesos cargados correctamente.");
     });
     layout->addWidget(loadBtn);
-
-    // Botón para iniciar simulación
     QPushButton *startBtn = createButton("Iniciar Simulación", "#28a745");
     layout->addWidget(startBtn);
 

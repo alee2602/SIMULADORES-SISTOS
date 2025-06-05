@@ -24,7 +24,7 @@ void GanttChartWidget::updateSize() {
     }
 
     int minWidth = maxTime * 40 + 100;
-    int minHeight = 80 + (maxLane + 1) * 60; // Ajusta altura por lanes
+    int minHeight = 80 + (maxLane + 1) * 60; 
     setMinimumWidth(minWidth);
     setMinimumHeight(minHeight);
 
@@ -38,7 +38,7 @@ void GanttChartWidget::setTimeline(const std::vector<ExecutionSlice>& newTimelin
         maxTime = std::max(maxTime, slice.start_time + slice.duration);
     }
     currentTime = 0;
-    updateSize(); // <-- Llama aquí
+    updateSize(); 
     update();
 }
 

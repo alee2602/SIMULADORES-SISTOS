@@ -74,8 +74,8 @@ QTimer *simulationTimer;
     QWidget* schedulingWidget;
     QWidget* synchronizationWidget;
 
-    GanttChartWidget* mainGanttChart;        // Para la pantalla principal de scheduling
-    GanttChartWidget* sequentialGanttChart;  // Para la simulación secuencial
+    GanttChartWidget* mainGanttChart;     
+    GanttChartWidget* sequentialGanttChart;  
 
     QTableWidget* processTable;
     QTableWidget* metricsTable;

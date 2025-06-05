@@ -108,7 +108,7 @@ std::vector<SyncEvent> SynchronizationSimulator::simulateSynchronization(
     
     // Track waiting processes
     std::map<QString, std::vector<Action>> waiting_processes;
-    std::map<QString, Action> active_processes; // process -> action it's performing
+    std::map<QString, Action> active_processes; 
     
     int max_cycle = 0;
     if (!sorted_actions.empty()) {
