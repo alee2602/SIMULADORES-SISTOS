@@ -15,14 +15,15 @@
 #include "loader.h"
 
 ProcessSimulator::ProcessSimulator(QWidget *parent)
-    : QWidget(parent), syncMechanism(nullptr)
+    : QWidget(parent), syncMechanism(nullptr), currentAlgorithmIndex(0)
 {
     setupUI();
-    generateSampleProcesses();
+    // No generar procesos de muestra automáticamente
+    // generateSampleProcesses();
     generateSampleResources();
     generateSampleActions();
-    generateSampleProcesses();
-    originalProcesses = processes;
+    // originalProcesses = processes; // Solo si hay procesos
+    sequentialResults.clear(); // Limpiar resultados previos
 }
 
 ProcessSimulator::~ProcessSimulator()
@@ -74,10 +75,27 @@ void ProcessSimulator::generateSampleProcesses()
         QMessageBox::warning(this, "Error", QString("File not found: %1").arg(path));
         return;
     }
-    processes = loadProcesses(path);
-    originalProcesses = processes; 
-    updateProcessTable();
-    statusLabel->setText(QString("Loaded %1 processes from %2").arg(processes.size()).arg(path));
+    
+    // Solo generar procesos de muestra si no hay procesos ya cargados
+    if (processes.empty()) {
+        processes = loadProcesses(path);
+        originalProcesses = processes;
+        updateProcessTable();
+        statusLabel->setText(QString("Loaded %1 sample processes from %2").arg(processes.size()).arg(path));
+    } else {
+        // Si ya hay procesos, preguntar si se quieren reemplazar
+        QMessageBox::StandardButton reply = QMessageBox::question(this, 
+            "Reemplazar procesos", 
+            "Ya hay procesos cargados. ¿Deseas reemplazarlos con los procesos de muestra?",
+            QMessageBox::Yes | QMessageBox::No);
+            
+        if (reply == QMessageBox::Yes) {
+            processes = loadProcesses(path);
+            originalProcesses = processes;
+            updateProcessTable();
+            statusLabel->setText(QString("Loaded %1 sample processes from %2").arg(processes.size()).arg(path));
+        }
+    }
 }
 
 void ProcessSimulator::generateSampleResources()
@@ -139,125 +157,128 @@ void ProcessSimulator::setupAlgorithmSelection(QVBoxLayout* layout) {
 }
 
 void ProcessSimulator::runSelectedAlgorithms() {
+    // Limpiar resultados previos
     QLayoutItem* item;
     while ((item = resultsLayout->takeAt(0)) != nullptr) {
         delete item->widget();
         delete item;
     }
 
-    std::vector<Process> originalProcessesCopy = originalProcesses;
-    QStringList selectedAlgorithmNames;
-    std::vector<std::vector<ExecutionSlice>> algorithmTimelines;
-    int laneIndex = 0;
+    // Verificar que hay procesos cargados
+    if (originalProcesses.empty()) {
+        QMessageBox::warning(this, "No hay procesos", "Por favor carga procesos antes de simular algoritmos.");
+        return;
+    }
 
+    // Preparar lista de algoritmos seleccionados
+    selectedAlgorithmsForSequential.clear();
+    
     if (fifoCheck->isChecked()) {
-        processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runFIFO(processes);
-        for (auto& slice : timeline) {
-            slice.algorithm = "FIFO";
-            slice.lane = laneIndex;
-        }
-        algorithmTimelines.push_back(timeline);
-        selectedAlgorithmNames.append("FIFO");
-        laneIndex++;
+        selectedAlgorithmsForSequential.push_back("FIFO");
     }
     if (sjfCheck->isChecked()) {
-        processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runSJF(processes);
-        for (auto& slice : timeline) {
-            slice.algorithm = "SJF";
-            slice.lane = laneIndex;
-        }
-        algorithmTimelines.push_back(timeline);
-        selectedAlgorithmNames.append("SJF");
-        laneIndex++;
+        selectedAlgorithmsForSequential.push_back("SJF");
     }
     if (srtfCheck->isChecked()) {
-        processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runSRT(processes);
-        for (auto& slice : timeline) {
-            slice.algorithm = "SRTF";
-            slice.lane = laneIndex;
-        }
-        algorithmTimelines.push_back(timeline);
-        selectedAlgorithmNames.append("SRTF");
-        laneIndex++;
+        selectedAlgorithmsForSequential.push_back("SRTF");
     }
     if (rrCheck->isChecked()) {
-        processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runRoundRobin(processes, 2);
-        for (auto& slice : timeline) {
-            slice.algorithm = "Round Robin";
-            slice.lane = laneIndex;
-        }
-        algorithmTimelines.push_back(timeline);
-        selectedAlgorithmNames.append("Round Robin");
-        laneIndex++;
+        selectedAlgorithmsForSequential.push_back("Round Robin");
     }
     if (priorityCheck->isChecked()) {
-        processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runPriority(processes, true);
-        for (auto& slice : timeline) {
-            slice.algorithm = "Priority";
-            slice.lane = laneIndex;
-        }
-        algorithmTimelines.push_back(timeline);
-        selectedAlgorithmNames.append("Priority");
-        laneIndex++;
+        selectedAlgorithmsForSequential.push_back("Priority");
     }
 
-    if (!algorithmTimelines.empty() && mainGanttChart) {
-        std::vector<ExecutionSlice> combinedTimeline;
-        for (const auto& timeline : algorithmTimelines) {
-            combinedTimeline.insert(combinedTimeline.end(), timeline.begin(), timeline.end());
-        }
-        mainGanttChart->setComparisonMode(true);
-        mainGanttChart->setAlgorithmNames(selectedAlgorithmNames);
-        mainGanttChart->setTimeline(combinedTimeline);
-
-        QString title = "Comparación: " + selectedAlgorithmNames.join(", ");
-        double totalWaiting = 0, totalTurnaround = 0;
-        int totalCount = 0;
-        for (int i = 0; i < selectedAlgorithmNames.size(); ++i) {
-            processes = originalProcessesCopy;
-            if (selectedAlgorithmNames[i] == "FIFO") SchedulingAlgorithms::runFIFO(processes);
-            else if (selectedAlgorithmNames[i] == "SJF") SchedulingAlgorithms::runSJF(processes);
-            else if (selectedAlgorithmNames[i] == "SRTF") SchedulingAlgorithms::runSRT(processes);
-            else if (selectedAlgorithmNames[i] == "Round Robin") SchedulingAlgorithms::runRoundRobin(processes, 2);
-            else if (selectedAlgorithmNames[i] == "Priority") SchedulingAlgorithms::runPriority(processes, true);
-            for (const auto& p : processes) {
-                totalWaiting += p.waiting_time;
-                totalTurnaround += (p.finish_time - p.arrival_time);
-                totalCount++;
-            }
-        }
-        double avgWaiting = totalCount ? totalWaiting / totalCount : 0;
-        double avgTurnaround = totalCount ? totalTurnaround / totalCount : 0;
-        statusLabel->setText(title + QString(" | Avg Waiting: %1 | Avg Completion: %2")
-            .arg(avgWaiting, 0, 'f', 2).arg(avgTurnaround, 0, 'f', 2));
-    } else if (mainGanttChart) {
-        mainGanttChart->setTimeline(std::vector<ExecutionSlice>());
-        statusLabel->setText("Selecciona al menos un algoritmo para ver resultados en el chart principal");
+    if (selectedAlgorithmsForSequential.empty()) {
+        QMessageBox::warning(this, "No hay algoritmos", "Por favor selecciona al menos un algoritmo.");
+        return;
     }
 
-    processes = originalProcessesCopy;
-    updateProcessTable();
+    // Iniciar simulación secuencial
+    currentAlgorithmIndex = 0;
+    runNextAlgorithmInSequence();
 }
 
-// Nueva función para mostrar resultados sin limpiar todo
+// Nueva función para ejecutar algoritmos secuencialmente
+void ProcessSimulator::runNextAlgorithmInSequence() {
+    if (currentAlgorithmIndex >= selectedAlgorithmsForSequential.size()) {
+        statusLabel->setText("Simulación secuencial completada");
+        showSimulationSummary(); 
+        return;
+    }
+
+    QString algorithmName = selectedAlgorithmsForSequential[currentAlgorithmIndex];
+    processes = originalProcesses;
+    std::vector<ExecutionSlice> timeline;
+
+    if (algorithmName == "FIFO") {
+        timeline = SchedulingAlgorithms::runFIFO(processes);
+    } else if (algorithmName == "SJF") {
+        timeline = SchedulingAlgorithms::runSJF(processes);
+    } else if (algorithmName == "SRTF") {
+        timeline = SchedulingAlgorithms::runSRT(processes);
+    } else if (algorithmName == "Round Robin") {
+        timeline = SchedulingAlgorithms::runRoundRobin(processes, 2);
+    } else if (algorithmName == "Priority") {
+        timeline = SchedulingAlgorithms::runPriority(processes, true);
+    }
+
+    // GUARDAR RESULTADO EN sequentialResults
+    double totalWait = 0, totalTurnaround = 0;
+    for (const auto& p : processes) {
+        totalWait += p.waiting_time;
+        totalTurnaround += (p.finish_time - p.arrival_time);
+    }
+    double avgWaiting = processes.empty() ? 0 : totalWait / processes.size();
+    double avgTurnaround = processes.empty() ? 0 : totalTurnaround / processes.size();
+
+    SimulationResult result;
+    result.algorithmName = algorithmName;
+    result.avgWaitingTime = avgWaiting;
+    result.avgTurnaroundTime = avgTurnaround;
+    result.timeline = timeline;
+    result.processResults = processes;
+    sequentialResults.push_back(result);
+
+    // Puedes dejar la animación si quieres
+    if (mainGanttChart) {
+        mainGanttChart->setComparisonMode(false);
+        mainGanttChart->setTimeline(timeline);
+        mainGanttChart->startAnimation();
+    }
+
+    currentAlgorithmIndex++;
+    QTimer::singleShot(3000, this, &ProcessSimulator::runNextAlgorithmInSequence);
+}
+
 void ProcessSimulator::displayAlgorithmResultInList(const QString& title, 
                                                    const std::vector<ExecutionSlice>& timeline, 
                                                    const std::vector<Process>& processResults) {
+    // Limpiar resultados previos antes de mostrar el nuevo
+    QLayoutItem* item;
+    while ((item = resultsLayout->takeAt(0)) != nullptr) {
+        delete item->widget();
+        delete item;
+    }
+    
+    // Crear contenedor para este resultado
+    QFrame* resultFrame = new QFrame();
+    resultFrame->setFrameStyle(QFrame::Box);
+    resultFrame->setStyleSheet("QFrame { border: 2px solid #e9ecef; border-radius: 8px; margin: 5px; padding: 10px; background-color: white; }");
+    
+    QVBoxLayout* frameLayout = new QVBoxLayout(resultFrame);
+
+    // Header con título del algoritmo
     QLabel* header = new QLabel(title);
     header->setFont(QFont("Arial", 16, QFont::Bold));
-    header->setStyleSheet("color: #2c3e50; margin-top: 10px;");
-    resultsLayout->addWidget(header);
+    header->setStyleSheet("color: #2c3e50; margin-bottom: 10px;");
+    header->setAlignment(Qt::AlignCenter);
+    frameLayout->addWidget(header);
 
-    // Crear un nuevo chart para mostrar en los resultados
     GanttChartWidget* chart = new GanttChartWidget();
     chart->setTimeline(timeline);
-    chart->setFixedHeight(150);
-    resultsLayout->addWidget(chart);
+    chart->setFixedHeight(220);
+    frameLayout->addWidget(chart);
 
     // Calcular y mostrar métricas
     double totalWaiting = 0;
@@ -271,39 +292,13 @@ void ProcessSimulator::displayAlgorithmResultInList(const QString& title,
     double avgTurnaround = processResults.empty() ? 0 : totalTurnaround / processResults.size();
 
     QLabel* summary = new QLabel(QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
-                                .arg(avgWaiting, 0, 'f', 2)
-                                .arg(avgTurnaround, 0, 'f', 2));
-    summary->setFont(QFont("Arial", 12));
-    summary->setStyleSheet("color: #6c757d; margin-bottom: 20px;");
-    resultsLayout->addWidget(summary);
-    
-    // Agregar separador visual
-    QFrame* line = new QFrame();
-    line->setFrameShape(QFrame::HLine);
-    line->setFrameShadow(QFrame::Sunken);
-    line->setStyleSheet("background-color: #e9ecef; margin: 10px 0;");
-    resultsLayout->addWidget(line);
-}
-
-
-void ProcessSimulator::displayAlgorithmResult(const QString& title, const std::vector<ExecutionSlice>& timeline) {
-    mainGanttChart->setTimeline(timeline);
-    double totalWaiting = 0;
-    double totalTurnaround = 0;
-    for (const auto& process : processes) {
-        totalWaiting += process.waiting_time;
-        totalTurnaround += (process.finish_time - process.arrival_time);
-    }
-
-    double avgWaiting = processes.empty() ? 0 : totalWaiting / processes.size();
-    double avgTurnaround = processes.empty() ? 0 : totalTurnaround / processes.size();
-
-    updateProcessTable();
-    updateMetricsTable();
-
-    statusLabel->setText(QString("Average Waiting Time: %1 | Average Turnaround Time: %2")
-                        .arg(avgWaiting, 0, 'f', 2)
-                        .arg(avgTurnaround, 0, 'f', 2));
+    .arg(avgWaiting, 0, 'f', 2)
+    .arg(avgTurnaround, 0, 'f', 2));
+    summary->setFont(QFont("Arial", 12, QFont::Bold));
+    summary->setStyleSheet("color: #28a745; margin-top: 5px;");
+    summary->setAlignment(Qt::AlignCenter);
+    frameLayout->addWidget(summary);
+    resultsLayout->addWidget(resultFrame);
 }
 
 void ProcessSimulator::updateProcessTable()
@@ -337,7 +332,14 @@ void ProcessSimulator::updateMetricsTable()
     }
     double avgWaiting = totalWaiting / processes.size();
     double avgTurnaround = totalTurnaround / processes.size();
-    statusLabel->setText(QString("Average Waiting Time: %1 | Average Turnaround Time: %2").arg(avgWaiting, 0, 'f', 2).arg(avgTurnaround, 0, 'f', 2));
+    
+    // MODIFICACIÓN: No mostrar las métricas en statusLabel, sino dentro del Gantt
+    // statusLabel->setText(QString("Average Waiting Time: %1 | Average Turnaround Time: %2").arg(avgWaiting, 0, 'f', 2).arg(avgTurnaround, 0, 'f', 2));
+    
+    // En su lugar, actualizar las métricas en el Gantt chart
+    if (mainGanttChart) {
+        mainGanttChart->setMetrics(avgWaiting, avgTurnaround);
+    }
 }
 
 void ProcessSimulator::loadProcessesFromDialog()
@@ -347,9 +349,14 @@ void ProcessSimulator::loadProcessesFromDialog()
         return;
 
     processes = loadProcesses(fileName);
-    originalProcesses = processes; 
+    originalProcesses = processes; // Guardar copia original
     updateProcessTable();
     statusLabel->setText(QString("Loaded %1 processes from file").arg(processes.size()));
+
+    // Limpiar cualquier simulación previa
+    if (mainGanttChart) {
+        mainGanttChart->setTimeline(std::vector<ExecutionSlice>());
+    }
 
     QMessageBox::information(this, "Archivo cargado", QString("Se cargaron %1 procesos desde %2").arg(processes.size()).arg(fileName));
 }
@@ -528,6 +535,7 @@ void ProcessSimulator::setupMultiSelectionWidget() {
         }
 
         processes = originalProcesses;
+        sequentialResults.clear(); // Limpiar resultados de simulaciones anteriores
         mainStack->setCurrentWidget(sequentialSimWidget);
         simulateNextAlgorithm();
     });
@@ -549,11 +557,14 @@ void ProcessSimulator::setupSchedulingWidget()
     headerLayout->addWidget(title, 1, Qt::AlignCenter);
     headerLayout->addStretch();
 
+    // MODIFICACIÓN: Agregar botón Clean junto a Load y Generate
     QHBoxLayout *processLayout = new QHBoxLayout();
     QPushButton *loadBtn = createButton("Load Processes", "#6c85bd");
     QPushButton *generateBtn = createButton("Generate Sample", "#70a1a8");
+    QPushButton *cleanBtn = createButton("Clean", "#dc3545"); // Nuevo botón Clean
     processLayout->addWidget(loadBtn);
     processLayout->addWidget(generateBtn);
+    processLayout->addWidget(cleanBtn); // Agregar el botón Clean
     processLayout->addStretch();
 
     mainGanttChart = new GanttChartWidget();  
@@ -602,6 +613,7 @@ void ProcessSimulator::setupSchedulingWidget()
     connect(backBtn, &QPushButton::clicked, [this]() { mainStack->setCurrentWidget(menuWidget); });
     connect(loadBtn, &QPushButton::clicked, this, &ProcessSimulator::loadProcessesFromDialog);
     connect(generateBtn, &QPushButton::clicked, this, &ProcessSimulator::generateSampleProcesses);
+    connect(cleanBtn, &QPushButton::clicked, this, &ProcessSimulator::cleanProcesses); // Conectar el botón Clean
     connect(startBtn, &QPushButton::clicked, mainGanttChart, &GanttChartWidget::startAnimation);
     connect(stopBtn, &QPushButton::clicked, mainGanttChart, &GanttChartWidget::stopAnimation);
     connect(speedSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), mainGanttChart, &GanttChartWidget::setAnimationSpeed);
@@ -640,12 +652,10 @@ void ProcessSimulator::setupSequentialSimWidget() {
     mainStack->addWidget(sequentialSimWidget);
 }
 
+// 2. Modificación de simulateNextAlgorithm para guardar resultados y mostrar resumen
 void ProcessSimulator::simulateNextAlgorithm() {
     if (selectedAlgorithms.empty()) {
-        QTimer::singleShot(2000, this, [this]() {
-            QMessageBox::information(this, "Simulación Finalizada", "Todos los algoritmos seleccionados han sido simulados.");
-            mainStack->setCurrentWidget(menuWidget);
-        });
+        showSimulationSummary(); 
         simulationTimer->stop();
         return;
     }
@@ -670,88 +680,203 @@ void ProcessSimulator::simulateNextAlgorithm() {
 
     simTitleLabel->setText("Simulando: " + config.name);
 
-
     if (sequentialGanttChart) {
         sequentialGanttChart->setTimeline(timeline);
         sequentialGanttChart->startAnimation();
     }
 
+    // Calcular métricas
     double totalWait = 0, totalTurnaround = 0;
     for (const auto& p : processes) {
         totalWait += p.waiting_time;
         totalTurnaround += (p.finish_time - p.arrival_time);
     }
 
-    metricsLabel->setText(QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
-        .arg(totalWait / processes.size(), 0, 'f', 2)
-        .arg(totalTurnaround / processes.size(), 0, 'f', 2));
+    double avgWaiting = totalWait / processes.size();
+    double avgTurnaround = totalTurnaround / processes.size();
 
-    int duration = timeline.empty() ? 2000 : (timeline.back().start_time + timeline.back().duration) * 500;
-    simulationTimer->start(duration + 1000);  
+    metricsLabel->setText(QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
+        .arg(avgWaiting, 0, 'f', 2)
+        .arg(avgTurnaround, 0, 'f', 2));
+
+    // Guardar resultado para el resumen
+    SimulationResult result;
+    result.algorithmName = config.name;
+    result.avgWaitingTime = avgWaiting;
+    result.avgTurnaroundTime = avgTurnaround;
+    result.timeline = timeline;
+    result.processResults = processes;
+    sequentialResults.push_back(result);
+
+    int fixedDuration = 4000; // 4 segundos mínimo por algoritmo
+    simulationTimer->start(fixedDuration);
 }
 
-
-
-void ProcessSimulator::setupSynchronizationWidget()
-{
-    synchronizationWidget = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(synchronizationWidget);
-    QHBoxLayout *headerLayout = new QHBoxLayout();
-    QPushButton *backBtn = createButton("← Back to Menu", "#6c757d");
-    QLabel *title = new QLabel("SYNCHRONIZATION MECHANISMS");
+// 3. Nueva función para mostrar ventana de resumen
+void ProcessSimulator::showSimulationSummary() {
+    if (sequentialResults.empty()) {
+        QMessageBox::warning(this, "Sin resultados", "No hay simulaciones finalizadas para mostrar.");
+        return;
+    }
+    resultsWindow = new QWidget();
+    resultsWindow->setWindowTitle("Resumen de Simulaciones");
+    resultsWindow->setFixedSize(1200, 800);
+    resultsWindow->setStyleSheet("background-color: #f8f9fa;");
+    
+    resultsWindowLayout = new QVBoxLayout(resultsWindow);
+    
+    // Título
+    QLabel* title = new QLabel("RESUMEN DE SIMULACIONES");
     title->setFont(QFont("Arial", 20, QFont::Bold));
-    title->setStyleSheet("color: #2c3e50;");
-    headerLayout->addWidget(backBtn);
-    headerLayout->addWidget(title, 1, Qt::AlignCenter);
-    headerLayout->addStretch();
+    title->setStyleSheet("color: #2c3e50; margin: 20px 0;");
+    title->setAlignment(Qt::AlignCenter);
+    resultsWindowLayout->addWidget(title);
+    
+    // Tabla de comparación
+    createComparisonTable();
+    
+    // Área con scroll para los Gantt charts individuales
+    QScrollArea* ganttScrollArea = new QScrollArea();
+    QWidget* ganttContainer = new QWidget();
+    QVBoxLayout* ganttLayout = new QVBoxLayout(ganttContainer);
+    
+    // Agregar cada resultado individual
+    for (const auto& result : sequentialResults) {
+        createIndividualResultWidget(result, ganttLayout);
+    }
+    
+    ganttContainer->setLayout(ganttLayout);
+    ganttScrollArea->setWidget(ganttContainer);
+    ganttScrollArea->setWidgetResizable(true);
+    ganttScrollArea->setMaximumHeight(400);
+    
+    resultsWindowLayout->addWidget(ganttScrollArea);
+    
+    // Botones
+    QHBoxLayout* buttonLayout = new QHBoxLayout();
+    QPushButton* closeBtn = createButton("Cerrar", "#dc3545");
+    QPushButton* backToMenuBtn = createButton("Volver al Menú Principal", "#6c757d");
+    
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(closeBtn);
+    buttonLayout->addWidget(backToMenuBtn);
+    buttonLayout->addStretch();
+    
+    resultsWindowLayout->addLayout(buttonLayout);
+    
+    // Conectar botones
+    connect(closeBtn, &QPushButton::clicked, resultsWindow, &QWidget::close);
+    connect(backToMenuBtn, &QPushButton::clicked, [this]() {
+        resultsWindow->close();
+        mainStack->setCurrentWidget(menuWidget);
+    });
+    
+    resultsWindow->show();
+}
 
-    QHBoxLayout *syncLayout = new QHBoxLayout();
-    syncLayout->addStretch();
-    QPushButton *mutexBtn = createButton("Mutex Locks", "#e74c3c");
-    QPushButton *semaphoreBtn = createButton("Semaphores", "#f39c12");
-    syncLayout->addWidget(mutexBtn);
-    syncLayout->addWidget(semaphoreBtn);
-    syncLayout->addStretch();
+// 4. Función para crear tabla de comparación
+void ProcessSimulator::createComparisonTable() {
+    QLabel* tableTitle = new QLabel("Tabla de Comparación de Algoritmos");
+    tableTitle->setFont(QFont("Arial", 16, QFont::Bold));
+    tableTitle->setStyleSheet("color: #2c3e50; margin: 10px 0;");
+    tableTitle->setAlignment(Qt::AlignCenter);
+    resultsWindowLayout->addWidget(tableTitle);
+    
+    QTableWidget* comparisonTable = new QTableWidget();
+    comparisonTable->setRowCount(sequentialResults.size());
+    comparisonTable->setColumnCount(3);
+    comparisonTable->setHorizontalHeaderLabels({"Algoritmo", "Tiempo Promedio de Espera", "Tiempo Promedio de Retorno"});
+    
+    // Encontrar los mejores valores para resaltar
+    double bestWaiting = std::numeric_limits<double>::max();
+    double bestTurnaround = std::numeric_limits<double>::max();
+    
+    for (const auto& result : sequentialResults) {
+        if (result.avgWaitingTime < bestWaiting) bestWaiting = result.avgWaitingTime;
+        if (result.avgTurnaroundTime < bestTurnaround) bestTurnaround = result.avgTurnaroundTime;
+    }
+    
+    for (int i = 0; i < sequentialResults.size(); i++) {
+        const auto& result = sequentialResults[i];
+        
+        comparisonTable->setItem(i, 0, new QTableWidgetItem(result.algorithmName));
+        
+        QTableWidgetItem* waitingItem = new QTableWidgetItem(QString::number(result.avgWaitingTime, 'f', 2));
+        QTableWidgetItem* turnaroundItem = new QTableWidgetItem(QString::number(result.avgTurnaroundTime, 'f', 2));
+        
+        // Resaltar los mejores valores
+        if (result.avgWaitingTime == bestWaiting) {
+            waitingItem->setBackground(QColor("#d4edda")); // Verde claro
+            waitingItem->setForeground(QColor("#155724")); // Verde oscuro
+        }
+        
+        if (result.avgTurnaroundTime == bestTurnaround) {
+            turnaroundItem->setBackground(QColor("#d4edda")); // Verde claro
+            turnaroundItem->setForeground(QColor("#155724")); // Verde oscuro
+        }
+        
+        comparisonTable->setItem(i, 1, waitingItem);
+        comparisonTable->setItem(i, 2, turnaroundItem);
+        
+        // Color de fondo por algoritmo
+        QColor rowColor;
+        if (result.algorithmName == "FIFO") rowColor = QColor("#FFE4E1");
+        else if (result.algorithmName == "SJF") rowColor = QColor("#E0F6FF");
+        else if (result.algorithmName == "SRTF") rowColor = QColor("#F0FFF0");
+        else if (result.algorithmName == "RR") rowColor = QColor("#FFF8DC");
+        else if (result.algorithmName == "PRIORITY") rowColor = QColor("#F0E68C");
+        
+        comparisonTable->item(i, 0)->setBackground(rowColor);
+    }
+    
+    comparisonTable->resizeColumnsToContents();
+    comparisonTable->setMaximumHeight(200);
+    comparisonTable->setStyleSheet("background-color: white; border: 1px solid #ddd; font-size: 14px;");
+    
+    resultsWindowLayout->addWidget(comparisonTable);
+}
 
-    QHBoxLayout *resourceLayout = new QHBoxLayout();
-    QPushButton *loadResourcesBtn = createButton("Load Resources", "#3498db");
-    QPushButton *generateResourcesBtn = createButton("Generate Sample Resources", "#2ecc71");
-    resourceLayout->addWidget(loadResourcesBtn);
-    resourceLayout->addWidget(generateResourcesBtn);
-    resourceLayout->addStretch();
+// 5. Función para crear widgets individuales de resultados
+void ProcessSimulator::createIndividualResultWidget(const SimulationResult& result, QVBoxLayout* layout) {
+    QFrame* resultFrame = new QFrame();
+    resultFrame->setFrameStyle(QFrame::Box);
+    resultFrame->setStyleSheet("QFrame { border: 2px solid #e9ecef; border-radius: 8px; margin: 5px; padding: 10px; background-color: white; }");
 
-    syncTable = new QTableWidget();
-    syncTable->setColumnCount(5);
-    syncTable->setHorizontalHeaderLabels({"PID", "State", "Resource", "Action", "Cycle"});
-    syncTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    syncTable->setStyleSheet("background-color: white; border: 1px solid #ddd; font-size: 14px;");
+    QVBoxLayout* frameLayout = new QVBoxLayout(resultFrame);
 
-    QTextEdit *resultsArea = new QTextEdit();
-    resultsArea->setMaximumHeight(150);
-    resultsArea->setStyleSheet("background-color: white; border: 1px solid #ddd;");
-    resultsArea->setPlaceholderText("Synchronization results will appear here...");
+    // Header con título del algoritmo
+    QLabel* header = new QLabel(result.algorithmName);
+    header->setFont(QFont("Arial", 16, QFont::Bold));
+    header->setStyleSheet("color: #2c3e50; margin-bottom: 10px;");
+    header->setAlignment(Qt::AlignCenter);
+    frameLayout->addWidget(header);
 
-    layout->addLayout(headerLayout);
-    layout->addLayout(syncLayout);
-    layout->addLayout(resourceLayout);
-    layout->addWidget(new QLabel("Synchronization Events:"));
-    layout->addWidget(syncTable);
-    layout->addWidget(new QLabel("Results:"));
-    layout->addWidget(resultsArea);
+    // Crear un nuevo chart para mostrar en los resultados
+    GanttChartWidget* chart = new GanttChartWidget();
+    chart->setTimeline(result.timeline);
+    chart->setFixedHeight(220);
+    chart->setFixedWidth(1200); // <-- Más ancho
 
-    connect(backBtn, &QPushButton::clicked, [this]()
-            { mainStack->setCurrentWidget(menuWidget); });
-    connect(mutexBtn, &QPushButton::clicked, [this]()
-            { runSynchronization("Mutex Lock"); });
-    connect(semaphoreBtn, &QPushButton::clicked, [this]()
-            { runSynchronization("Semaphore"); });
-    connect(generateResourcesBtn, &QPushButton::clicked, [this]()
-            {
-        generateSampleResources();
-        generateSampleActions();
-        QMessageBox::information(this, "Success", "Sample resources and actions generated!"); });
+    // Poner el chart en un QScrollArea para scroll horizontal si es necesario
+    QScrollArea* chartScroll = new QScrollArea();
+    chartScroll->setWidget(chart);
+    chartScroll->setWidgetResizable(false);
+    chartScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    chartScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    chartScroll->setFixedHeight(240); // Un poco más que el chart
 
-    mainStack->addWidget(synchronizationWidget);
+    frameLayout->addWidget(chartScroll);
+
+    // Mostrar métricas
+    QLabel* summary = new QLabel(QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
+        .arg(result.avgWaitingTime, 0, 'f', 2)
+        .arg(result.avgTurnaroundTime, 0, 'f', 2));
+    summary->setFont(QFont("Arial", 12, QFont::Bold));
+    summary->setStyleSheet("color: #28a745; margin-top: 5px;");
+    summary->setAlignment(Qt::AlignCenter);
+    frameLayout->addWidget(summary);
+
+    layout->addWidget(resultFrame);
 }
 
 QCheckBox* ProcessSimulator::createStyledCheckBox(const QString &text, const QString &color) {
@@ -797,80 +922,119 @@ void ProcessSimulator::startMainAnimation() {
 }
 
 void ProcessSimulator::runSelectedAlgorithmsComparison() {
+    // Limpiar resultados previos
     QLayoutItem* item;
     while ((item = resultsLayout->takeAt(0)) != nullptr) {
         delete item->widget();
         delete item;
     }
+    
     algorithmTimelines.clear();
     algorithmNames.clear();
     std::vector<Process> originalProcessesCopy = originalProcesses;
-    int laneIndex = 0;
+    
+    // Verificar que hay procesos cargados
+    if (originalProcessesCopy.empty()) {
+        QMessageBox::warning(this, "No hay procesos", "Por favor carga procesos antes de comparar algoritmos.");
+        return;
+    }
+    
+    // Recopilar algoritmos seleccionados y sus métricas
+    QStringList selectedAlgs;
+    std::vector<double> waitingTimes;
+    std::vector<double> turnaroundTimes;
+    
     if (fifoCheck->isChecked()) {
         processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runFIFO(processes);
-        for (auto& slice : timeline) { slice.algorithm = "FIFO"; slice.lane = laneIndex; }
-        algorithmTimelines.push_back(timeline);
-        algorithmNames.append("FIFO");
-        laneIndex++;
+        SchedulingAlgorithms::runFIFO(processes);
+        selectedAlgs.append("FIFO");
+        
+        double totalWaiting = 0, totalTurnaround = 0;
+        for (const auto& process : processes) {
+            totalWaiting += process.waiting_time;
+            totalTurnaround += (process.finish_time - process.arrival_time);
+        }
+        waitingTimes.push_back(totalWaiting / processes.size());
+        turnaroundTimes.push_back(totalTurnaround / processes.size());
     }
+    
     if (sjfCheck->isChecked()) {
         processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runSJF(processes);
-        for (auto& slice : timeline) { slice.algorithm = "SJF"; slice.lane = laneIndex; }
-        algorithmTimelines.push_back(timeline);
-        algorithmNames.append("SJF");
-        laneIndex++;
+        SchedulingAlgorithms::runSJF(processes);
+        selectedAlgs.append("SJF");
+        
+        double totalWaiting = 0, totalTurnaround = 0;
+        for (const auto& process : processes) {
+            totalWaiting += process.waiting_time;
+            totalTurnaround += (process.finish_time - process.arrival_time);
+        }
+        waitingTimes.push_back(totalWaiting / processes.size());
+        turnaroundTimes.push_back(totalTurnaround / processes.size());
     }
+    
     if (srtfCheck->isChecked()) {
         processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runSRT(processes);
-        for (auto& slice : timeline) { slice.algorithm = "SRTF"; slice.lane = laneIndex; }
-        algorithmTimelines.push_back(timeline);
-        algorithmNames.append("SRTF");
-        laneIndex++;
+        SchedulingAlgorithms::runSRT(processes);
+        selectedAlgs.append("SRTF");
+        
+        double totalWaiting = 0, totalTurnaround = 0;
+        for (const auto& process : processes) {
+            totalWaiting += process.waiting_time;
+            totalTurnaround += (process.finish_time - process.arrival_time);
+        }
+        waitingTimes.push_back(totalWaiting / processes.size());
+        turnaroundTimes.push_back(totalTurnaround / processes.size());
     }
+    
     if (rrCheck->isChecked()) {
         processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runRoundRobin(processes, 2);
-        for (auto& slice : timeline) { slice.algorithm = "Round Robin"; slice.lane = laneIndex; }
-        algorithmTimelines.push_back(timeline);
-        algorithmNames.append("Round Robin");
-        laneIndex++;
+        SchedulingAlgorithms::runRoundRobin(processes, 2);
+        selectedAlgs.append("Round Robin");
+        
+        double totalWaiting = 0, totalTurnaround = 0;
+        for (const auto& process : processes) {
+            totalWaiting += process.waiting_time;
+            totalTurnaround += (process.finish_time - process.arrival_time);
+        }
+        waitingTimes.push_back(totalWaiting / processes.size());
+        turnaroundTimes.push_back(totalTurnaround / processes.size());
     }
+    
     if (priorityCheck->isChecked()) {
         processes = originalProcessesCopy;
-        auto timeline = SchedulingAlgorithms::runPriority(processes, true);
-        for (auto& slice : timeline) { slice.algorithm = "Priority"; slice.lane = laneIndex; }
-        algorithmTimelines.push_back(timeline);
-        algorithmNames.append("Priority");
-        laneIndex++;
+        SchedulingAlgorithms::runPriority(processes, true);
+        selectedAlgs.append("Priority");
+        
+        double totalWaiting = 0, totalTurnaround = 0;
+        for (const auto& process : processes) {
+            totalWaiting += process.waiting_time;
+            totalTurnaround += (process.finish_time - process.arrival_time);
+        }
+        waitingTimes.push_back(totalWaiting / processes.size());
+        turnaroundTimes.push_back(totalTurnaround / processes.size());
     }
-    if (!algorithmTimelines.empty()) {
-        displayComparisonResult(algorithmNames, algorithmTimelines);
+    
+    // MODIFICACIÓN: Solo mostrar tabla de comparación, NO el diagrama de Gantt
+    if (!selectedAlgs.isEmpty()) {
+        displayComparisonTableOnly(selectedAlgs, waitingTimes, turnaroundTimes);
+    } else {
+        QMessageBox::warning(this, "No hay algoritmos", "Por favor selecciona al menos un algoritmo para comparar.");
     }
+    
+    // Restaurar procesos originales
     processes = originalProcessesCopy;
     updateProcessTable();
 }
 
-void ProcessSimulator::displayComparisonResult(const QStringList& algorithms, const std::vector<std::vector<ExecutionSlice>>& timelines) {
+// 5. Nueva función para mostrar solo tabla de comparación
+void ProcessSimulator::displayComparisonTableOnly(const QStringList& algorithms, 
+                                                  const std::vector<double>& waitingTimes,
+                                                  const std::vector<double>& turnaroundTimes) {
     QLabel* header = new QLabel("Comparación de Algoritmos");
     header->setFont(QFont("Arial", 18, QFont::Bold));
     header->setStyleSheet("color: #2c3e50; margin: 20px 0;");
     header->setAlignment(Qt::AlignCenter);
     resultsLayout->addWidget(header);
-
-    std::vector<ExecutionSlice> combinedTimeline;
-    for (const auto& timeline : timelines) {
-        combinedTimeline.insert(combinedTimeline.end(), timeline.begin(), timeline.end());
-    }
-
-    GanttChartWidget* comparisonChart = new GanttChartWidget();
-    comparisonChart->setComparisonMode(true);
-    comparisonChart->setAlgorithmNames(algorithms);
-    comparisonChart->setTimeline(combinedTimeline);
-    comparisonChart->setFixedHeight(100 + algorithms.size() * 60);
-    resultsLayout->addWidget(comparisonChart);
 
     QTableWidget* comparisonTable = new QTableWidget();
     comparisonTable->setRowCount(algorithms.size());
@@ -878,40 +1042,114 @@ void ProcessSimulator::displayComparisonResult(const QStringList& algorithms, co
     comparisonTable->setHorizontalHeaderLabels({"Algoritmo", "Tiempo Promedio de Espera", "Tiempo Promedio de Retorno"});
 
     for (int i = 0; i < algorithms.size(); i++) {
-        processes = originalProcesses;
-        if (algorithms[i] == "FIFO") {
-            SchedulingAlgorithms::runFIFO(processes);
-        } else if (algorithms[i] == "SJF") {
-            SchedulingAlgorithms::runSJF(processes);
-        } else if (algorithms[i] == "SRTF") {
-            SchedulingAlgorithms::runSRT(processes);
-        } else if (algorithms[i] == "Round Robin") {
-            SchedulingAlgorithms::runRoundRobin(processes, 2);
-        } else if (algorithms[i] == "Priority") {
-            SchedulingAlgorithms::runPriority(processes, true);
-        }
-        double totalWaiting = 0;
-        double totalTurnaround = 0;
-        for (const auto& process : processes) {
-            totalWaiting += process.waiting_time;
-            totalTurnaround += (process.finish_time - process.arrival_time);
-        }
-        double avgWaiting = processes.empty() ? 0 : totalWaiting / processes.size();
-        double avgTurnaround = processes.empty() ? 0 : totalTurnaround / processes.size();
         comparisonTable->setItem(i, 0, new QTableWidgetItem(algorithms[i]));
-        comparisonTable->setItem(i, 1, new QTableWidgetItem(QString::number(avgWaiting, 'f', 2)));
-        comparisonTable->setItem(i, 2, new QTableWidgetItem(QString::number(avgTurnaround, 'f', 2)));
+        comparisonTable->setItem(i, 1, new QTableWidgetItem(QString::number(waitingTimes[i], 'f', 2)));
+        comparisonTable->setItem(i, 2, new QTableWidgetItem(QString::number(turnaroundTimes[i], 'f', 2)));
+        
+        // Colores según algoritmo
         QColor rowColor;
         if (algorithms[i] == "FIFO") rowColor = QColor("#FFE4E1");
         else if (algorithms[i] == "SJF") rowColor = QColor("#E0F6FF");
         else if (algorithms[i] == "SRTF") rowColor = QColor("#F0FFF0");
         else if (algorithms[i] == "Round Robin") rowColor = QColor("#FFF8DC");
         else if (algorithms[i] == "Priority") rowColor = QColor("#F0E68C");
+        
         for (int j = 0; j < 3; j++) {
             comparisonTable->item(i, j)->setBackground(rowColor);
         }
     }
+    
     comparisonTable->resizeColumnsToContents();
-    comparisonTable->setMaximumHeight(150);
+    comparisonTable->setMaximumHeight(200);
+    comparisonTable->setStyleSheet("background-color: white; border: 1px solid #ddd;");
     resultsLayout->addWidget(comparisonTable);
+    
+    statusLabel->setText(QString("Comparación completada para %1 algoritmos").arg(algorithms.size()));
+}
+
+void ProcessSimulator::cleanProcesses()
+{
+    processes.clear();
+    originalProcesses.clear();
+
+    // Limpiar las tablas
+    processTable->setRowCount(0);
+    metricsTable->setRowCount(0);
+
+    // Limpiar el Gantt chart
+    if (mainGanttChart) {
+        mainGanttChart->setTimeline(std::vector<ExecutionSlice>());
+    }
+
+    // Limpiar resultados previos
+    QLayoutItem* item;
+    while ((item = resultsLayout->takeAt(0)) != nullptr) {
+        delete item->widget();
+        delete item;
+    }
+
+    statusLabel->setText("Processes cleared. Ready to load new processes.");
+}
+
+void ProcessSimulator::setupSynchronizationWidget() {
+    synchronizationWidget = new QWidget();
+    QVBoxLayout *layout = new QVBoxLayout(synchronizationWidget);
+
+    // Título
+    QLabel *title = new QLabel("SIMULADOR DE MECANISMOS DE SINCRONIZACIÓN");
+    title->setFont(QFont("Arial", 20, QFont::Bold));
+    title->setStyleSheet("color: #2c3e50;");
+    title->setAlignment(Qt::AlignCenter);
+    layout->addWidget(title);
+
+    // Botones para cargar recursos y acciones
+    QHBoxLayout *loadLayout = new QHBoxLayout();
+    QPushButton *loadResourcesBtn = createButton("Cargar Recursos", "#5a68a5");
+    QPushButton *loadActionsBtn = createButton("Cargar Acciones", "#70a1a8");
+    loadLayout->addWidget(loadResourcesBtn);
+    loadLayout->addWidget(loadActionsBtn);
+    loadLayout->addStretch();
+    layout->addLayout(loadLayout);
+
+    // Botones para simular mecanismos
+    QHBoxLayout *syncBtnLayout = new QHBoxLayout();
+    QPushButton *mutexBtn = createButton("Simular Mutex Lock", "#28a745");
+    QPushButton *semaphoreBtn = createButton("Simular Semaphore", "#17a2b8");
+    syncBtnLayout->addWidget(mutexBtn);
+    syncBtnLayout->addWidget(semaphoreBtn);
+    syncBtnLayout->addStretch();
+    layout->addLayout(syncBtnLayout);
+
+    // Tabla de eventos de sincronización
+    syncTable = new QTableWidget();
+    syncTable->setColumnCount(5);
+    syncTable->setHorizontalHeaderLabels({"PID", "Estado", "Recurso", "Acción", "Ciclo"});
+    syncTable->horizontalHeader()->setStretchLastSection(true);
+    syncTable->setStyleSheet("background-color: white; border: 1px solid #ddd;");
+    layout->addWidget(syncTable);
+
+    // Botón para volver al menú principal
+    QPushButton *backBtn = createButton("← Volver al Menú", "#6c757d");
+    layout->addWidget(backBtn);
+
+    // Conexiones
+    connect(loadResourcesBtn, &QPushButton::clicked, this, [this]() {
+        generateSampleResources();
+        QMessageBox::information(this, "Recursos", "Recursos cargados correctamente.");
+    });
+    connect(loadActionsBtn, &QPushButton::clicked, this, [this]() {
+        generateSampleActions();
+        QMessageBox::information(this, "Acciones", "Acciones cargadas correctamente.");
+    });
+    connect(mutexBtn, &QPushButton::clicked, this, [this]() {
+        runSynchronization("Mutex Lock");
+    });
+    connect(semaphoreBtn, &QPushButton::clicked, this, [this]() {
+        runSynchronization("Semaphore");
+    });
+    connect(backBtn, &QPushButton::clicked, [this]() {
+        mainStack->setCurrentWidget(menuWidget);
+    });
+
+    mainStack->addWidget(synchronizationWidget);
 }

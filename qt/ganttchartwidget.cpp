@@ -5,7 +5,8 @@
 #include <QSize>
 
 GanttChartWidget::GanttChartWidget(QWidget* parent)
-    : QWidget(parent), currentTime(0), maxTime(0), isAnimating(false), animationSpeed(500) {
+    : QWidget(parent), currentTime(0), maxTime(0), isAnimating(false), animationSpeed(500),
+      avgWaitingTime(0), avgTurnaroundTime(0), showMetrics(false) {
     setMinimumHeight(200);
     setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed); // <-- Agrega esto
     animationTimer = new QTimer(this);
@@ -82,25 +83,31 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
         return;
     }
 
-    int margin = 40;
-    int chartHeight = height() - 2 * margin;
-    int chartWidth = width() - 2 * margin;
-    int timeUnit = std::max(40, std::min(80, chartWidth / maxTime));
+    // painter.setFont(QFont("Arial", 16, QFont::Bold));
+    // painter.setPen(QColor("#2c3e50"));
+    // QRect titleRect(0, 0, width(), 35);
+    // painter.drawText(titleRect, Qt::AlignCenter, "Gantt Chart"); // <-- Elimina o comenta esta línea
+
+    // Ajusta el margen superior para dejar espacio al título
+    int margin = 60; // Antes era 40
+    int chartHeight = height() - margin - 40; // 40 margen inferior
+    int chartWidth = width() - 2 * 40;
+    int timeUnit = (maxTime > 0) ? std::max(40, std::min(80, chartWidth / maxTime)) : 40;
 
     painter.setPen(QPen(Qt::black, 2));
-    painter.drawLine(margin, height() - margin, width() - margin, height() - margin);
+    painter.drawLine(40, height() - 40, width() - 40, height() - 40);
 
     painter.setFont(QFont("Arial", 10));
     for (int t = 0; t <= maxTime; t++) {
-        int x = margin + t * timeUnit;
-        painter.drawLine(x, height() - margin - 5, x, height() - margin + 5);
-        painter.drawText(x - 10, height() - margin + 20, QString::number(t));
+        int x = 40 + t * timeUnit;
+        painter.drawLine(x, height() - 45, x, height() - 35);
+        painter.drawText(x - 10, height() - 20, QString::number(t));
     }
 
     if (isAnimating && currentTime <= maxTime) {
-        int currentX = margin + currentTime * timeUnit;
+        int currentX = 40 + currentTime * timeUnit;
         painter.setPen(QPen(Qt::red, 3));
-        painter.drawLine(currentX, margin, currentX, height() - margin);
+        painter.drawLine(currentX, margin, currentX, height() - 40);
     }
 
     int blockHeight = chartHeight / 3;
@@ -108,7 +115,7 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
 
     for (const auto& slice : timeline) {
         if (!isAnimating || slice.start_time < currentTime) {
-            int x = margin + slice.start_time * timeUnit;
+            int x = 40 + slice.start_time * timeUnit;
             int width = slice.duration * timeUnit;
             if (isAnimating && slice.start_time + slice.duration > currentTime) {
                 width = (currentTime - slice.start_time) * timeUnit;
@@ -127,7 +134,18 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
 
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 10));
-    painter.drawText(10, 20, QString("Current Time: %1").arg(currentTime));
+    painter.drawText(10, margin - 10, QString("Current Time: %1").arg(currentTime));
+
+    // --- Métricas abajo ---
+    if (showMetrics && !timeline.empty()) {
+        painter.setFont(QFont("Arial", 12, QFont::Bold));
+        painter.setPen(QColor("#28a745"));
+        QString metricsText = QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
+                             .arg(avgWaitingTime, 0, 'f', 2)
+                             .arg(avgTurnaroundTime, 0, 'f', 2);
+        QRect metricsRect = rect().adjusted(10, rect().height() - 30, -10, -5);
+        painter.drawText(metricsRect, Qt::AlignCenter, metricsText);
+    }
 }
 
 QScrollArea* GanttChartWidget::createScrollArea() {
@@ -173,4 +191,11 @@ QSize GanttChartWidget::sizeHint() const {
 
 bool GanttChartWidget::hasTimeline() const {
     return !timeline.empty();
+}
+
+void GanttChartWidget::setMetrics(double avgWaiting, double avgTurnaround) {
+    avgWaitingTime = avgWaiting;
+    avgTurnaroundTime = avgTurnaround;
+    showMetrics = true;
+    update(); // Redibujar el widget
 }

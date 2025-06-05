@@ -26,8 +26,12 @@ protected:
     void paintEvent(QPaintEvent* event) override;
     QSize sizeHint() const override;
 
+public slots:
+    void setMetrics(double avgWaiting, double avgTurnaround);
+
 private slots:
     void updateAnimation();
+
 
 private:
     void updateSize();
@@ -40,6 +44,10 @@ private:
     int animationSpeed;
     bool comparisonMode = false;
     QStringList algorithmNames;
+    double avgWaitingTime;
+    double avgTurnaroundTime;
+    bool showMetrics;
+
 public:
     void setComparisonMode(bool enabled) { comparisonMode = enabled; }
     void setAlgorithmNames(const QStringList& names) { algorithmNames = names; }

@@ -124,6 +124,35 @@ QTimer *simulationTimer;
 public:
     void runSelectedAlgorithmsComparison();
     void displayComparisonResult(const QStringList& algorithms, const std::vector<std::vector<ExecutionSlice>>& timelines);
+
+private slots:
+    void runNextAlgorithmInSequence();
+    void cleanProcesses(); // Nueva función para limpiar procesos
+    void displayComparisonTableOnly(const QStringList& algorithms, 
+                                   const std::vector<double>& waitingTimes,
+                                   const std::vector<double>& turnaroundTimes);
+
+private:
+    QStringList selectedAlgorithmsForSequential;
+    int currentAlgorithmIndex;
+
+    // Estructura para almacenar resultados de simulación
+    struct SimulationResult {
+        QString algorithmName;
+        double avgWaitingTime;
+        double avgTurnaroundTime;
+        std::vector<ExecutionSlice> timeline;
+        std::vector<Process> processResults;
+    };
+
+    std::vector<SimulationResult> sequentialResults;
+    QWidget* resultsWindow;
+    QVBoxLayout* resultsWindowLayout;
+
+    // Nuevas funciones para resumen de simulación secuencial
+    void showSimulationSummary();
+    void createComparisonTable();
+    void createIndividualResultWidget(const SimulationResult& result, QVBoxLayout* layout);
 };
 
 #endif
