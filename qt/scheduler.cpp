@@ -205,13 +205,13 @@ std::vector<ExecutionSlice> SchedulingAlgorithms::runPriority(std::vector<Proces
     std::vector<Process> executed;
     int currentTime = 0;
 
-    // Initialize wait times for aging
+    // Inicializar tiempos de espera
     for (const auto& p : processes) {
         wait_time[p.pid] = 0;
     }
 
     while (!remaining.empty() || !ready_queue.empty()) {
-        // Add arrived processes
+        // Añadir procesos que han llegado
         for (auto it = remaining.begin(); it != remaining.end();) {
             if (it->arrival_time <= currentTime) {
                 ready_queue.push_back(*it);
@@ -221,19 +221,21 @@ std::vector<ExecutionSlice> SchedulingAlgorithms::runPriority(std::vector<Proces
             }
         }
 
+        // Si hay procesos listos
         if (!ready_queue.empty()) {
-            // Apply aging if enabled
             if (agingEnabled) {
                 for (auto& p : ready_queue) {
                     wait_time[p.pid]++;
-                    // Decrease priority number (higher priority) every 5 time units of waiting
-                    if (wait_time[p.pid] % agingInterval == 0 && p.priority > 1) {
-                        p.priority--;
+                }
+                for (size_t i = 0; i < ready_queue.size(); ++i) {
+                    const QString& pid = ready_queue[i].pid;
+                    if (wait_time[pid] % agingInterval == 0 && ready_queue[i].priority > 1) {
+                        ready_queue[i].priority--;
                     }
                 }
             }
 
-            // Find highest priority process (lowest priority number)
+            // Seleccionar el de mayor prioridad
             auto highest_priority = std::min_element(ready_queue.begin(), ready_queue.end(),
                 [](const Process& a, const Process& b) {
                     return a.priority < b.priority;
@@ -247,9 +249,10 @@ std::vector<ExecutionSlice> SchedulingAlgorithms::runPriority(std::vector<Proces
             current.waiting_time = current.start_time - current.arrival_time;
 
             timeline.push_back(ExecutionSlice(current.pid, currentTime, current.burst_time, current.color));
-            
+
             currentTime = current.finish_time;
             executed.push_back(current);
+            wait_time.erase(current.pid); 
         } else {
             currentTime++;
         }

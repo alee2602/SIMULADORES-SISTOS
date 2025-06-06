@@ -5,10 +5,10 @@
 #include <QSize>
 
 GanttChartWidget::GanttChartWidget(QWidget* parent)
-    : QWidget(parent), currentTime(0), maxTime(0), isAnimating(false), animationSpeed(500),
-      avgWaitingTime(0), avgTurnaroundTime(0), showMetrics(false) {
+    : QWidget(parent), currentTime(0), maxTime(0), isAnimating(false), animationSpeed(350),
+    avgWaitingTime(0), avgTurnaroundTime(0), showMetrics(false) {
     setMinimumHeight(200);
-    setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed); // <-- Agrega esto
+    setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Preferred); 
     animationTimer = new QTimer(this);
     connect(animationTimer, &QTimer::timeout, this, &GanttChartWidget::updateAnimation);
     setStyleSheet("background-color: white; border: 2px solid #e9ecef; border-radius: 10px;");
@@ -31,9 +31,14 @@ void GanttChartWidget::updateSize() {
     }
 
     int minWidth = maxTime * 40 + 100;
-    int minHeight = 80 + (maxLane + 1) * 60; 
+    int minHeight = 80 + (maxLane + 1) * 60;
+
+    if (showMetrics) {
+        minHeight += 40;  
+    }
+
     setMinimumWidth(minWidth);
-    setMinimumHeight(minHeight);
+    resize(minWidth, minHeight);
 
     update();
 }
@@ -135,27 +140,14 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
             if (width > 20) {
                 painter.setPen(Qt::white);
                 painter.setFont(QFont("Arial", 12, QFont::Bold));
-                painter.drawText(rect, Qt::AlignCenter, slice.pid);
+                painter.drawText(rect, Qt::AlignLeft, slice.pid);
             }
         }
     }
 
     painter.setPen(Qt::black);
     painter.setFont(QFont("Arial", 10));
-    painter.drawText(10, margin - 10, QString("Current Time: %1").arg(currentTime));
-
-    // --- Métricas abajo ---
-    if (showMetrics && !timeline.empty()) {
-        painter.setPen(QColor("#28a745"));
-        QFont metricsFont = painter.font();
-        metricsFont.setPointSize(13);
-        metricsFont.setBold(true);
-        painter.setFont(metricsFont);
-        painter.drawText(QRect(0, height() - 20, width(), 30), Qt::AlignHCenter | Qt::AlignTop,
-            QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
-                .arg(avgWaitingTime, 0, 'f', 2)
-                .arg(avgTurnaroundTime, 0, 'f', 2));
-    }
+    painter.drawText(10, margin - 20, QString("Current Time: %1").arg(currentTime));
 }
 
 QScrollArea* GanttChartWidget::createScrollArea() {
@@ -196,7 +188,11 @@ QScrollArea* GanttChartWidget::createScrollArea() {
 }
 
 QSize GanttChartWidget::sizeHint() const {
-    return QSize(800, 200);
+    int height = 200;
+    if (showMetrics) {
+        height += 40;
+    }
+    return QSize(800, height);
 }
 
 bool GanttChartWidget::hasTimeline() const {
@@ -207,5 +203,6 @@ void GanttChartWidget::setMetrics(double avgWaiting, double avgTurnaround) {
     avgWaitingTime = avgWaiting;
     avgTurnaroundTime = avgTurnaround;
     showMetrics = true;
-    update(); // Redibujar el widget
+    updateSize(); 
+    update();      // redibuja
 }

@@ -66,6 +66,8 @@ private:
     QLabel *agingLabel;
     QSpinBox *agingSpinBox;
 
+    QLabel* metricsLabelBelowGantt = nullptr;
+
     // Data
     std::vector<Process> processes;
     std::vector<Resource> resources;

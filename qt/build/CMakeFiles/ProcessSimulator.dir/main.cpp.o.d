@@ -1,5 +1,5 @@
 CMakeFiles/ProcessSimulator.dir/main.cpp.o: \
- /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/main.cpp \
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/main.cpp \
  /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QApplication \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qapplication.h \
@@ -350,7 +350,7 @@ CMakeFiles/ProcessSimulator.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qiodevice.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextdocument.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qurl.h \
- /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/processsimulator.h \
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/processsimulator.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTableWidget \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtablewidget.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtableview.h \
@@ -375,21 +375,21 @@ CMakeFiles/ProcessSimulator.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qcheckbox.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qstring.h \
- /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.h \
- /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/utils.h \
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/scheduler.h \
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/utils.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/QColor \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qcolor.h \
- /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/GanttChartWidget.h \
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/GanttChartWidget.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QTimer \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qtimer.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qbasictimer.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h \
- /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.h \
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/synchronizer.h \
  /usr/include/c++/11/queue /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_queue.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHeaderView \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qheaderview.h \
- /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/loader.h \
- /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizationsimulator.h
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/loader.h \
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/synchronizationsimulator.h

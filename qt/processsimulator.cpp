@@ -259,9 +259,9 @@ void ProcessSimulator::runNextAlgorithmInSequence() {
     } else if (algorithmName == "SRTF") {
         timeline = SchedulingAlgorithms::runSRT(processes);
     } else if (algorithmName == "Round Robin") {
-        timeline = SchedulingAlgorithms::runRoundRobin(processes, 2);
+        timeline = SchedulingAlgorithms::runRoundRobin(processes, selectedQuantum);
     } else if (algorithmName == "Priority") {
-        timeline = SchedulingAlgorithms::runPriority(processes, true);
+        timeline = SchedulingAlgorithms::runPriority(processes, agingEnabled, selectedAging);
     }
 
     // GUARDAR RESULTADO EN sequentialResults
@@ -272,6 +272,14 @@ void ProcessSimulator::runNextAlgorithmInSequence() {
     }
     double avgWaiting = processes.empty() ? 0 : totalWait / processes.size();
     double avgTurnaround = processes.empty() ? 0 : totalTurnaround / processes.size();
+
+    if (metricsLabelBelowGantt) {
+        metricsLabelBelowGantt->setText(
+            QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
+                .arg(avgWaiting, 0, 'f', 2)
+                .arg(avgTurnaround, 0, 'f', 2)
+        );
+    }
 
     SimulationResult result;
     result.algorithmName = algorithmName;
@@ -526,18 +534,18 @@ void ProcessSimulator::setupSchedulingWidget(QWidget* menuWidget_)
     connect(mainGanttChart, &GanttChartWidget::animationFinished,
         this, &ProcessSimulator::runNextAlgorithmInSequence);
     
-    QHBoxLayout *animLayout = new QHBoxLayout();
-    QPushButton *startBtn = createButton("▶ Start Animation", "#30c752");
-    QPushButton *stopBtn = createButton("Stop Animation", "#dc3545");
-    QSpinBox *speedSpinBox = new QSpinBox();
-    speedSpinBox->setRange(100, 2000);
-    speedSpinBox->setValue(500);
-    speedSpinBox->setSuffix(" ms");
-    animLayout->addWidget(new QLabel("Speed:"));
-    animLayout->addWidget(speedSpinBox);
-    animLayout->addWidget(startBtn);
-    animLayout->addWidget(stopBtn);
-    animLayout->addStretch();
+    //QHBoxLayout *animLayout = new QHBoxLayout();
+    //QPushButton *startBtn = createButton("▶ Start Animation", "#30c752");
+    //QPushButton *stopBtn = createButton("Stop Animation", "#dc3545");
+    //QSpinBox *speedSpinBox = new QSpinBox();
+    //speedSpinBox->setRange(100, 2000);
+    //speedSpinBox->setValue(500);
+    //speedSpinBox->setSuffix(" ms");
+    //animLayout->addWidget(new QLabel("Speed:"));
+    //animLayout->addWidget(speedSpinBox);
+    //animLayout->addWidget(startBtn);
+    //animLayout->addWidget(stopBtn);
+    //animLayout->addStretch();
 
     QHBoxLayout *tablesLayout = new QHBoxLayout();
     processTable = new QTableWidget();
@@ -560,9 +568,15 @@ void ProcessSimulator::setupSchedulingWidget(QWidget* menuWidget_)
     layout->addLayout(processLayout);
     setupAlgorithmSelection(layout);
     layout->addWidget(mainGanttScrollArea); 
-    layout->addLayout(animLayout);
+    //layout->addLayout(animLayout);
     layout->addLayout(tablesLayout);
     layout->addWidget(statusLabel);
+
+    metricsLabelBelowGantt = new QLabel();
+    metricsLabelBelowGantt->setAlignment(Qt::AlignCenter);
+    metricsLabelBelowGantt->setStyleSheet("color: #28a745; font-weight: bold; font-size: 16px;");
+    layout->addWidget(metricsLabelBelowGantt);
+
 
     connect(backBtn, &QPushButton::clicked, [this, menuWidget_]() {
         mainStack->setCurrentWidget(menuWidget_);
@@ -570,9 +584,9 @@ void ProcessSimulator::setupSchedulingWidget(QWidget* menuWidget_)
     connect(loadBtn, &QPushButton::clicked, this, &ProcessSimulator::loadProcessesFromDialog);
     connect(generateBtn, &QPushButton::clicked, this, &ProcessSimulator::generateSampleProcesses);
     connect(cleanBtn, &QPushButton::clicked, this, &ProcessSimulator::cleanProcesses); // Conectar el botón Clean
-    connect(startBtn, &QPushButton::clicked, mainGanttChart, &GanttChartWidget::startAnimation);
-    connect(stopBtn, &QPushButton::clicked, mainGanttChart, &GanttChartWidget::stopAnimation);
-    connect(speedSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), mainGanttChart, &GanttChartWidget::setAnimationSpeed);
+    //connect(startBtn, &QPushButton::clicked, mainGanttChart, &GanttChartWidget::startAnimation);
+    //connect(stopBtn, &QPushButton::clicked, mainGanttChart, &GanttChartWidget::stopAnimation);
+    //connect(speedSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), mainGanttChart, &GanttChartWidget::setAnimationSpeed);
 
     mainStack->addWidget(schedulingWidget);
 }
@@ -966,7 +980,7 @@ void ProcessSimulator::runSelectedAlgorithmsComparison() {
     
     if (rrCheck->isChecked()) {
         processes = originalProcessesCopy;
-        SchedulingAlgorithms::runRoundRobin(processes, 2);
+        SchedulingAlgorithms::runRoundRobin(processes, selectedQuantum);
         selectedAlgs.append("Round Robin");
         
         double totalWaiting = 0, totalTurnaround = 0;
@@ -980,7 +994,7 @@ void ProcessSimulator::runSelectedAlgorithmsComparison() {
     
     if (priorityCheck->isChecked()) {
         processes = originalProcessesCopy;
-        SchedulingAlgorithms::runPriority(processes, true);
+        SchedulingAlgorithms::runPriority(processes, agingEnabled, selectedAging);
         selectedAlgs.append("Priority");
         
         double totalWaiting = 0, totalTurnaround = 0;
@@ -1006,8 +1020,8 @@ void ProcessSimulator::runSelectedAlgorithmsComparison() {
 
 // 5. Nueva función para mostrar solo tabla de comparación
 void ProcessSimulator::displayComparisonTableOnly(const QStringList& algorithms, 
-                                                  const std::vector<double>& waitingTimes,
-                                                  const std::vector<double>& turnaroundTimes) {
+                                                const std::vector<double>& waitingTimes,
+                                                const std::vector<double>& turnaroundTimes) {
     // LIMPIAR resultados previos
     QLayoutItem* item;
     while ((item = resultsLayout->takeAt(0)) != nullptr) {
