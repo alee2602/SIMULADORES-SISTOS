@@ -775,8 +775,15 @@ void ProcessSimulator::showSimulationSummary() {
 
 // 4. Función para crear tabla de comparación
 void ProcessSimulator::createComparisonTable() {
+    // Limpiar widgets previos del layout
+    QLayoutItem* item;
+    while ((item = resultsWindowLayout->takeAt(0)) != nullptr) {
+        if (item->widget()) item->widget()->deleteLater();
+        delete item;
+    }
+
     QLabel* tableTitle = new QLabel("Tabla de Comparación de Algoritmos");
-    tableTitle->setFont(QFont("Arial", 16, QFont::Bold));
+    tableTitle->setFont(QFont("Arial", 20, QFont::Bold));
     tableTitle->setStyleSheet("color: #2c3e50; margin: 10px 0;");
     tableTitle->setAlignment(Qt::AlignCenter);
     resultsWindowLayout->addWidget(tableTitle);
@@ -829,9 +836,14 @@ void ProcessSimulator::createComparisonTable() {
     }
     
     comparisonTable->resizeColumnsToContents();
-    comparisonTable->setMaximumHeight(200);
-    comparisonTable->setStyleSheet("background-color: white; border: 1px solid #ddd; font-size: 14px;");
-    
+    comparisonTable->setMinimumWidth(900);
+    comparisonTable->setMinimumHeight(300);
+    comparisonTable->setMaximumHeight(400);
+    comparisonTable->verticalHeader()->setDefaultSectionSize(40);
+    comparisonTable->setFont(QFont("Arial", 16));
+    comparisonTable->setStyleSheet("background-color: white; border: 1px solid #ddd; font-size: 18px;"); 
+    comparisonTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     resultsWindowLayout->addWidget(comparisonTable);
 }
 
@@ -853,13 +865,21 @@ void ProcessSimulator::createIndividualResultWidget(const SimulationResult& resu
     // Crear un nuevo chart para mostrar en los resultados
     GanttChartWidget* chart = new GanttChartWidget();
     chart->setTimeline(result.timeline);
+    chart->updateSize(); // <-- Asegura el tamaño correcto
+
+    // Ajusta el ancho del chart según el tiempo máximo
+    int maxTime = 0;
+    for (const auto& slice : result.timeline) {
+        maxTime = std::max(maxTime, slice.start_time + slice.duration);
+    }
+    int minWidth = maxTime * 40 + 100;
+    chart->setMinimumWidth(minWidth);
     chart->setFixedHeight(220);
-    chart->setFixedWidth(1200); // <-- Más ancho
 
     // Poner el chart en un QScrollArea para scroll horizontal si es necesario
     QScrollArea* chartScroll = new QScrollArea();
     chartScroll->setWidget(chart);
-    chartScroll->setWidgetResizable(false);
+    chartScroll->setWidgetResizable(false); // <-- Importante para scroll horizontal
     chartScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     chartScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     chartScroll->setFixedHeight(240); // Un poco más que el chart
@@ -1029,8 +1049,15 @@ void ProcessSimulator::runSelectedAlgorithmsComparison() {
 void ProcessSimulator::displayComparisonTableOnly(const QStringList& algorithms, 
                                                   const std::vector<double>& waitingTimes,
                                                   const std::vector<double>& turnaroundTimes) {
+    // LIMPIAR resultados previos
+    QLayoutItem* item;
+    while ((item = resultsLayout->takeAt(0)) != nullptr) {
+        if (item->widget()) item->widget()->deleteLater();
+        delete item;
+    }
+
     QLabel* header = new QLabel("Comparación de Algoritmos");
-    header->setFont(QFont("Arial", 18, QFont::Bold));
+    header->setFont(QFont("Arial", 22, QFont::Bold));
     header->setStyleSheet("color: #2c3e50; margin: 20px 0;");
     header->setAlignment(Qt::AlignCenter);
     resultsLayout->addWidget(header);
@@ -1059,8 +1086,13 @@ void ProcessSimulator::displayComparisonTableOnly(const QStringList& algorithms,
     }
     
     comparisonTable->resizeColumnsToContents();
-    comparisonTable->setMaximumHeight(200);
-    comparisonTable->setStyleSheet("background-color: white; border: 1px solid #ddd;");
+    comparisonTable->setMinimumWidth(900);
+    comparisonTable->setMinimumHeight(300);
+    comparisonTable->setMaximumHeight(400);
+    comparisonTable->setFont(QFont("Arial", 16)); 
+    comparisonTable->setStyleSheet("background-color: white; border: 1px solid #ddd; font-size: 22px;");
+    comparisonTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     resultsLayout->addWidget(comparisonTable);
     
     statusLabel->setText(QString("Comparación completada para %1 algoritmos").arg(algorithms.size()));
@@ -1070,23 +1102,16 @@ void ProcessSimulator::cleanProcesses()
 {
     processes.clear();
     originalProcesses.clear();
-
-    // Limpiar las tablas
     processTable->setRowCount(0);
     metricsTable->setRowCount(0);
-
-    // Limpiar el Gantt chart
     if (mainGanttChart) {
         mainGanttChart->setTimeline(std::vector<ExecutionSlice>());
     }
-
-    // Limpiar resultados previos
     QLayoutItem* item;
     while ((item = resultsLayout->takeAt(0)) != nullptr) {
         delete item->widget();
         delete item;
     }
-
     statusLabel->setText("Processes cleared. Ready to load new processes.");
 }
 
@@ -1094,8 +1119,6 @@ void ProcessSimulator::cleanProcesses()
 void ProcessSimulator::setupSynchronizationWidget() {
     synchronizationWidget = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(synchronizationWidget);
-
-    // Título
     QLabel *title = new QLabel("SIMULADOR DE MECANISMOS DE SINCRONIZACIÓN");
     title->setFont(QFont("Arial", 20, QFont::Bold));
     title->setStyleSheet("color: #2c3e50;");
@@ -1110,8 +1133,6 @@ void ProcessSimulator::setupSynchronizationWidget() {
     loadLayout->addWidget(loadActionsBtn);
     loadLayout->addStretch();
     layout->addLayout(loadLayout);
-
-    // Botones para simular mecanismos
     QHBoxLayout *syncBtnLayout = new QHBoxLayout();
     QPushButton *mutexBtn = createButton("Simulate Mutex", "#28a745");
     QPushButton *semaphoreBtn = createButton("Simulate Semaphore", "#17a2b8");
@@ -1153,3 +1174,4 @@ void ProcessSimulator::setupSynchronizationWidget() {
 
     mainStack->addWidget(synchronizationWidget);
 }
+

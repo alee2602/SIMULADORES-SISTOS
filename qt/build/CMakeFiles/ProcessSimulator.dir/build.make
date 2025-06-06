@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt"
+CMAKE_SOURCE_DIR = /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build"
+CMAKE_BINARY_DIR = /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/ProcessSimulator.dir/depend.make
@@ -72,100 +72,100 @@ include CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o: ProcessSimulator_autogen/mocs_compilation.cpp
 CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o -MF CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o -c "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/mocs_compilation.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o -MF CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/mocs_compilation.cpp
 
 CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/mocs_compilation.cpp" > CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/mocs_compilation.cpp > CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.i
 
 CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/mocs_compilation.cpp" -o CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/mocs_compilation.cpp -o CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.s
 
 CMakeFiles/ProcessSimulator.dir/main.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/main.cpp.o: ../main.cpp
 CMakeFiles/ProcessSimulator.dir/main.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ProcessSimulator.dir/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/main.cpp.o -MF CMakeFiles/ProcessSimulator.dir/main.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/main.cpp.o -c "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/main.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/ProcessSimulator.dir/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/main.cpp.o -MF CMakeFiles/ProcessSimulator.dir/main.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/main.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/main.cpp
 
 CMakeFiles/ProcessSimulator.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ProcessSimulator.dir/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/main.cpp" > CMakeFiles/ProcessSimulator.dir/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/main.cpp > CMakeFiles/ProcessSimulator.dir/main.cpp.i
 
 CMakeFiles/ProcessSimulator.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ProcessSimulator.dir/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/main.cpp" -o CMakeFiles/ProcessSimulator.dir/main.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/main.cpp -o CMakeFiles/ProcessSimulator.dir/main.cpp.s
 
 CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: ../synchronizer.cpp
 CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o -MF CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o -c "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/synchronizer.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o -MF CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.cpp
 
 CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/synchronizer.cpp" > CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.cpp > CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.i
 
 CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/synchronizer.cpp" -o CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.cpp -o CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.s
 
 CMakeFiles/ProcessSimulator.dir/loader.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/loader.cpp.o: ../loader.cpp
 CMakeFiles/ProcessSimulator.dir/loader.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ProcessSimulator.dir/loader.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/loader.cpp.o -MF CMakeFiles/ProcessSimulator.dir/loader.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/loader.cpp.o -c "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/loader.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ProcessSimulator.dir/loader.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/loader.cpp.o -MF CMakeFiles/ProcessSimulator.dir/loader.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/loader.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/loader.cpp
 
 CMakeFiles/ProcessSimulator.dir/loader.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ProcessSimulator.dir/loader.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/loader.cpp" > CMakeFiles/ProcessSimulator.dir/loader.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/loader.cpp > CMakeFiles/ProcessSimulator.dir/loader.cpp.i
 
 CMakeFiles/ProcessSimulator.dir/loader.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ProcessSimulator.dir/loader.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/loader.cpp" -o CMakeFiles/ProcessSimulator.dir/loader.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/loader.cpp -o CMakeFiles/ProcessSimulator.dir/loader.cpp.s
 
 CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o: ../scheduler.cpp
 CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o -MF CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o -c "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/scheduler.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o -MF CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.cpp
 
 CMakeFiles/ProcessSimulator.dir/scheduler.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ProcessSimulator.dir/scheduler.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/scheduler.cpp" > CMakeFiles/ProcessSimulator.dir/scheduler.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.cpp > CMakeFiles/ProcessSimulator.dir/scheduler.cpp.i
 
 CMakeFiles/ProcessSimulator.dir/scheduler.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ProcessSimulator.dir/scheduler.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/scheduler.cpp" -o CMakeFiles/ProcessSimulator.dir/scheduler.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.cpp -o CMakeFiles/ProcessSimulator.dir/scheduler.cpp.s
 
 CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o: ../processsimulator.cpp
 CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o -MF CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o -c "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/processsimulator.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o -MF CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/processsimulator.cpp
 
 CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/processsimulator.cpp" > CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/processsimulator.cpp > CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.i
 
 CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/processsimulator.cpp" -o CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/processsimulator.cpp -o CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.s
 
 CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o: CMakeFiles/ProcessSimulator.dir/flags.make
 CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o: ../ganttchartwidget.cpp
 CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o: CMakeFiles/ProcessSimulator.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o -MF CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o -c "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/ganttchartwidget.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o -MF CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o.d -o CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o -c /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/ganttchartwidget.cpp
 
 CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/ganttchartwidget.cpp" > CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/ganttchartwidget.cpp > CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.i
 
 CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/ganttchartwidget.cpp" -o CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/ganttchartwidget.cpp -o CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.s
 
 # Object files for target ProcessSimulator
 ProcessSimulator_OBJECTS = \
@@ -194,7 +194,7 @@ bin/ProcessSimulator: /usr/lib/x86_64-linux-gnu/libQt6Core.so.6.2.4
 bin/ProcessSimulator: /usr/lib/x86_64-linux-gnu/libGLX.so
 bin/ProcessSimulator: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 bin/ProcessSimulator: CMakeFiles/ProcessSimulator.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable bin/ProcessSimulator"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable bin/ProcessSimulator"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/ProcessSimulator.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -206,6 +206,6 @@ CMakeFiles/ProcessSimulator.dir/clean:
 .PHONY : CMakeFiles/ProcessSimulator.dir/clean
 
 CMakeFiles/ProcessSimulator.dir/depend:
-	cd "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build" "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator.dir/DependInfo.cmake" --color=$(COLOR)
+	cd /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/ProcessSimulator.dir/depend
 

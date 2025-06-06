@@ -14,7 +14,7 @@ class GanttChartWidget : public QWidget {
 
 public:
     explicit GanttChartWidget(QWidget* parent = nullptr);
-    
+    void updateSize();
     void setTimeline(const std::vector<ExecutionSlice>& timeline);
     void startAnimation();
     void stopAnimation();
@@ -37,7 +37,7 @@ signals:
     void animationFinished();
 
 private:
-    void updateSize();
+   
     QString algorithmTitle;
     
     std::vector<ExecutionSlice> timeline;
