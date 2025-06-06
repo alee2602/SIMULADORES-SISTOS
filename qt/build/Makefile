@@ -331,6 +331,30 @@ scheduler.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/scheduler.cpp.s
 .PHONY : scheduler.cpp.s
 
+synchronizationsimulator.o: synchronizationsimulator.cpp.o
+.PHONY : synchronizationsimulator.o
+
+# target to build an object file
+synchronizationsimulator.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.o
+.PHONY : synchronizationsimulator.cpp.o
+
+synchronizationsimulator.i: synchronizationsimulator.cpp.i
+.PHONY : synchronizationsimulator.i
+
+# target to preprocess a source file
+synchronizationsimulator.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.i
+.PHONY : synchronizationsimulator.cpp.i
+
+synchronizationsimulator.s: synchronizationsimulator.cpp.s
+.PHONY : synchronizationsimulator.s
+
+# target to generate assembly for a file
+synchronizationsimulator.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ProcessSimulator.dir/build.make CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.s
+.PHONY : synchronizationsimulator.cpp.s
+
 synchronizer.o: synchronizer.cpp.o
 .PHONY : synchronizer.o
 
@@ -387,6 +411,9 @@ help:
 	@echo "... scheduler.o"
 	@echo "... scheduler.i"
 	@echo "... scheduler.s"
+	@echo "... synchronizationsimulator.o"
+	@echo "... synchronizationsimulator.i"
+	@echo "... synchronizationsimulator.s"
 	@echo "... synchronizer.o"
 	@echo "... synchronizer.i"
 	@echo "... synchronizer.s"

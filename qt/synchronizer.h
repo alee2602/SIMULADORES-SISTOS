@@ -95,4 +95,10 @@ public:
     );
 };
 
+class Synchronizer {
+public:
+    virtual ~Synchronizer() = default;
+    // Métodos virtuales puros si es una interfaz
+};
+
 #endif

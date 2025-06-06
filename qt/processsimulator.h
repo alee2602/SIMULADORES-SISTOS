@@ -22,7 +22,7 @@ class ProcessSimulator : public QWidget {
     Q_OBJECT
 
 public:
-    ProcessSimulator(QWidget* parent = nullptr);
+    explicit ProcessSimulator(QStackedWidget* mainStack, QWidget* menuWidget, QWidget *parent = nullptr);
     ~ProcessSimulator();
 
 private:
@@ -55,12 +55,11 @@ private:
     QCheckBox *fifoCheck, *sjfCheck, *srtfCheck, *rrCheck, *priorityCheck;
     QCheckBox* createStyledCheckBox(const QString &text, const QString &color);
     void setupTableWithScroll(QTableWidget* table);
+    void setupTableStyle(QTableWidget* table);
     QCheckBox *fifoCheckMulti, *sjfCheckMulti, *srtfCheckMulti, *rrCheckMulti, *priorityCheckMulti;
     QCheckBox *agingEnabledCheck;
     QVBoxLayout *resultsLayout;
     QWidget *resultsArea;
-
-    // Labels y SpinBoxes para parámetros de Round Robin y Priority
     QLabel *quantumLabel;
     QSpinBox *quantumSpinBox;
 
@@ -75,7 +74,6 @@ private:
 
     // UI components
     QStackedWidget* mainStack;
-    QWidget* menuWidget;
     QWidget* schedulingWidget;
     QWidget* synchronizationWidget;
 
@@ -92,10 +90,9 @@ private:
     void simulateNextAlgorithm();
 
     // Setup methods
-    void setupUI();
-    void setupMenuWidget();
-    void setupSchedulingWidget();
-    void setupSynchronizationWidget();
+    void setupUI(QWidget* menuWidget);
+    void setupSchedulingWidget(QWidget* menuWidget);
+    void setupSequentialSimWidget(QWidget* menuWidget);
 
     // Button styles
     QPushButton* createMenuButton(const QString& text, const QString& color, const QString& description);
@@ -109,7 +106,6 @@ private:
     void loadProcessesFromDialog();
     void generateSampleProcesses();
     void generateSampleResources();
-    void generateSampleActions();
     void updateProcessTable();
     void updateMetricsTable();
 
@@ -121,7 +117,6 @@ private:
     void runPriority();
 
     // Synchronization
-    void runSynchronization(const QString& mechanism);
     void startMainAnimation();
 
     std::vector<std::vector<ExecutionSlice>> algorithmTimelines;
@@ -153,12 +148,14 @@ private:
     std::vector<SimulationResult> sequentialResults;
     QWidget* resultsWindow;
     QVBoxLayout* resultsWindowLayout;
-    void showSimulationSummary();
+    void showSimulationSummary(QWidget* menuWidget);
     void createComparisonTable();
     void createIndividualResultWidget(const SimulationResult& result, QVBoxLayout* layout);
     int selectedQuantum = 2;
     bool agingEnabled = false;
     int selectedAging = 5;
+
+    QWidget* menuWidget_;
 };
 
 #endif

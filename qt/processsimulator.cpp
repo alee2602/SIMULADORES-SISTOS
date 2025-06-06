@@ -14,12 +14,11 @@
 #include "ganttchartwidget.h"
 #include "loader.h"
 
-ProcessSimulator::ProcessSimulator(QWidget *parent)
-    : QWidget(parent), syncMechanism(nullptr), currentAlgorithmIndex(0)
+ProcessSimulator::ProcessSimulator(QStackedWidget* mainStack, QWidget* menuWidget_, QWidget *parent)
+    : QWidget(parent), mainStack(mainStack), menuWidget_(menuWidget_)
 {
-    setupUI();
+    setupUI(menuWidget_);
     generateSampleResources();
-    generateSampleActions();
     sequentialResults.clear(); 
 }
 
@@ -104,17 +103,6 @@ void ProcessSimulator::generateSampleResources()
         return;
     }
     resources = loadResources(path);
-}
-
-void ProcessSimulator::generateSampleActions()
-{
-    QString path = "data/actions.txt";
-    if (!QFile::exists(path))
-    {
-        QMessageBox::warning(this, "Error", QString("File not found: %1").arg(path));
-        return;
-    }
-    actions = loadActions(path);
 }
 
 void ProcessSimulator::setupAlgorithmSelection(QVBoxLayout* layout) {
@@ -252,7 +240,7 @@ void ProcessSimulator::runSelectedAlgorithms() {
 void ProcessSimulator::runNextAlgorithmInSequence() {
     if (currentAlgorithmIndex >= selectedAlgorithmsForSequential.size()) {
         statusLabel->setText("Simulación secuencial completada");
-        showSimulationSummary(); 
+        showSimulationSummary(menuWidget_); 
         return;
     }
 
@@ -414,43 +402,7 @@ void ProcessSimulator::loadProcessesFromDialog()
     QMessageBox::information(this, "Archivo cargado", QString("Se cargaron %1 procesos desde %2").arg(processes.size()).arg(fileName));
 }
 
-void ProcessSimulator::runSynchronization(const QString &mechanism)
-{
-    if (processes.empty() || resources.empty() || actions.empty())
-    {
-        QMessageBox::warning(this, "Warning", "No processes, resources, or actions loaded!");
-        return;
-    }
-    delete syncMechanism;
-    if (mechanism == "Mutex Lock")
-    {
-        syncMechanism = new MutexLock(resources);
-    }
-    else if (mechanism == "Semaphore")
-    {
-        syncMechanism = new Semaphore(resources);
-    }
-    auto events = SynchronizationSimulator::simulateSynchronization(processes, resources, actions, syncMechanism);
-    syncTable->setRowCount(events.size());
-    QString resultText = QString("=== %1 Simulation Results ===\n").arg(mechanism);
-    for (int i = 0; i < events.size(); ++i)
-    {
-        const auto &event = events[i];
-        syncTable->setItem(i, 0, new QTableWidgetItem(event.pid));
-        syncTable->setItem(i, 1, new QTableWidgetItem(event.state == ProcessState::ACCESSED ? "ACCESSED" : "WAITING"));
-        syncTable->setItem(i, 2, new QTableWidgetItem(event.resource));
-        syncTable->setItem(i, 3, new QTableWidgetItem(event.action_type));
-        syncTable->setItem(i, 4, new QTableWidgetItem(QString::number(event.cycle)));
-        resultText += QString("Cycle %1: Process %2 %3 %4 (%5)\n").arg(event.cycle).arg(event.pid).arg(event.action_type).arg(event.resource).arg(event.state == ProcessState::ACCESSED ? "ACCESSED" : "WAITING");
-    }
-    QMessageBox msgBox;
-    msgBox.setWindowTitle("Synchronization Results");
-    msgBox.setText(QString("%1 simulation completed successfully!").arg(mechanism));
-    msgBox.setDetailedText(resultText);
-    msgBox.exec();
-}
-
-void ProcessSimulator::setupUI()
+void ProcessSimulator::setupUI(QWidget* menuWidget_)
 {
     setWindowTitle("Advanced Process Scheduling & Synchronization Simulator");
     setFixedSize(1400, 1000);
@@ -458,57 +410,12 @@ void ProcessSimulator::setupUI()
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainStack = new QStackedWidget();
-
-    setupMenuWidget();
-    setupSchedulingWidget();
-    setupSynchronizationWidget();
+    setupSchedulingWidget(menuWidget_);
     setupMultiSelectionWidget();
-    setupSequentialSimWidget();
-
-
+    setupSequentialSimWidget(menuWidget_);
     mainLayout->addWidget(mainStack);
 }
 
-void ProcessSimulator::setupMenuWidget()
-{
-    menuWidget = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(menuWidget);
-    layout->setSpacing(20);
-    layout->setContentsMargins(50, 30, 50, 30);
-
-    QLabel *title = new QLabel("PROCESS SIMULATOR");
-    title->setAlignment(Qt::AlignCenter);
-    title->setFont(QFont("Arial", 32, QFont::Bold));
-    title->setStyleSheet("color: black; background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1, stop: 0 rgb(168, 220, 230), stop: 1 rgb(184, 231, 255)); border-radius: 20px; padding: 30px; margin: 20px;");
-
-    QLabel *subtitle = new QLabel("Choose Simulation Type");
-    subtitle->setAlignment(Qt::AlignCenter);
-    subtitle->setFont(QFont("Arial", 18));
-    subtitle->setStyleSheet("color: #6c757d; margin: 10px;");
-
-    QVBoxLayout *buttonLayout = new QVBoxLayout();
-    buttonLayout->setSpacing(25);
-    buttonLayout->setAlignment(Qt::AlignCenter);
-
-    QPushButton *schedulingBtn = createMenuButton("Simulador de Algoritmos de Calendarización", "#c4dafa", "Simulate process scheduling algorithms like FIFO, SJF, Round Robin, and Priority");
-    QPushButton *syncBtn = createMenuButton("Simulador de Mecanismos de Sincronización", "#c4e5fb", "Simulate synchronization mechanisms like Mutex Locks and Semaphores");
-
-    buttonLayout->addWidget(schedulingBtn);
-    buttonLayout->addWidget(syncBtn);
-
-    layout->addWidget(title);
-    layout->addWidget(subtitle);
-    layout->addStretch(1);
-    layout->addLayout(buttonLayout);
-    layout->addStretch(2);
-
-    connect(schedulingBtn, &QPushButton::clicked, [this]()
-            { mainStack->setCurrentWidget(schedulingWidget); });
-    connect(syncBtn, &QPushButton::clicked, [this]()
-            { mainStack->setCurrentWidget(synchronizationWidget); });
-
-    mainStack->addWidget(menuWidget);
-}
 
 void ProcessSimulator::setupMultiSelectionWidget() {
     multiSelectionWidget = new QWidget();
@@ -590,7 +497,7 @@ void ProcessSimulator::setupMultiSelectionWidget() {
     mainStack->addWidget(multiSelectionWidget);
 }
 
-void ProcessSimulator::setupSchedulingWidget()
+void ProcessSimulator::setupSchedulingWidget(QWidget* menuWidget_)
 {
     schedulingWidget = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(schedulingWidget);
@@ -636,14 +543,12 @@ void ProcessSimulator::setupSchedulingWidget()
     processTable = new QTableWidget();
     processTable->setColumnCount(5);
     processTable->setHorizontalHeaderLabels({"PID", "Burst Time", "Arrival Time", "Priority", "Color"});
-    processTable->horizontalHeader()->setStretchLastSection(true);
-    processTable->setStyleSheet("background-color: white; border: 1px solid #ddd;");
+    setupTableStyle(processTable);
 
     metricsTable = new QTableWidget();
     metricsTable->setColumnCount(4);
     metricsTable->setHorizontalHeaderLabels({"PID", "Start Time", "Finish Time", "Waiting Time"});
-    metricsTable->horizontalHeader()->setStretchLastSection(true);
-    metricsTable->setStyleSheet("background-color: white; border: 1px solid #ddd;");
+    setupTableStyle(metricsTable);
 
     tablesLayout->addWidget(processTable);
     tablesLayout->addWidget(metricsTable);
@@ -659,7 +564,9 @@ void ProcessSimulator::setupSchedulingWidget()
     layout->addLayout(tablesLayout);
     layout->addWidget(statusLabel);
 
-    connect(backBtn, &QPushButton::clicked, [this]() { mainStack->setCurrentWidget(menuWidget); });
+    connect(backBtn, &QPushButton::clicked, [this, menuWidget_]() {
+        mainStack->setCurrentWidget(menuWidget_);
+    });
     connect(loadBtn, &QPushButton::clicked, this, &ProcessSimulator::loadProcessesFromDialog);
     connect(generateBtn, &QPushButton::clicked, this, &ProcessSimulator::generateSampleProcesses);
     connect(cleanBtn, &QPushButton::clicked, this, &ProcessSimulator::cleanProcesses); // Conectar el botón Clean
@@ -671,7 +578,7 @@ void ProcessSimulator::setupSchedulingWidget()
 }
 
 
-void ProcessSimulator::setupSequentialSimWidget() {
+void ProcessSimulator::setupSequentialSimWidget(QWidget* menuWidget_) {
     sequentialSimWidget = new QWidget();
     QVBoxLayout *layout = new QVBoxLayout(sequentialSimWidget);
 
@@ -691,8 +598,8 @@ void ProcessSimulator::setupSequentialSimWidget() {
     QPushButton *returnBtn = createButton("← Volver al menú", "#6c757d");
     layout->addWidget(returnBtn);
 
-    connect(returnBtn, &QPushButton::clicked, [this]() {
-        mainStack->setCurrentWidget(menuWidget);
+    connect(returnBtn, &QPushButton::clicked, [this, menuWidget_]() {
+        mainStack->setCurrentWidget(menuWidget_);
     });
 
     simulationTimer = new QTimer(this);
@@ -704,7 +611,7 @@ void ProcessSimulator::setupSequentialSimWidget() {
 // 2. Modificación de simulateNextAlgorithm para guardar resultados y mostrar resumen
 void ProcessSimulator::simulateNextAlgorithm() {
     if (selectedAlgorithms.empty()) {
-        showSimulationSummary(); 
+        showSimulationSummary(menuWidget_); 
         simulationTimer->stop();
         return;
     }
@@ -762,7 +669,7 @@ void ProcessSimulator::simulateNextAlgorithm() {
 }
 
 // 3. Nueva función para mostrar ventana de resumen
-void ProcessSimulator::showSimulationSummary() {
+void ProcessSimulator::showSimulationSummary(QWidget* menuWidget_) {
     if (sequentialResults.empty()) {
         QMessageBox::warning(this, "Sin resultados", "No hay simulaciones finalizadas para mostrar.");
         return;
@@ -815,9 +722,9 @@ void ProcessSimulator::showSimulationSummary() {
     
     // Conectar botones
     connect(closeBtn, &QPushButton::clicked, resultsWindow, &QWidget::close);
-    connect(backToMenuBtn, &QPushButton::clicked, [this]() {
+    connect(backToMenuBtn, &QPushButton::clicked, [this, menuWidget_]() {
         resultsWindow->close();
-        mainStack->setCurrentWidget(menuWidget);
+        mainStack->setCurrentWidget(menuWidget_);
     });
     
     resultsWindow->show();
@@ -842,8 +749,8 @@ void ProcessSimulator::createComparisonTable() {
     comparisonTable->setRowCount(sequentialResults.size());
     comparisonTable->setColumnCount(3);
     comparisonTable->setHorizontalHeaderLabels({"Algoritmo", "Tiempo Promedio de Espera", "Tiempo Promedio de Retorno"});
+    setupTableStyle(comparisonTable);
     
-    // Encontrar los mejores valores para resaltar
     double bestWaiting = std::numeric_limits<double>::max();
     double bestTurnaround = std::numeric_limits<double>::max();
     
@@ -1118,6 +1025,7 @@ void ProcessSimulator::displayComparisonTableOnly(const QStringList& algorithms,
     comparisonTable->setRowCount(algorithms.size());
     comparisonTable->setColumnCount(3);
     comparisonTable->setHorizontalHeaderLabels({"Algoritmo", "Tiempo Promedio de Espera", "Tiempo Promedio de Retorno"});
+    setupTableStyle(comparisonTable);
 
     for (int i = 0; i < algorithms.size(); i++) {
         comparisonTable->setItem(i, 0, new QTableWidgetItem(algorithms[i]));
@@ -1168,102 +1076,32 @@ void ProcessSimulator::cleanProcesses()
     statusLabel->setText("Processes cleared. Ready to load new processes.");
 }
 
-// SINCRONIZACIÓN
-void ProcessSimulator::setupSynchronizationWidget() {
-    synchronizationWidget = new QWidget();
-    QVBoxLayout *layout = new QVBoxLayout(synchronizationWidget);
-    QLabel *title = new QLabel("SIMULADOR DE MECANISMOS DE SINCRONIZACIÓN");
-    title->setFont(QFont("Arial", 20, QFont::Bold));
-    title->setStyleSheet("color: #2c3e50;");
-    title->setAlignment(Qt::AlignCenter);
-    layout->addWidget(title);
-
-    // Botones para cargar recursos y acciones
-    QHBoxLayout *loadLayout = new QHBoxLayout();
-    QPushButton *loadResourcesBtn = createButton("Load Resources", "#5a68a5");
-    QPushButton *loadActionsBtn = createButton("Load Actions", "#70a1a8");
-    loadLayout->addWidget(loadResourcesBtn);
-    loadLayout->addWidget(loadActionsBtn);
-    loadLayout->addStretch();
-    layout->addLayout(loadLayout);
-    
-    QHBoxLayout *paramLayout = new QHBoxLayout();
-    QLabel *quantumLabel = new QLabel("Quantum (RR):");
-    QSpinBox *quantumSpinBox = new QSpinBox();
-    quantumSpinBox->setRange(1, 10);
-    quantumSpinBox->setValue(2);
-
-    QLabel *agingLabel = new QLabel("Aging (Priority):");
-    QSpinBox *agingSpinBox = new QSpinBox();
-    agingSpinBox->setRange(1, 10);
-    agingSpinBox->setValue(5);
-
-    QCheckBox *agingEnabledCheck = new QCheckBox("Habilitar envejecimiento");
-    agingSpinBox->setEnabled(false);
-    connect(agingEnabledCheck, &QCheckBox::toggled, agingSpinBox, &QWidget::setEnabled);
-
-    paramLayout->addWidget(quantumLabel);
-    paramLayout->addWidget(quantumSpinBox);
-    paramLayout->addSpacing(20);
-    paramLayout->addWidget(agingLabel);
-    paramLayout->addWidget(agingSpinBox);
-    paramLayout->addWidget(agingEnabledCheck);
-    layout->addLayout(paramLayout);
-    QHBoxLayout *syncBtnLayout = new QHBoxLayout();
-    QPushButton *mutexBtn = createButton("Simulate Mutex", "#28a745");
-    QPushButton *semaphoreBtn = createButton("Simulate Semaphore", "#17a2b8");
-    QPushButton *rrBtn = createButton("Simulate Round Robin", "#ffc107");
-    QPushButton *priorityBtn = createButton("Simulate Priority", "#f39c12");
-    syncBtnLayout->addWidget(mutexBtn);
-    syncBtnLayout->addWidget(semaphoreBtn);
-    syncBtnLayout->addWidget(rrBtn);
-    syncBtnLayout->addWidget(priorityBtn);
-    syncBtnLayout->addStretch();
-    layout->addLayout(syncBtnLayout);
-
-    // Tabla de eventos de sincronización
-    syncTable = new QTableWidget();
-    syncTable->setColumnCount(5);
-    syncTable->setHorizontalHeaderLabels({"PID", "Estado", "Recurso", "Acción", "Ciclo"});
-    syncTable->horizontalHeader()->setStretchLastSection(true);
-    syncTable->setStyleSheet("background-color: white; border: 1px solid #ddd;");
-    layout->addWidget(syncTable);
-
-    // Botón para volver al menú principal
-    QPushButton *backBtn = createButton("← Back to Menu", "#6c757d");
-    layout->addWidget(backBtn);
-
-    // Conexiones
-    connect(loadResourcesBtn, &QPushButton::clicked, this, [this]() {
-        generateSampleResources();
-        QMessageBox::information(this, "Recursos", "Recursos cargados correctamente.");
-    });
-    connect(loadActionsBtn, &QPushButton::clicked, this, [this]() {
-        generateSampleActions();
-        QMessageBox::information(this, "Acciones", "Acciones cargadas correctamente.");
-    });
-    connect(mutexBtn, &QPushButton::clicked, this, [this]() {
-        runSynchronization("Mutex Lock");
-    });
-    connect(semaphoreBtn, &QPushButton::clicked, this, [this]() {
-        runSynchronization("Semaphore");
-    });
-    connect(rrBtn, &QPushButton::clicked, this, [this, quantumSpinBox]() {
-        // Aquí puedes pasar el quantum seleccionado
-        int quantum = quantumSpinBox->value();
-        runSynchronization(QString("Round Robin (Quantum=%1)").arg(quantum));
-        // O adapta runSynchronization para aceptar quantum como parámetro
-    });
-    connect(priorityBtn, &QPushButton::clicked, this, [this, agingEnabledCheck, agingSpinBox]() {
-        bool agingEnabled = agingEnabledCheck->isChecked();
-        int agingValue = agingSpinBox->value();
-        runSynchronization(QString("Priority (Aging=%1, Enabled=%2)").arg(agingValue).arg(agingEnabled ? "Yes" : "No"));
-        // O adapta runSynchronization para aceptar aging como parámetro
-    });
-    connect(backBtn, &QPushButton::clicked, [this]() {
-        mainStack->setCurrentWidget(menuWidget);
-    });
-
-    mainStack->addWidget(synchronizationWidget);
+void ProcessSimulator::setupTableStyle(QTableWidget* table) {
+    table->setStyleSheet(
+        "QTableWidget {"
+        "  background-color: #f8f9fa;"
+        "  border: 2px solidrgb(196, 176, 197);"
+        "  border-radius: 10px;"
+        "  font-size: 16px;"
+        "  selection-background-color:rgb(228, 178, 242);"
+        "  selection-color: #263238;"
+        "}"
+        "QHeaderView::section {"
+        "  background-color:rgb(113, 25, 96);"
+        "  color: white;"
+        "  font-weight: bold;"
+        "  font-size: 16px;"
+        "  border: none;"
+        "  padding: 8px;"
+        "}"
+        "QTableWidget::item {"
+        "  padding: 6px;"
+        "}"
+    );
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table->verticalHeader()->setVisible(false);
+    table->setShowGrid(false);
+    table->setAlternatingRowColors(true);
+    table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
 }
-

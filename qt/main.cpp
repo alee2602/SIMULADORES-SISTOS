@@ -1,59 +1,86 @@
 #include <QApplication>
+#include <QStackedWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
-#include <QHBoxLayout>
-#include <QLabel>
 #include <QWidget>
-#include <QComboBox>
-#include <QInputDialog>
-#include <QMessageBox>
-#include <QDialog>
-#include <QFrame>
-#include <QFont>
-#include <QGraphicsDropShadowEffect>
-#include <QFileDialog>
-#include <QTextEdit>
-#include <QScrollArea>
-#include <QPainter>
-#include <QTimer>
-#include <QProgressBar>
-#include <QSpinBox>
-#include <QTableWidget>
-#include <QTableWidgetItem>
-#include <QHeaderView>
-#include <QStackedWidget>
-#include <QButtonGroup>
-#include <vector>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <algorithm>
-#include <queue>
-#include <map>
-#include "synchronizer.h"
-#include "scheduler.h"
+#include <QLabel>
 #include "processsimulator.h"
-#include "ganttchartwidget.h"
+#include "synchronizationsimulator.h"
 
-using namespace std;
+QPushButton* createMenuButton(const QString &text, const QString &color, const QString &description) {
+    QPushButton *btn = new QPushButton(text);
+    btn->setMinimumSize(900, 140);
+    btn->setMaximumSize(1200, 140);
+    btn->setFont(QFont("Arial", 28, QFont::Bold)); 
+    btn->setStyleSheet(QString(
+        "QPushButton { background-color: %1; color: black; font-size: 28px; border-radius: 20px; padding: 20px; }"
+        "QPushButton:hover { background-color: #e3f0fc; }"
+    ).arg(color));
+    btn->setToolTip(description);
+    return btn;
+}
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    // Set application style
-    app.setStyleSheet(
-        "QWidget { font-family: 'Segoe UI', Arial, sans-serif; }"
-        "QTableWidget { gridline-color: #e0e0e0; }"
-        "QTableWidget::item { padding: 8px; }"
-        "QTableWidget::item:selected { background-color: #3498db; color: white; }"
-        "QHeaderView::section { background-color: #34495e; color: white; "
-        "padding: 10px; border: none; font-weight: bold; }"
-        "QSpinBox { padding: 5px; border: 1px solid #ddd; border-radius: 4px; }"
-        "QLabel { color: #2c3e50; }"
+    QStackedWidget *mainStack = new QStackedWidget;
+
+    // Menú principal
+    QWidget *menu = new QWidget;
+    QVBoxLayout *layout = new QVBoxLayout(menu);
+    layout->setSpacing(20);
+    layout->setContentsMargins(50, 30, 50, 30);
+
+    QLabel *title = new QLabel("PROCESS SIMULATOR");
+    title->setAlignment(Qt::AlignCenter);
+    title->setFont(QFont("Arial", 32, QFont::Bold));
+    title->setStyleSheet("color: black; background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1, stop: 0 rgb(168, 220, 230), stop: 1 rgb(184, 231, 255)); border-radius: 20px; padding: 30px; margin: 20px;");
+
+    QLabel *subtitle = new QLabel("Choose Simulation Type");
+    subtitle->setAlignment(Qt::AlignCenter);
+    subtitle->setFont(QFont("Arial", 18));
+    subtitle->setStyleSheet("color: #6c757d; margin: 10px;");
+
+    QVBoxLayout *buttonLayout = new QVBoxLayout();
+    buttonLayout->setSpacing(25);
+    buttonLayout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+
+    QPushButton *btnSched = createMenuButton(
+        "Simulador de Algoritmos de Calendarización",
+        "#c4dafa",
+        "Simulate process scheduling algorithms like FIFO, SJF, Round Robin, and Priority"
+    );
+    QPushButton *btnSync = createMenuButton(
+        "Simulador de Mecanismos de Sincronización",
+        "#c4e5fb",
+        "Simulate synchronization mechanisms like Mutex Locks and Semaphores"
     );
 
-    ProcessSimulator simulator;
-    simulator.show();
+    buttonLayout->addWidget(btnSched);
+    buttonLayout->addWidget(btnSync);
+
+    layout->addWidget(title);
+    layout->addWidget(subtitle);
+    layout->addStretch(1);
+    layout->addLayout(buttonLayout);
+    layout->addStretch(2);
+
+    mainStack->addWidget(menu);
+    ProcessSimulator *schedSim = new ProcessSimulator(mainStack, menu, nullptr);
+    SynchronizationSimulatorWidget *syncSim = new SynchronizationSimulatorWidget;
+    mainStack->addWidget(schedSim);
+    mainStack->addWidget(syncSim);
+
+    QObject::connect(btnSched, &QPushButton::clicked, [mainStack, schedSim]() {
+        mainStack->setCurrentWidget(schedSim);
+    });
+    QObject::connect(btnSync, &QPushButton::clicked, [mainStack, syncSim]() {
+        mainStack->setCurrentWidget(syncSim);
+    });
+
+    menu->setFixedSize(1200, 600);
+    mainStack->setFixedSize(1400, 1000);
+    mainStack->show();
 
     return app.exec();
 }

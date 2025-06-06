@@ -14,6 +14,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/main.cpp" "CMakeFiles/ProcessSimulator.dir/main.cpp.o" "gcc" "CMakeFiles/ProcessSimulator.dir/main.cpp.o.d"
   "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/processsimulator.cpp" "CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o" "gcc" "CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o.d"
   "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.cpp" "CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o" "gcc" "CMakeFiles/ProcessSimulator.dir/scheduler.cpp.o.d"
+  "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizationsimulator.cpp" "CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.o" "gcc" "CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.o.d"
   "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.cpp" "CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o" "gcc" "CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o.d"
   )
 

@@ -391,4 +391,6 @@ CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o:
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextcursor.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextformat.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
- /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextoption.h
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextoption.h \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_synchronizationsimulator.cpp \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../synchronizationsimulator.h

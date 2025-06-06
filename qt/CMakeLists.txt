@@ -18,6 +18,7 @@ set(SOURCES
     scheduler.cpp
     processsimulator.cpp
     ganttchartwidget.cpp
+    synchronizationsimulator.cpp
 )
 
 # Header files
@@ -28,6 +29,7 @@ set(HEADERS
     synchronizer.h
     processsimulator.h
     ganttchartwidget.h
+    synchronizationsimulator.h
 )
 
 # Create executable
