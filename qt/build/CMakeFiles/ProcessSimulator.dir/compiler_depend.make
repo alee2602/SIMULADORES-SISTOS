@@ -446,7 +446,14 @@ CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o:
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
   /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextoption.h \
   ProcessSimulator_autogen/EWIEGA46WW/moc_synchronizationsimulator.cpp \
-  ../synchronizationsimulator.h
+  ../synchronizationsimulator.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QComboBox \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qcombobox.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTextEdit \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtextedit.h \
+  /usr/include/c++/11/set \
+  /usr/include/c++/11/bits/stl_set.h \
+  /usr/include/c++/11/bits/stl_multiset.h
 
 CMakeFiles/ProcessSimulator.dir/ganttchartwidget.cpp.o: ../ganttchartwidget.cpp \
   /usr/include/stdc-predef.h \
@@ -1673,7 +1680,18 @@ CMakeFiles/ProcessSimulator.dir/main.cpp.o: ../main.cpp \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHeaderView \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qheaderview.h \
   ../loader.h \
-  ../synchronizationsimulator.h
+  ../synchronizationsimulator.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QComboBox \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qcombobox.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTextEdit \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtextedit.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextoption.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextcursor.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextformat.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
+  /usr/include/c++/11/set \
+  /usr/include/c++/11/bits/stl_set.h \
+  /usr/include/c++/11/bits/stl_multiset.h
 
 CMakeFiles/ProcessSimulator.dir/processsimulator.cpp.o: ../processsimulator.cpp \
   /usr/include/stdc-predef.h \
@@ -2899,6 +2917,31 @@ CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.o: ../synchronizati
   ../synchronizationsimulator.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qwidget.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QComboBox \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qcombobox.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLabel \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlabel.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpicture.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qiodevice.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextdocument.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qurl.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QTimer \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qtimer.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qbasictimer.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTextEdit \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtextedit.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextoption.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextcursor.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextformat.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QPushButton \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qpushbutton.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractbutton.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QStackedWidget \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qstackedwidget.h \
+  /usr/include/c++/11/set \
+  /usr/include/c++/11/bits/stl_set.h \
+  /usr/include/c++/11/bits/stl_multiset.h \
   ../loader.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QVBoxLayout \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qboxlayout.h \
@@ -2906,15 +2949,12 @@ CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.o: ../synchronizati
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlayoutitem.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qboxlayout.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgridlayout.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QPushButton \
-  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qpushbutton.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractbutton.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHBoxLayout \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QFileDialog \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qfiledialog.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qdir.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qfile.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qfiledevice.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtCore/qiodevice.h \
   /usr/include/c++/11/filesystem \
   /usr/include/c++/11/bits/fs_fwd.h \
   /usr/include/c++/11/bits/fs_path.h \
@@ -2950,14 +2990,46 @@ CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.o: ../synchronizati
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qfileinfo.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qdatetime.h \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qcalendar.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtCore/qurl.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qdialog.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QMessageBox \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qmessagebox.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLabel \
-  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlabel.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpicture.h \
-  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextdocument.h
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGroupBox \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgroupbox.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QSplitter \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qsplitter.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/QFont \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qfont.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QAbstractItemView \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractitemview.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/QPainter \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainter.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/QResizeEvent \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qevent.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qcoreevent.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qpointer.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qeventpoint.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qvector2d.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qvectornd.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpointingdevice.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qinputdevice.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qscreen.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QList \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qlist.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qobject.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QRect \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qrect.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QSize \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qsize.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QSizeF \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/QTransform \
+  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtransform.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qnativeinterface.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QDebug \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/qdebug.h \
+  /usr/include/c++/11/climits
 
 CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: ../synchronizer.cpp \
   /usr/include/stdc-predef.h \
@@ -3368,6 +3440,26 @@ CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: ../synchronizer.cpp \
 
 ../synchronizer.cpp:
 
+/usr/include/x86_64-linux-gnu/qt6/QtCore/QSizeF:
+
+/usr/include/x86_64-linux-gnu/qt6/QtCore/QRect:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/qinputdevice.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/qpointingdevice.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/qvectornd.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/qvector2d.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/qevent.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/QResizeEvent:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qsplitter.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgroupbox.h:
+
 ../scheduler.cpp:
 
 /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlineedit.h:
@@ -3423,6 +3515,14 @@ CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: ../synchronizer.cpp \
 ../loader.cpp:
 
 /usr/include/x86_64-linux-gnu/qt6/QtGui/qpainter.h:
+
+/usr/include/c++/11/bits/stl_multiset.h:
+
+/usr/include/c++/11/bits/stl_set.h:
+
+/usr/include/c++/11/set:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QComboBox:
 
 ../synchronizationsimulator.h:
 
@@ -3504,9 +3604,13 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 
 ../utils.h:
 
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qcombobox.h:
+
 /usr/include/x86_64-linux-gnu/qt6/QtGui/QColor:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qbasictimer.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGroupBox:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qtimer.h:
 
@@ -3519,6 +3623,8 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 /usr/include/x86_64-linux-gnu/qt6/QtGui/qfontinfo.h:
 
 /usr/include/x86_64-linux-gnu/qt6/QtGui/qfontmetrics.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QAbstractItemView:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qshareddata.h:
 
@@ -3563,6 +3669,10 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 /usr/include/x86_64-linux-gnu/qt6/QtGui/qpalette.h:
 
 /usr/include/c++/11/ctime:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/QTransform:
+
+/usr/include/x86_64-linux-gnu/qt6/QtCore/QObject:
 
 /usr/include/c++/11/ratio:
 
@@ -3636,6 +3746,8 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 
 /usr/include/c++/11/bits/basic_string.tcc:
 
+/usr/include/x86_64-linux-gnu/qt6/QtCore/qpointer.h:
+
 /usr/include/x86_64-linux-gnu/qt6/QtGui/qtransform.h:
 
 /usr/include/c++/11/bits/charconv.h:
@@ -3643,6 +3755,8 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 /usr/include/x86_64-linux-gnu/bits/types/error_t.h:
 
 /usr/include/asm-generic/errno-base.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/qeventpoint.h:
 
 /usr/include/x86_64-linux-gnu/asm/errno.h:
 
@@ -3685,6 +3799,8 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 /usr/include/c++/11/bits/ostream_insert.h:
 
 /usr/include/c++/11/bits/char_traits.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtCore/QList:
 
 /usr/include/c++/11/exception:
 
@@ -3772,6 +3888,8 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/locale_t.h:
 
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QSplitter:
+
 /usr/include/c++/11/bits/locale_facets.tcc:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
@@ -3789,6 +3907,8 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 ../ganttchartwidget.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtGui/qscreen.h:
 
 /usr/include/c++/11/bits/ostream.tcc:
 
@@ -3925,6 +4045,8 @@ ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp:
 /usr/include/c++/11/bits/functexcept.h:
 
 /usr/include/c++/11/streambuf:
+
+/usr/include/c++/11/climits:
 
 /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QApplication:
 

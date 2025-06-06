@@ -393,4 +393,10 @@ CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o:
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextoption.h \
  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_synchronizationsimulator.cpp \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../synchronizationsimulator.h
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../synchronizationsimulator.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QComboBox \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qcombobox.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTextEdit \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtextedit.h \
+ /usr/include/c++/11/set /usr/include/c++/11/bits/stl_set.h \
+ /usr/include/c++/11/bits/stl_multiset.h

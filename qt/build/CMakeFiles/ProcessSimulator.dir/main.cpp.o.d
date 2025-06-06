@@ -392,4 +392,14 @@ CMakeFiles/ProcessSimulator.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHeaderView \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qheaderview.h \
  /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/loader.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/synchronizationsimulator.h
+ /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/synchronizationsimulator.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QComboBox \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qcombobox.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTextEdit \
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtextedit.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextoption.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextcursor.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextformat.h \
+ /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h /usr/include/c++/11/set \
+ /usr/include/c++/11/bits/stl_set.h \
+ /usr/include/c++/11/bits/stl_multiset.h

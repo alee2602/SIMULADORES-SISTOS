@@ -171,24 +171,23 @@ std::vector<SyncEvent> SynchronizationSimulator::simulateSynchronization(
     return events;
 }
 
-std::vector<ProcessSyncState> SynchronizationSimulator::getProcessStates(
+std::vector<SyncProcessState> SynchronizationSimulator::getProcessStates(
     const std::vector<Process>& processes,
     const std::vector<SyncEvent>& events,
     int maxCycles) {
     
-    std::vector<ProcessSyncState> states;
-    std::map<QString, ProcessSyncState> current_states;
+    std::vector<SyncProcessState> states;
+    std::map<QString, SyncProcessState> current_states;
     
     // Initialize states
     for (const auto& process : processes) {
-        current_states[process.pid] = ProcessSyncState(process.pid, process.color);
+        current_states[process.pid] = SyncProcessState(process.pid, process.color);
     }
     
     // Process events to determine states at each cycle
     for (int cycle = 0; cycle <= maxCycles; cycle++) {
-        // Reset all to idle
         for (auto& [pid, state] : current_states) {
-            state.current_state = ProcessState::IDLE;
+            state.current_state = ProcessState::WAITING;
             state.waiting_for_resource = "";
         }
         

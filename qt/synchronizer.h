@@ -10,8 +10,7 @@
 
 enum class ProcessState {
     ACCESSED,
-    WAITING,
-    IDLE
+    WAITING
 };
 
 struct SyncEvent {
@@ -30,7 +29,8 @@ struct SyncEvent {
         : pid(p), resource(r), action_type(at), cycle(c), state(s), color(col) {}
 };
 
-struct ProcessSyncState {
+// CAMBIO: ProcessSyncState -> SyncProcessState
+struct SyncProcessState {
     QString pid;
     ProcessState current_state;
     QString waiting_for_resource;
@@ -38,12 +38,12 @@ struct ProcessSyncState {
     QColor color;
 
     // Constructor predeterminado
-    ProcessSyncState() 
-        : pid(""), current_state(ProcessState::IDLE), waiting_for_resource(""), cycles_waiting(0), color(Qt::white) {}
+    SyncProcessState() 
+        : pid(""), current_state(ProcessState::WAITING), waiting_for_resource(""), cycles_waiting(0), color(Qt::white) {}
 
     // Constructor con parámetros
-    ProcessSyncState(QString p, QColor c) 
-        : pid(p), current_state(ProcessState::IDLE), waiting_for_resource(""), cycles_waiting(0), color(c) {}
+    SyncProcessState(QString p, QColor c) 
+        : pid(p), current_state(ProcessState::WAITING), waiting_for_resource(""), cycles_waiting(0), color(c) {}
 };
 
 class SynchronizationMechanism {
@@ -92,7 +92,8 @@ public:
         SynchronizationMechanism* mechanism
     );
     
-    static std::vector<ProcessSyncState> getProcessStates(
+    // CAMBIO: ProcessSyncState -> SyncProcessState
+    static std::vector<SyncProcessState> getProcessStates(
         const std::vector<Process>& processes,
         const std::vector<SyncEvent>& events,
         int maxCycles
