@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt
+# Install script for directory: /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -49,7 +49,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ProcessSimulator"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/bin/ProcessSimulator")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/bin/ProcessSimulator")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ProcessSimulator" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/ProcessSimulator")
     if(CMAKE_INSTALL_DO_STRIP)
@@ -60,10 +60,10 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/data" TYPE FILE FILES
-    "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/data/actions.txt"
-    "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/data/processes.txt"
-    "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/data/processes_5.txt"
-    "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/data/resources.txt"
+    "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/data/actions.txt"
+    "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/data/processes.txt"
+    "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/data/processes_5.txt"
+    "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/data/resources.txt"
     )
 endif()
 
@@ -75,5 +75,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

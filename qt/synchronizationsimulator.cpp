@@ -87,8 +87,8 @@ void SynchronizationSimulatorWidget::setupUI()
     syncTypeCombo->setStyleSheet("QComboBox { padding: 4px; font-size: 10px; border-radius: 4px; }");
     syncTypeCombo->setMaximumHeight(30);
 
-    QPushButton *loadResBtn = createButton("Cargar Recursos", "#70a1a8");
-    QPushButton *loadActBtn = createButton("Cargar Acciones", "#28a745");
+    loadResBtn = createButton("Cargar Recursos", "#70a1a8");
+    loadActBtn = createButton("Cargar Acciones", "#28a745");
     QPushButton *runMutexBtn = createButton("Simular Mutex", "#dc3545");
     QPushButton *runSemBtn = createButton("Simular Semáforo", "#ffc107");
     QPushButton *clearBtn = createButton("Limpiar", "#6c757d");
@@ -242,7 +242,13 @@ void SynchronizationSimulatorWidget::setupUI()
         emit backToMenuRequested();
     });
     connect(syncTypeCombo, &QComboBox::currentTextChanged, this, &SynchronizationSimulatorWidget::onSyncTypeChanged);
-    connect(loadResBtn, &QPushButton::clicked, this, &SynchronizationSimulatorWidget::loadResourcesFromDialog);
+    connect(loadResBtn, &QPushButton::clicked, [this]() {
+        if (currentSyncType == "Mutex") {
+            QMessageBox::warning(this, "No requerido", "No necesitas cargar recursos para Mutex.");
+        } else {
+            loadResourcesFromDialog();
+        }
+    });
     connect(loadActBtn, &QPushButton::clicked, this, &SynchronizationSimulatorWidget::loadActionsFromDialog);
     connect(runMutexBtn, &QPushButton::clicked, [this]() { runSynchronization("Mutex Lock"); });
     connect(runSemBtn, &QPushButton::clicked, [this]() { runSynchronization("Semaphore"); });
@@ -256,13 +262,16 @@ void SynchronizationSimulatorWidget::setupUI()
 void SynchronizationSimulatorWidget::onSyncTypeChanged()
 {
     currentSyncType = syncTypeCombo->currentText();
-    
+
+    // Mostrar/ocultar el botón de recursos según el tipo
     if (currentSyncType == "Mutex") {
+        loadResBtn->setVisible(false);
         statusLabel->setText("Mutex seleccionado - Solo necesitas cargar acciones para iniciar la simulación.");
     } else {
+        loadResBtn->setVisible(true);
         statusLabel->setText("Semáforo seleccionado - Necesitas cargar recursos y acciones para iniciar la simulación.");
     }
-    
+
     updateInfoDisplay();
 }
 

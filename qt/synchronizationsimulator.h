@@ -1,4 +1,3 @@
-
 #pragma once
 #include <QWidget>
 #include <QTableWidget>
@@ -72,4 +71,8 @@ private:
     // Colors
     std::map<QString, QColor> processColors;
     QStringList colorPalette = {"#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7", "#DDA0DD", "#98D8C8", "#F7DC6F"};
+
+    // Buttons
+    QPushButton *loadResBtn;
+    QPushButton *loadActBtn;
 };
