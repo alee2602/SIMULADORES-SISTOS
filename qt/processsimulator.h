@@ -133,6 +133,9 @@ private slots:
     void displayComparisonTableOnly(const QStringList& algorithms, 
                                 const std::vector<double>& waitingTimes,
                                 const std::vector<double>& turnaroundTimes);
+                                
+signals:
+    void returnToMenuRequested();
 
 private:
     QStringList selectedAlgorithmsForSequential;

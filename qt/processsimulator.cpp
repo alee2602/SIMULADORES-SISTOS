@@ -578,12 +578,10 @@ void ProcessSimulator::setupSchedulingWidget(QWidget* menuWidget_)
     layout->addWidget(metricsLabelBelowGantt);
 
 
-    connect(backBtn, &QPushButton::clicked, [this, menuWidget_]() {
-        mainStack->setCurrentWidget(menuWidget_);
-    });
+    connect(backBtn, &QPushButton::clicked, this, &ProcessSimulator::returnToMenuRequested);
     connect(loadBtn, &QPushButton::clicked, this, &ProcessSimulator::loadProcessesFromDialog);
     connect(generateBtn, &QPushButton::clicked, this, &ProcessSimulator::generateSampleProcesses);
-    connect(cleanBtn, &QPushButton::clicked, this, &ProcessSimulator::cleanProcesses); // Conectar el botón Clean
+    connect(cleanBtn, &QPushButton::clicked, this, &ProcessSimulator::cleanProcesses); 
     //connect(startBtn, &QPushButton::clicked, mainGanttChart, &GanttChartWidget::startAnimation);
     //connect(stopBtn, &QPushButton::clicked, mainGanttChart, &GanttChartWidget::stopAnimation);
     //connect(speedSpinBox, QOverload<int>::of(&QSpinBox::valueChanged), mainGanttChart, &GanttChartWidget::setAnimationSpeed);
@@ -1006,7 +1004,6 @@ void ProcessSimulator::runSelectedAlgorithmsComparison() {
         turnaroundTimes.push_back(totalTurnaround / processes.size());
     }
     
-    // MODIFICACIÓN: Solo mostrar tabla de comparación, NO el diagrama de Gantt
     if (!selectedAlgs.isEmpty()) {
         displayComparisonTableOnly(selectedAlgs, waitingTimes, turnaroundTimes);
     } else {

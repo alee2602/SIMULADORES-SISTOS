@@ -67,6 +67,11 @@ int main(int argc, char *argv[]) {
 
     mainStack->addWidget(menu);
     ProcessSimulator *schedSim = new ProcessSimulator(mainStack, menu, nullptr);
+
+    QObject::connect(schedSim, &ProcessSimulator::returnToMenuRequested, [mainStack, menu]() {
+        mainStack->setCurrentWidget(menu);
+    });
+
     SynchronizationSimulatorWidget *syncSim = new SynchronizationSimulatorWidget;
     mainStack->addWidget(schedSim);
     mainStack->addWidget(syncSim);
