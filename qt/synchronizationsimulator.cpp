@@ -444,7 +444,13 @@ void SynchronizationSimulatorWidget::loadResourcesFromDialog()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Cargar Recursos", "", "Text Files (*.txt)");
     if (fileName.isEmpty()) return;
-    
+
+    QFileInfo fi(fileName);
+    if (fi.fileName() != "resources.txt") {
+        QMessageBox::warning(this, "Archivo incorrecto", "Por favor selecciona un archivo llamado 'resources.txt'.");
+        return;
+    }
+
     resources = loadResources(fileName);
     updateInfoDisplay();
     statusLabel->setText(QString("Cargados %1 recursos desde archivo.").arg(resources.size()));
@@ -455,7 +461,13 @@ void SynchronizationSimulatorWidget::loadActionsFromDialog()
 {
     QString fileName = QFileDialog::getOpenFileName(this, "Cargar Acciones", "", "Text Files (*.txt)");
     if (fileName.isEmpty()) return;
-    
+
+    QFileInfo fi(fileName);
+    if (fi.fileName() != "actions.txt") {
+        QMessageBox::warning(this, "Archivo incorrecto", "Por favor selecciona un archivo llamado 'actions.txt'.");
+        return;
+    }
+
     actions = loadActions(fileName);
     updateInfoDisplay();
     statusLabel->setText(QString("Cargadas %1 acciones desde archivo.").arg(actions.size()));
