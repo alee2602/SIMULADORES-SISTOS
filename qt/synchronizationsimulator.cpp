@@ -653,23 +653,24 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
 
     // NUEVO: Apilar bloques verticalmente ignorando proceso
     int blockIndex = 0;
-    int blockSpacing = 18; // Más espacio entre bloques
-    int blockHeight = processHeight + 10; // Más alto para mejor lectura
-    int blockWidth = cycleWidth - 10;    // Bloques más anchos
+    int blockSpacing = 18; // Más espacio entre bloques (antes 10)
+    int blockWidth = 100;  // Un poco más ancho (antes 80)
+    int blockHeight = 60;  // Mantén la altura baja
 
     for (const auto& event : currentEvents) {
         if (event.cycle == currentAnimationCycle) {
-            int xPos = leftMargin + currentAnimationCycle * cycleWidth;
+            // Ancho fijo para todos los bloques, centrados en la columna del ciclo
+            int xPos = leftMargin + currentAnimationCycle * cycleWidth + (cycleWidth - blockWidth) / 2;
             int yPos = topMargin + blockIndex * (blockHeight + blockSpacing);
 
             QLabel* eventBlock = new QLabel(simulationArea);
             eventBlock->setObjectName(QString("eventBlock_c%1_idx%2").arg(currentAnimationCycle).arg(blockIndex));
-            // Usa HTML simple, fuente grande y alto fijo
+            // Texto compacto y centrado
             QString eventText = QString(
                 "<div style='text-align:center;'>"
-                "<span style='font-size:20px;font-weight:bold;'>%1</span><br>"
-                "<span style='font-size:16px;'>%2</span><br>"
-                "<span style='font-size:15px;'>%3</span>"
+                "<span style='font-size:18px;font-weight:bold;'>%1</span><br>"
+                "<span style='font-size:12px;'>%2</span><br>"
+                "<span style='font-size:11px;'>%3</span>"
                 "</div>"
             ).arg(event.pid).arg(event.action_type).arg(event.resource);
             eventBlock->setText(eventText);
@@ -678,15 +679,15 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
 
             QString bgColor, borderColor, textColor;
             if (event.state == ProcessState::ACCESSED) {
-                bgColor = "#43e97b";
-                borderColor = "#1e8449";
-                textColor = "#1b2e1b";
+                bgColor = "#6ee7b7";
+                borderColor = "#10b981";
+                textColor = "#134e4a";
                 accessedCount++;
                 currentCycleInfo.append(QString("%1:✓%2(%3)").arg(event.pid, event.resource, event.action_type));
             } else {
-                bgColor = "#f7971e";
-                borderColor = "#d35400";
-                textColor = "#4d2e00";
+                bgColor = "#fdba74";
+                borderColor = "#ea580c";
+                textColor = "#7c2d12";
                 waitingCount++;
                 currentCycleInfo.append(QString("%1:⏳%2(%3)").arg(event.pid, event.resource, event.action_type));
             }
@@ -694,22 +695,22 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
             eventBlock->setStyleSheet(QString(
                 "background: %1;"
                 "border: 2px solid %2;"
-                "border-radius: 18px;"
-                "font-size: 15px;"
+                "border-radius: 12px;"
+                "font-size: 13px;"
                 "color: %3;"
-                "padding: 18px 12px 18px 12px;"
-                "min-height: %4px;"
-                "max-width: %5px;"
-            ).arg(bgColor, borderColor, textColor).arg(blockHeight).arg(blockWidth));
+                "padding: 4px 2px 4px 2px;"
+                "min-width: %4px; min-height: %5px;"
+                "max-width: %4px; max-height: %5px;"
+            ).arg(bgColor, borderColor, textColor).arg(blockWidth).arg(blockHeight));
 
-            // Sombra real solo si quieres (opcional)
+            // Sombra sutil
             QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect(eventBlock);
-            shadow->setBlurRadius(16);
-            shadow->setColor(QColor(0,0,0,60));
-            shadow->setOffset(0, 6);
+            shadow->setBlurRadius(8);
+            shadow->setColor(QColor(0,0,0,35));
+            shadow->setOffset(0, 3);
             eventBlock->setGraphicsEffect(shadow);
 
-            eventBlock->setGeometry(xPos + 5, yPos + 5, blockWidth, blockHeight);
+            eventBlock->setGeometry(xPos, yPos, blockWidth, blockHeight);
             eventBlock->show();
 
             blockIndex++;
