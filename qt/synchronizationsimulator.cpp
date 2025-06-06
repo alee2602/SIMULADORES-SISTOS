@@ -282,9 +282,59 @@ void SynchronizationSimulatorWidget::setupUI()
     timelineScroll->setWidgetResizable(false);
     timelineScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     timelineScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    timelineScroll->setMinimumHeight(720);
+    timelineScroll->setMinimumHeight(400);
     timelineScroll->setMaximumHeight(720);
 
+    timelineScroll->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    simulationArea->setMinimumWidth(2000);
+
+    timelineScroll->setStyleSheet(
+        "QScrollArea {"
+        "    background: transparent;"
+        "    border: none;"
+        "}"
+        "QScrollBar:horizontal {"
+        "    background: #e3f0fc;"
+        "    height: 18px;"
+        "    margin: 0;"
+        "    border-radius: 8px;"
+        "}"
+        "QScrollBar::handle:horizontal {"
+        "    background: #3498db;"
+        "    min-width: 40px;"
+        "    border-radius: 8px;"
+        "}"
+        "QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {"
+        "    background: none;"
+        "    border: none;"
+        "    width: 0px;"
+        "}"
+        "QScrollBar:vertical {"
+        "    background: #e3f0fc;"
+        "    width: 18px;"
+        "    margin: 0;"
+        "    border-radius: 8px;"
+        "}"
+        "QScrollBar::handle:vertical {"
+        "    background: #3498db;"
+        "    min-height: 40px;"
+        "    border-radius: 8px;"
+        "}"
+        "QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {"
+        "    background: none;"
+        "    border: none;"
+        "    height: 0px;"
+        "}"
+        "QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal,"
+        "QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {"
+        "    background: none;"
+        "}"
+    );
+
+    timelineScroll->horizontalScrollBar()->setVisible(true);
+    timelineScroll->horizontalScrollBar()->setMinimumHeight(18);
+    timelineScroll->horizontalScrollBar()->setMaximumHeight(18);
+    
     timelineGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
     timelineLayout->addWidget(timelineScroll);
@@ -488,23 +538,23 @@ void SynchronizationSimulatorWidget::runSynchronization(const QString &mechanism
 void SynchronizationSimulatorWidget::setupEmptyTimeline()
 {
     if (currentEvents.empty()) return;
-    
+
     auto children = simulationArea->findChildren<QWidget*>();
     for (auto child : children) {
         child->deleteLater();
     }
-    
+
     int minCycle = 0;
     int maxCycle = 0;
     for (const auto& event : currentEvents) {
         maxCycle = std::max(maxCycle, event.cycle);
     }
-    
+
     std::set<QString> uniqueProcesses;
     for (const auto& event : currentEvents) {
         uniqueProcesses.insert(event.pid);
     }
-    
+
     int leftMargin = 80;
     int rightMargin = 50;
     int bottomMargin = 80;
@@ -514,22 +564,6 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     int axisHeight = 50;
 
     int numProcesses = uniqueProcesses.size();
-    
-    int totalWidth = leftMargin + (maxCycle + 2) * cycleWidth + rightMargin;
-    int totalHeight = topMargin + numProcesses * processHeight + axisHeight + bottomMargin + 40;
-
-    simulationArea->setFixedSize(totalWidth, totalHeight);
-    QLabel* titleLabel = new QLabel("Timeline de Sincronización", simulationArea);
-    titleLabel->setStyleSheet(
-        "font-size: 20px; "
-        "font-weight: bold; "
-        "color: #2c3e50; "
-        "background: transparent;"
-        "border: none;" 
-    );
-    titleLabel->setAlignment(Qt::AlignCenter);
-    titleLabel->setGeometry(0, 10, totalWidth, 30);
-    titleLabel->show();
 
     int numBlocksMax = 0;
     for (int cycle = 0; cycle <= maxCycle; ++cycle) {
@@ -542,6 +576,25 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     int blockHeight = 60;
     int blockSpacing = 18;
     int axisY = topMargin + numBlocksMax * (blockHeight + blockSpacing) + 20;
+
+    int infoBlockHeight = 40;
+    int infoBlockSpacing = 20;
+
+    int totalWidth = leftMargin + (maxCycle + 2) * cycleWidth + rightMargin;
+    int totalHeight = axisY + 15 + infoBlockHeight + infoBlockSpacing;
+
+    simulationArea->setFixedSize(totalWidth, totalHeight);
+    QLabel* titleLabel = new QLabel("Timeline de Sincronización", simulationArea);
+    titleLabel->setStyleSheet(
+        "font-size: 20px; "
+        "font-weight: bold; "
+        "color: #2c3e50; "
+        "background: transparent;"
+        "border: none;"
+    );
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setGeometry(0, 10, totalWidth, 30);
+    titleLabel->show();
 
     QLabel* axisLine = new QLabel(simulationArea);
     axisLine->setStyleSheet("background: #2c3e50;");
@@ -572,19 +625,19 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
         numberLabel->setGeometry(xPos - 20, axisY + 15, 40, 20);
         numberLabel->show();
     }
-    
+
     std::vector<QString> processList(uniqueProcesses.begin(), uniqueProcesses.end());
     std::sort(processList.begin(), processList.end());
-        
+
     QLabel* waitingInfo = new QLabel(simulationArea);
     waitingInfo->setObjectName("waitingInfo");
     waitingInfo->setText("<b>Estado:</b> Preparando animación...");
     waitingInfo->setStyleSheet("background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:5px;font-size:11px;");
     waitingInfo->setWordWrap(true);
     int infoWidth = std::min(800, totalWidth - 40);
-    waitingInfo->setGeometry(80, axisY + 40, totalWidth - 160, 40);
+    waitingInfo->setGeometry(80, axisY + 40, totalWidth - 160, infoBlockHeight);
     waitingInfo->show();
-    
+
     simulationArea->setProperty("minCycle", minCycle);
     simulationArea->setProperty("maxCycle", maxCycle);
     simulationArea->setProperty("cycleWidth", cycleWidth);
@@ -592,7 +645,7 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     simulationArea->setProperty("topMargin", topMargin);
     simulationArea->setProperty("processHeight", processHeight);
     simulationArea->setProperty("processList", QStringList(processList.begin(), processList.end()));
-    
+
     simulationArea->update();
 }
 
