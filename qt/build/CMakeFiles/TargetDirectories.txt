@@ -1,8 +1,8 @@
-/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator.dir
-/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/edit_cache.dir
-/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/list_install_components.dir
-/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/install.dir
-/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/install/local.dir
-/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/install/strip.dir
-/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator_autogen.dir
+/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator.dir
+/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/list_install_components.dir
+/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/install.dir
+/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/install/local.dir
+/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/install/strip.dir
+/mnt/c/Users/Ale/OneDrive - UVG/Escritorio/Cuarto Año/Semestre 1/Sistos/SIMULADORES-SISTOS/qt/build/CMakeFiles/ProcessSimulator_autogen.dir

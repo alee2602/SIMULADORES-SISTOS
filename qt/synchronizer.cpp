@@ -2,20 +2,25 @@
 #include <algorithm>
 #include <map>
 #include <set>
+#include <queue>
 
 MutexLock::MutexLock(const std::vector<Resource>& res) : resources(res) {
     resetResources();
 }
 
 bool MutexLock::tryAcquire(const QString& resource, const QString& pid, const QString& action_type) {
-    if (isAvailable(resource)) {
+    // Solo un proceso por recurso, sin importar READ/WRITE
+    if (resource_owners.find(resource) == resource_owners.end()) {
+        // Recurso libre, se asigna
         resource_owners[resource] = pid;
         return true;
     }
+    // Recurso ocupado, debe esperar
     return false;
 }
 
 void MutexLock::release(const QString& resource, const QString& pid) {
+    // Liberar si es el dueño actual
     if (resource_owners.find(resource) != resource_owners.end() && 
         resource_owners[resource] == pid) {
         resource_owners.erase(resource);
@@ -24,6 +29,14 @@ void MutexLock::release(const QString& resource, const QString& pid) {
 
 bool MutexLock::isAvailable(const QString& resource) const {
     return resource_owners.find(resource) == resource_owners.end();
+}
+
+bool MutexLock::hasWriter(const QString& resource) const {
+    return resource_owners.find(resource) != resource_owners.end();
+}
+
+bool MutexLock::hasReaders(const QString& resource) const {
+    return false; 
 }
 
 void MutexLock::resetResources() {
@@ -93,7 +106,7 @@ std::vector<SyncEvent> SynchronizationSimulator::simulateSynchronization(
     
     mechanism->resetResources();
     
-    std::map<QString, std::vector<Action>> waiting_processes;
+    std::queue<Action> waiting_queue;
     std::map<QString, Action> active_processes; 
     
     int max_cycle = 0;
@@ -101,84 +114,59 @@ std::vector<SyncEvent> SynchronizationSimulator::simulateSynchronization(
         max_cycle = sorted_actions.back().cycle;
     }
     
-    for (int current_cycle = 0; current_cycle <= max_cycle + 10; current_cycle++) {
+    for (int current_cycle = 0; current_cycle <= max_cycle + 5; current_cycle++) {
+        
+        // Liberar procesos que terminaron su ejecución
         std::vector<QString> to_remove;
         for (auto& [pid, action] : active_processes) {
             mechanism->release(action.resource, pid);
-            events.push_back(SyncEvent(pid, action.resource, action.type, 
-                                     current_cycle, ProcessState::ACCESSED, 
-                                     process_colors[pid]));
             to_remove.push_back(pid);
         }
         for (const auto& pid : to_remove) {
             active_processes.erase(pid);
         }
 
-        std::vector<std::pair<QString, Action>> actions_this_cycle;
-
+        // Agregar nuevas acciones de este ciclo a la cola FIFO
         for (const auto& action : sorted_actions) {
             if (action.cycle == current_cycle) {
-                actions_this_cycle.emplace_back(action.pid, action);
+                waiting_queue.push(action);
             }
         }
-        for (auto& [pid, waiting_actions] : waiting_processes) {
-            for (const auto& action : waiting_actions) {
-                actions_this_cycle.emplace_back(pid, action);
+
+        // Procesar cola FIFO
+        std::queue<Action> still_waiting;
+        
+        while (!waiting_queue.empty()) {
+            Action current_action = waiting_queue.front();
+            waiting_queue.pop();
+            
+            // Solo intentar si el proceso no está ya activo
+            if (active_processes.count(current_action.pid) == 0) {
+                
+                if (mechanism->tryAcquire(current_action.resource, current_action.pid, current_action.type)) {
+                    // Proceso obtiene recurso
+                    active_processes[current_action.pid] = current_action;
+                    events.push_back(SyncEvent(current_action.pid, current_action.resource, 
+                                            current_action.type, current_cycle, 
+                                            ProcessState::ACCESSED, 
+                                            process_colors[current_action.pid]));
+                } else {
+                    // Recurso ocupado, va a seguir esperando
+                    events.push_back(SyncEvent(current_action.pid, current_action.resource, 
+                                            current_action.type, current_cycle, 
+                                            ProcessState::WAITING, 
+                                            process_colors[current_action.pid]));
+                    still_waiting.push(current_action);
+                }
             }
         }
-        waiting_processes.clear();
-
-        if (dynamic_cast<MutexLock*>(mechanism)) {
-            std::set<QString> recursos_ocupados;
-            for (const auto& [pid, action] : actions_this_cycle) {
-                if (active_processes.count(pid)) continue;
-                if (recursos_ocupados.count(action.resource)) {
-                    events.push_back(SyncEvent(pid, action.resource, action.type,
-                                         current_cycle, ProcessState::WAITING,
-                                         process_colors[pid]));
-                    waiting_processes[pid].push_back(action);
-                    continue;
-                }
-                if (mechanism->tryAcquire(action.resource, pid, action.type)) {
-                    active_processes[pid] = action;
-                    recursos_ocupados.insert(action.resource);
-                } else {
-                    events.push_back(SyncEvent(pid, action.resource, action.type,
-                                         current_cycle, ProcessState::WAITING,
-                                         process_colors[pid]));
-                    waiting_processes[pid].push_back(action);
-                }
-            }
-        } else if (auto sem = dynamic_cast<Semaphore*>(mechanism)) {
-            std::map<QString, int> cupos_restantes;
-            for (const auto& resource : resources) {
-                cupos_restantes[resource.name] = sem->getAvailableCount(resource.name);
-            }
-
-            std::vector<std::pair<QString, Action>> waiting_fifo;
-            for (auto& [pid, waiting_actions] : waiting_processes) {
-                for (const auto& action : waiting_actions) {
-                    waiting_fifo.emplace_back(pid, action);
-                }
-            }
-            for (const auto& [pid, action] : actions_this_cycle) {
-                if (waiting_processes.find(pid) == waiting_processes.end())
-                    waiting_fifo.emplace_back(pid, action);
-            }
-            waiting_processes.clear();
-
-            for (const auto& [pid, action] : waiting_fifo) {
-                if (active_processes.count(pid)) continue;
-                if (cupos_restantes[action.resource] > 0 && sem->tryAcquire(action.resource, pid, action.type)) {
-                    active_processes[pid] = action;
-                    cupos_restantes[action.resource]--;
-                } else {
-                    events.push_back(SyncEvent(pid, action.resource, action.type,
-                                         current_cycle, ProcessState::WAITING,
-                                         process_colors[pid]));
-                    waiting_processes[pid].push_back(action);
-                }
-            }
+        
+        // Mantener orden FIFO
+        waiting_queue = still_waiting;
+        
+        // Terminar si no hay más procesos activos ni esperando
+        if (active_processes.empty() && waiting_queue.empty() && current_cycle > max_cycle) {
+            break;
         }
     }
     

@@ -7,6 +7,7 @@
 #include <queue>
 #include <QTableWidget>
 #include <QHeaderView>
+#include <algorithm>
 
 enum class ProcessState {
     ACCESSED,
@@ -52,7 +53,7 @@ public:
 
 class MutexLock : public SynchronizationMechanism {
 private:
-    std::map<QString, QString> resource_owners;
+    std::map<QString, QString> resource_owners;  // recurso -> PID (quien lo tiene)
     std::vector<Resource> resources;
 
 public:
@@ -61,6 +62,10 @@ public:
     void release(const QString& resource, const QString& pid) override;
     bool isAvailable(const QString& resource) const override;
     void resetResources() override;
+    
+    // Métodos auxiliares (mantengo para compatibilidad, pero simplificados)
+    bool hasWriter(const QString& resource) const;
+    bool hasReaders(const QString& resource) const;
 };
 
 class Semaphore : public SynchronizationMechanism {
