@@ -40,49 +40,47 @@ SynchronizationSimulatorWidget::~SynchronizationSimulatorWidget()
 void SynchronizationSimulatorWidget::setupUI()
 {
     setWindowTitle("Synchronization Simulator");
-    setFixedSize(1400, 900); // REDUCIDO de 1600x1000 a 1400x900
+    setFixedSize(1400, 900);
     setStyleSheet("background-color: #f8f9fa;");
 
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
-    mainLayout->setSpacing(6); // Reducido de 8 a 6
+    mainLayout->setSpacing(6);
 
-    // Header - MÁS COMPACTO
     QHBoxLayout *headerLayout = new QHBoxLayout();
     QPushButton *backBtn = createButton("← Back to Menu", "#6c757d");
     QLabel *title = new QLabel("SIMULADOR DE MECANISMOS DE SINCRONIZACIÓN");
-    title->setFont(QFont("Arial", 16, QFont::Bold)); // Reducido de 18 a 16
+    title->setFont(QFont("Arial", 16, QFont::Bold));
     title->setStyleSheet(
         "color: #2c3e50;"
         "background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #c4e5fb, stop:1 #e3f0fc);"
-        "border-radius: 8px;" // Reducido de 10 a 8
-        "padding: 8px;" // Reducido de 12 a 8
-        "margin: 2px;" // Reducido de 4 a 2
+        "border-radius: 8px;"
+        "padding: 8px;"
+        "margin: 2px;"
     );
     title->setAlignment(Qt::AlignCenter);
-    title->setMaximumHeight(40); // Reducido de 50 a 40
+    title->setMaximumHeight(40);
     
     headerLayout->addWidget(backBtn);
     headerLayout->addWidget(title, 1);
     headerLayout->addStretch();
 
-    // Control Panel - MÁS COMPACTO
     QHBoxLayout *controlLayout = new QHBoxLayout();
     
     QLabel *typeLabel = new QLabel("Tipo:");
-    typeLabel->setFont(QFont("Arial", 10, QFont::Bold)); // Reducido de 11 a 10
+    typeLabel->setFont(QFont("Arial", 10, QFont::Bold));
     
     syncTypeCombo = new QComboBox();
     syncTypeCombo->addItems({"Mutex", "Semaphore"});
     syncTypeCombo->setStyleSheet(
         "QComboBox { "
-        "  padding: 4px; " // Reducido de 6 a 4
-        "  font-size: 10px; " // Reducido de 11 a 10
-        "  border-radius: 4px; " // Reducido de 5 a 4
+        "  padding: 4px; "
+        "  font-size: 10px; "
+        "  border-radius: 4px; "
         "  border: 1px solid #ced4da; "
         "  background: white; "
         "}"
     );
-    syncTypeCombo->setMaximumHeight(30); // Reducido de 35 a 30
+    syncTypeCombo->setMaximumHeight(30);
 
     loadResBtn = createButton("Cargar Recursos", "#70a1a8");
     loadActBtn = createButton("Cargar Acciones", "#28a745");
@@ -101,133 +99,127 @@ void SynchronizationSimulatorWidget::setupUI()
     controlLayout->addWidget(infoBtn);
     controlLayout->addStretch();
 
-    // Status and Cycle Counter - MÁS COMPACTO
     QHBoxLayout *statusLayout = new QHBoxLayout();
     
     statusLabel = new QLabel("Mutex seleccionado - Solo necesitas cargar acciones para iniciar la simulación.");
     statusLabel->setStyleSheet(
         "color: #495057; "
         "background: #e9ecef; "
-        "border: 1px solid #ced4da; " // Reducido de 2 a 1
-        "border-radius: 4px; " // Reducido de 6 a 4
-        "padding: 6px; " // Reducido de 10 a 6
-        "font-size: 10px;" // Reducido de 12 a 10
+        "border: 1px solid #ced4da; "
+        "border-radius: 4px; "
+        "padding: 6px; "
+        "font-size: 10px;"
     );
-    statusLabel->setMaximumHeight(25); // Reducido de 35 a 25
+    statusLabel->setMaximumHeight(25);
     statusLabel->setWordWrap(true);
     
     cycleLabel = new QLabel("Ciclo Actual: 0");
-    cycleLabel->setFont(QFont("Arial", 12, QFont::Bold)); // Reducido de 14 a 12
+    cycleLabel->setFont(QFont("Arial", 12, QFont::Bold));
     cycleLabel->setStyleSheet(
         "color: #2c3e50; "
         "background: white; "
-        "border: 2px solid #3498db; " // Reducido de 3 a 2
-        "border-radius: 6px; " // Reducido de 8 a 6
-        "padding: 6px; " // Reducido de 10 a 6
+        "border: 2px solid #3498db; "
+        "border-radius: 6px; "
+        "padding: 6px; "
     );
     cycleLabel->setAlignment(Qt::AlignCenter);
-    cycleLabel->setMinimumWidth(120); // Reducido de 140 a 120
-    cycleLabel->setMaximumHeight(30); // Reducido de 40 a 30
+    cycleLabel->setMinimumWidth(120);
+    cycleLabel->setMaximumHeight(30);
     
     statusLayout->addWidget(statusLabel, 3);
     statusLayout->addWidget(cycleLabel, 1);
 
-    // Main content with splitter - PROPORCIONES MEJORADAS
     QSplitter *mainSplitter = new QSplitter(Qt::Horizontal);
-    mainSplitter->setHandleWidth(8); // Reducido de 10 a 8
+    mainSplitter->setHandleWidth(8);
     
-    // Left panel - MÁS COMPACTO
     QWidget *leftPanel = new QWidget();
-    leftPanel->setMaximumWidth(320); // Reducido de 400 a 320
-    leftPanel->setMinimumWidth(300); // Reducido de 350 a 300
+    leftPanel->setMaximumWidth(320);
+    leftPanel->setMinimumWidth(300);
     QVBoxLayout *leftLayout = new QVBoxLayout(leftPanel);
-    leftLayout->setSpacing(6); // Reducido de 10 a 6
+    leftLayout->setSpacing(6);
     
-    // System info - MÁS COMPACTO
     QGroupBox *infoGroup = new QGroupBox("Información del Sistema");
-    infoGroup->setFont(QFont("Arial", 10, QFont::Bold)); // Reducido de 11 a 10
-    infoGroup->setMaximumHeight(100); // Reducido de 120 a 100
+    infoGroup->setFont(QFont("Arial", 10, QFont::Bold));
+    infoGroup->setMaximumHeight(100);
     infoGroup->setStyleSheet(
         "QGroupBox { "
         "  font-weight: bold; "
-        "  border: 1px solid #bdc3c7; " // Reducido de 2 a 1
-        "  border-radius: 6px; " // Reducido de 8 a 6
-        "  margin-top: 8px; " // Reducido de 10 a 8
+        "  border: 1px solid #bdc3c7; "
+        "  border-radius: 6px; "
+        "  margin-top: 8px; "
         "  background: #ecf0f1; "
         "} "
         "QGroupBox::title { "
         "  subcontrol-origin: margin; "
-        "  left: 8px; " // Reducido de 10 a 8
-        "  padding: 0 6px 0 6px; " // Reducido de 8 a 6
+        "  left: 8px; "
+        "  padding: 0 6px 0 6px; "
         "  background: white; "
-        "  border-radius: 3px; " // Reducido de 4 a 3
+        "  border-radius: 3px; "
         "}"
     );
     QVBoxLayout *infoGroupLayout = new QVBoxLayout(infoGroup);
-    infoGroupLayout->setContentsMargins(6, 12, 6, 6); // Reducido
+    infoGroupLayout->setContentsMargins(6, 12, 6, 6);
     infoDisplay = new QTextEdit();
-    infoDisplay->setMaximumHeight(70); // Reducido de 90 a 70
+    infoDisplay->setMaximumHeight(70);
     infoDisplay->setStyleSheet(
         "background-color: #e8f4fd; "
-        "border: 1px solid #2196f3; " // Reducido de 2 a 1
-        "border-radius: 4px; " // Reducido de 6 a 4
-        "padding: 4px; " // Reducido de 8 a 4
+        "border: 1px solid #2196f3; "
+        "border-radius: 4px; "
+        "padding: 4px; "
         "font-family: 'Consolas', monospace; "
-        "font-size: 9px;" // Reducido de 11 a 9
+        "font-size: 9px;"
     );
     infoDisplay->setReadOnly(true);
     infoGroupLayout->addWidget(infoDisplay);
     leftLayout->addWidget(infoGroup);
     
-    // Events table - MÁS COMPACTO PERO FUNCIONAL
     QGroupBox *eventsGroup = new QGroupBox("Eventos de Simulación");
-    eventsGroup->setFont(QFont("Arial", 10, QFont::Bold)); // Reducido de 11 a 10
+    eventsGroup->setFont(QFont("Arial", 10, QFont::Bold));
     eventsGroup->setStyleSheet(
         "QGroupBox { "
         "  font-weight: bold; "
-        "  border: 1px solid #bdc3c7; " // Reducido de 2 a 1
-        "  border-radius: 6px; " // Reducido de 8 a 6
-        "  margin-top: 8px; " // Reducido de 10 a 8
+        "  border: 1px solid #bdc3c7; "
+        "  border-radius: 6px; "
+        "  margin-top: 8px; "
         "  background: #ecf0f1; "
         "} "
         "QGroupBox::title { "
         "  subcontrol-origin: margin; "
-        "  left: 8px; " // Reducido de 10 a 8
-        "  padding: 0 6px 0 6px; " // Reducido de 8 a 6
+        "  left: 8px; "
+        "  padding: 0 6px 0 6px; "
         "  background: white; "
-        "  border-radius: 3px; " // Reducido de 4 a 3
+        "  border-radius: 3px; "
         "}"
     );
     QVBoxLayout *eventsLayout = new QVBoxLayout(eventsGroup);
-    eventsLayout->setContentsMargins(6, 12, 6, 6); // Reducido
+    eventsLayout->setContentsMargins(6, 12, 6, 6);
     
     syncTable = new QTableWidget();
     syncTable->setColumnCount(5);
     syncTable->setHorizontalHeaderLabels({"Proceso", "Estado", "Recurso", "Acción", "Ciclo"});
     
-    // TABLA MÁS COMPACTA PERO LEGIBLE
-    syncTable->setMinimumHeight(520); // Reducido de 620 a 520
+    syncTable->setMinimumHeight(520);
     syncTable->setStyleSheet(
         "QTableWidget {"
         "  background-color: #ffffff;"
-        "  border: 1px solid #3498db;" // Reducido de 2 a 1
-        "  border-radius: 6px;" // Reducido de 8 a 6
-        "  font-size: 10px;" // Reducido de 12 a 10
+        "  border: 1px solid #3498db;"
+        "  border-radius: 6px;"
+        "  font-size: 10px;"
         "  selection-background-color: #e3f0fc;"
         "  gridline-color: #ecf0f1;"
-        "  margin: 2px;" // Reducido de 5 a 2
+        "  margin: 2px;"
         "}"
         "QHeaderView::section {"
         "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #3498db, stop:1 #2980b9);"
         "  color: white;"
         "  font-weight: bold;"
-        "  font-size: 10px;" // Reducido de 12 a 10
+        "  font-size: 10px;"
         "  border: none;"
-        "  padding: 8px;" // Reducido de 12 a 8
+        "  padding: 8px;"
         "  border-right: 1px solid #2980b9;"
         "}"
         "QTableWidget::item {"
-        "  padding: 6px;" // Reducido de 10 a 6
+        "  padding: 6px;"
         "  border-bottom: 1px solid #ecf0f1;"
         "}"
         "QTableWidget::item:selected {"
@@ -236,7 +228,6 @@ void SynchronizationSimulatorWidget::setupUI()
         "}"
     );
     
-    // Configuración de la tabla - MÁS COMPACTA
     syncTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     syncTable->horizontalHeader()->setStretchLastSection(true);
     syncTable->verticalHeader()->setVisible(false);
@@ -244,80 +235,70 @@ void SynchronizationSimulatorWidget::setupUI()
     syncTable->setAlternatingRowColors(true);
     syncTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     
-    // Anchos de columna más compactos
-    syncTable->setColumnWidth(0, 60);  // Proceso - Reducido de 80 a 60
-    syncTable->setColumnWidth(1, 70);  // Estado - Reducido de 90 a 70
-    syncTable->setColumnWidth(2, 60);  // Recurso - Reducido de 80 a 60
-    syncTable->setColumnWidth(3, 60);  // Acción - Reducido de 80 a 60
-    // La columna 5 (Ciclo) se estirará automáticamente
+    syncTable->setColumnWidth(0, 60);
+    syncTable->setColumnWidth(1, 70);
+    syncTable->setColumnWidth(2, 60);
+    syncTable->setColumnWidth(3, 60);
     
     eventsLayout->addWidget(syncTable);
     leftLayout->addWidget(eventsGroup);
     
-    // Right panel - TIMELINE OPTIMIZADO
     QWidget *rightPanel = new QWidget();
     QVBoxLayout *rightLayout = new QVBoxLayout(rightPanel);
-    rightLayout->setSpacing(4); // Reducido de 6 a 4
+    rightLayout->setSpacing(4);
     
-    // Timeline visualization area - MÁS COMPACTO
     QGroupBox *timelineGroup = new QGroupBox("Timeline Horizontal de Sincronización");
-    timelineGroup->setFont(QFont("Arial", 11, QFont::Bold)); // Reducido de 12 a 11
+    timelineGroup->setFont(QFont("Arial", 11, QFont::Bold));
     timelineGroup->setStyleSheet(
         "QGroupBox { "
         "  font-weight: bold; "
-        "  border: 1px solid #2c3e50; " // Reducido de 2 a 1
-        "  border-radius: 8px; " // Reducido de 10 a 8
-        "  margin-top: 10px; " // Reducido de 12 a 10
+        "  border: 1px solid #2c3e50; "
+        "  border-radius: 8px; "
+        "  margin-top: 10px; "
         "  background: #ecf0f1; "
         "} "
         "QGroupBox::title { "
         "  subcontrol-origin: margin; "
-        "  left: 12px; " // Reducido de 15 a 12
-        "  padding: 0 8px 0 8px; " // Reducido de 10 a 8
+        "  left: 12px; "
+        "  padding: 0 8px 0 8px; "
         "  background: white; "
-        "  border-radius: 4px; " // Reducido de 6 a 4
+        "  border-radius: 4px; "
         "  color: #2c3e50; "
         "}"
     );
     QVBoxLayout *timelineLayout = new QVBoxLayout(timelineGroup);
-    timelineLayout->setContentsMargins(8, 15, 8, 8); // Reducido
+    timelineLayout->setContentsMargins(8, 15, 8, 8);
     
-    // Widget para timeline MÁS COMPACTO
     simulationArea = new QWidget();
-    simulationArea->setMinimumHeight(600);  // Aumentado de 480 a 600 para tener más altura
+    simulationArea->setMinimumHeight(600);
     simulationArea->setStyleSheet(
         "background: #ffffff; "
         "border: 1px solid #3498db; "
         "border-radius: 6px;"
     );
     
-    // ScrollArea con mayor altura vertical real
     QScrollArea *timelineScroll = new QScrollArea();
     timelineScroll->setWidget(simulationArea);
     timelineScroll->setWidgetResizable(false);
     timelineScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     timelineScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    timelineScroll->setMinimumHeight(720);  // Mantener este valor, pero arreglar la configuración del layout
-    timelineScroll->setMaximumHeight(720);  // Agregar esta línea para forzar la altura exacta
+    timelineScroll->setMinimumHeight(720);
+    timelineScroll->setMaximumHeight(720);
 
-    // Asegurar que el timelineGroup se expande para ocupar el espacio disponible
     timelineGroup->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     
     timelineLayout->addWidget(timelineScroll);
     rightLayout->addWidget(timelineGroup);
     
-    // Add panels to splitter - PROPORCIONES OPTIMIZADAS PARA MENOR ANCHO
     mainSplitter->addWidget(leftPanel);
     mainSplitter->addWidget(rightPanel);
-    mainSplitter->setSizes({300, 1100}); // Ajustado para 1400px total
+    mainSplitter->setSizes({300, 1100});
 
-    // Assemble main layout
     mainLayout->addLayout(headerLayout);
     mainLayout->addLayout(controlLayout);
     mainLayout->addLayout(statusLayout);
     mainLayout->addWidget(mainSplitter);
 
-    // Connections (mantener las mismas conexiones)
     connect(backBtn, &QPushButton::clicked, [this]() {
         emit backToMenuRequested();
     });
@@ -335,35 +316,33 @@ void SynchronizationSimulatorWidget::setupUI()
     connect(clearBtn, &QPushButton::clicked, this, &SynchronizationSimulatorWidget::clearAll);
     connect(infoBtn, &QPushButton::clicked, this, &SynchronizationSimulatorWidget::showInfo);
     
-    // Initial state
     onSyncTypeChanged();
 }
 
-// Función auxiliar para crear botones MÁS GRANDES y MÁS LARGOS
 QPushButton* SynchronizationSimulatorWidget::createButton(const QString &text, const QString &color)
 {
     QPushButton *btn = new QPushButton(text);
-    btn->setMinimumSize(180, 45); // Aumentado de 150,40 a 180,45 para hacer más largos y anchos
-    btn->setFont(QFont("Arial", 14, QFont::Bold)); // Mantenemos el tamaño de fuente grande
+    btn->setMinimumSize(180, 45);
+    btn->setFont(QFont("Arial", 14, QFont::Bold));
     btn->setStyleSheet(QString(
         "QPushButton { "
         "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 %1, stop:1 %2); "
         "  color: white; "
-        "  border-radius: 8px; " // Aumentado de 6 a 8
-        "  padding: 8px; " // Aumentado de 6 a 8
-        "  font-size: 11px; " // Aumentado de 9 a 11
-        "  border: 2px solid %3; " // Aumentado de 1 a 2
-        "  margin: 3px; " // Aumentado de 2 a 3
+        "  border-radius: 8px; "
+        "  padding: 8px; "
+        "  font-size: 11px; "
+        "  border: 2px solid %3; "
+        "  margin: 3px; "
         "}"
         "QPushButton:hover { "
         "  background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 %4, stop:1 %5); "
-        "  margin-top: 2px; " // Aumentado de 1 a 2
-        "  margin-bottom: 4px; " // Aumentado de 3 a 4
+        "  margin-top: 2px; "
+        "  margin-bottom: 4px; "
         "}"
         "QPushButton:pressed { "
         "  background: %6; "
-        "  margin-top: 4px; " // Aumentado de 3 a 4
-        "  margin-bottom: 2px; " // Aumentado de 1 a 2
+        "  margin-top: 4px; "
+        "  margin-bottom: 2px; "
         "}"
     ).arg(color)
      .arg(QColor(color).darker(110).name())
@@ -378,7 +357,6 @@ void SynchronizationSimulatorWidget::onSyncTypeChanged()
 {
     currentSyncType = syncTypeCombo->currentText();
 
-    // Mostrar/ocultar el botón de recursos según el tipo
     if (currentSyncType == "Mutex") {
         loadResBtn->setVisible(false);
         statusLabel->setText("Mutex seleccionado - Solo necesitas cargar acciones para iniciar la simulación.");
@@ -446,7 +424,6 @@ void SynchronizationSimulatorWidget::runSynchronization(const QString &mechanism
         return;
     }
     
-    // Create dummy processes from actions if not loaded
     if (processes.empty()) {
         std::set<QString> uniquePids;
         for (const auto& action : actions) {
@@ -475,7 +452,6 @@ void SynchronizationSimulatorWidget::runSynchronization(const QString &mechanism
 
     currentEvents = SynchronizationSimulator::simulateSynchronization(processes, resources, actions, syncMechanism);
     
-    // Find max cycles
     maxCycles = 0;
     int minCycles = INT_MAX;
     for (const auto& event : currentEvents) {
@@ -483,7 +459,6 @@ void SynchronizationSimulatorWidget::runSynchronization(const QString &mechanism
         minCycles = std::min(minCycles, event.cycle);
     }
     
-    // Update events table
     syncTable->setRowCount(currentEvents.size());
     for (int i = 0; i < currentEvents.size(); ++i) {
         const auto &event = currentEvents[i];
@@ -493,7 +468,6 @@ void SynchronizationSimulatorWidget::runSynchronization(const QString &mechanism
         syncTable->setItem(i, 3, new QTableWidgetItem(event.action_type));
         syncTable->setItem(i, 4, new QTableWidgetItem(QString::number(event.cycle)));
         
-        // Color based on state
         QColor rowColor = (event.state == ProcessState::ACCESSED) ? QColor("#d4edda") : QColor("#f8d7da");
         for (int j = 0; j < 5; ++j) {
             if (syncTable->item(i, j)) {
@@ -502,64 +476,53 @@ void SynchronizationSimulatorWidget::runSynchronization(const QString &mechanism
         }
     }
     
-    // Setup timeline horizontal
     setupEmptyTimeline();
     
-    // Start animation from cycle 0
     currentAnimationCycle = 0;
-    animationTimer->start(1500); // 1.5 seconds per cycle
+    animationTimer->start(1500);
     
     statusLabel->setText(QString(" Simulación iniciada. %1 eventos en ciclos 0-%2.")
                         .arg(currentEvents.size()).arg(maxCycles));
 }
 
-// 1. MODIFICAR setupEmptyTimeline() - Ajustar dimensiones y scroll
 void SynchronizationSimulatorWidget::setupEmptyTimeline()
 {
     if (currentEvents.empty()) return;
     
-    // Limpiar widgets existentes
     auto children = simulationArea->findChildren<QWidget*>();
     for (auto child : children) {
         child->deleteLater();
     }
     
-    // Encontrar el rango real de ciclos
     int minCycle = 0;
     int maxCycle = 0;
     for (const auto& event : currentEvents) {
         maxCycle = std::max(maxCycle, event.cycle);
     }
     
-    // Obtener lista única de procesos
     std::set<QString> uniqueProcesses;
     for (const auto& event : currentEvents) {
         uniqueProcesses.insert(event.pid);
     }
     
-    // DIMENSIONES MEJORADAS con MÁS espacio vertical entre procesos
-    int leftMargin = 80;      // Espacio para etiquetas
-    int rightMargin = 50;     // Margen derecho
-    int topMargin = 80;       // Espacio para título y leyenda
-    int bottomMargin = 80;    // Aumentado para más espacio
-    int cycleWidth = 120;     // Ancho por ciclo
-    int processHeight = 80;   // Aumentado de 60 a 80 para más espacio entre procesos
-    int axisHeight = 50;      // Aumentado de 40 a 50
+    int leftMargin = 80;
+    int rightMargin = 50;
+    int topMargin = 80;
+    int bottomMargin = 80;
+    int cycleWidth = 120;
+    int processHeight = 80;
+    int axisHeight = 50;
 
     int numProcesses = uniqueProcesses.size();
     
-    // Calcular tamaño total con MÁS espacio 
     int totalWidth = leftMargin + (maxCycle + 2) * cycleWidth + rightMargin;
-    // Hacer el área más alta
-    int totalHeight = topMargin + numProcesses * processHeight + axisHeight + bottomMargin + 40;  // +40 para más espacio
+    int totalHeight = topMargin + numProcesses * processHeight + axisHeight + bottomMargin + 40;
     
     qDebug() << "Timeline COMPACTO: Ciclos 0 a" << maxCycle 
              << "| Procesos:" << numProcesses
              << "| Tamaño TOTAL:" << totalWidth << "x" << totalHeight;
 
-    // Redimensionar simulationArea
     simulationArea->setFixedSize(totalWidth, totalHeight);
-    // Título
     QLabel* titleLabel = new QLabel("Timeline de Sincronización", simulationArea);
     titleLabel->setStyleSheet(
         "font-size: 20px; "
@@ -572,24 +535,20 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     titleLabel->setGeometry(0, 10, totalWidth, 30);
     titleLabel->show();
     
-    // Eje X
     int axisY = topMargin + numProcesses * processHeight;
     QLabel* axisLine = new QLabel(simulationArea);
     axisLine->setStyleSheet("background: #2c3e50;");
     axisLine->setGeometry(leftMargin, axisY, (maxCycle + 1) * cycleWidth, 3);
     axisLine->show();
     
-    // Números del eje X
     for (int cycle = 0; cycle <= maxCycle; ++cycle) {
         int xPos = leftMargin + cycle * cycleWidth;
         
-        // Marca vertical
         QLabel* tick = new QLabel(simulationArea);
         tick->setStyleSheet("background: #2c3e50;");
         tick->setGeometry(xPos, axisY, 2, 10);
         tick->show();
         
-        // Número del ciclo
         QLabel* numberLabel = new QLabel(QString::number(cycle), simulationArea);
         numberLabel->setStyleSheet(
             "color: #2c3e50; "
@@ -605,11 +564,9 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
         numberLabel->show();
     }
     
-    // Se eliminaron las etiquetas de procesos
     std::vector<QString> processList(uniqueProcesses.begin(), uniqueProcesses.end());
     std::sort(processList.begin(), processList.end());
         
-    // Área de información MEJORADA
     QLabel* waitingInfo = new QLabel(simulationArea);
     waitingInfo->setObjectName("waitingInfo");
     waitingInfo->setText("<b>Estado:</b> Preparando animación...");
@@ -619,7 +576,6 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     waitingInfo->setGeometry(80, totalHeight - 50, totalWidth - 160, 40);
     waitingInfo->show();
     
-    // Guardar propiedades para la animación
     simulationArea->setProperty("minCycle", minCycle);
     simulationArea->setProperty("maxCycle", maxCycle);
     simulationArea->setProperty("cycleWidth", cycleWidth);
@@ -631,41 +587,33 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     simulationArea->update();
 }
 
-// 2. MODIFICAR nextAnimationStep() - Mejorar el display de bloques
 void SynchronizationSimulatorWidget::nextAnimationStep()
 {
-    // Actualizar contador de ciclo
     cycleLabel->setText(QString("Ciclo: %1").arg(currentAnimationCycle));
     
-    // Obtener valores guardados
     int minCycle = simulationArea->property("minCycle").toInt();
     int maxCycle = simulationArea->property("maxCycle").toInt();
     int cycleWidth = simulationArea->property("cycleWidth").toInt();
     int leftMargin = simulationArea->property("leftMargin").toInt();
     int topMargin = simulationArea->property("topMargin").toInt();
     int processHeight = simulationArea->property("processHeight").toInt();
-    //QStringList processList = simulationArea->property("processList").toStringList();
     
-    // Información del ciclo actual
     QStringList currentCycleInfo;
     int accessedCount = 0;
     int waitingCount = 0;
 
-    // NUEVO: Apilar bloques verticalmente ignorando proceso
     int blockIndex = 0;
-    int blockSpacing = 18; // Más espacio entre bloques (antes 10)
-    int blockWidth = 100;  // Un poco más ancho (antes 80)
-    int blockHeight = 60;  // Mantén la altura baja
+    int blockSpacing = 18;
+    int blockWidth = 100;
+    int blockHeight = 60;
 
     for (const auto& event : currentEvents) {
         if (event.cycle == currentAnimationCycle) {
-            // Ancho fijo para todos los bloques, centrados en la columna del ciclo
             int xPos = leftMargin + currentAnimationCycle * cycleWidth + (cycleWidth - blockWidth) / 2;
             int yPos = topMargin + blockIndex * (blockHeight + blockSpacing);
 
             QLabel* eventBlock = new QLabel(simulationArea);
             eventBlock->setObjectName(QString("eventBlock_c%1_idx%2").arg(currentAnimationCycle).arg(blockIndex));
-            // Texto compacto y centrado
             QString eventText = QString(
                 "<div style='text-align:center;'>"
                 "<span style='font-size:18px;font-weight:bold;'>%1</span><br>"
@@ -703,7 +651,6 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
                 "max-width: %4px; max-height: %5px;"
             ).arg(bgColor, borderColor, textColor).arg(blockWidth).arg(blockHeight));
 
-            // Sombra sutil
             QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect(eventBlock);
             shadow->setBlurRadius(8);
             shadow->setColor(QColor(0,0,0,35));
@@ -717,7 +664,6 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
         }
     }
     
-    // Actualizar información de estado MEJORADA
     QLabel* waitingInfo = simulationArea->findChild<QLabel*>("waitingInfo");
     if (waitingInfo) {
         QString infoText = QString("<b>Ciclo %1:</b> ").arg(currentAnimationCycle);
@@ -730,7 +676,6 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
         waitingInfo->setText(infoText);
     }
     
-    // SCROLL AUTOMÁTICO MEJORADO
     QScrollArea* scrollArea = qobject_cast<QScrollArea*>(simulationArea->parentWidget());
     if (scrollArea && currentAnimationCycle > 0) {
         int scrollToX = leftMargin + currentAnimationCycle * cycleWidth - scrollArea->width() / 2;
@@ -738,16 +683,13 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
         scrollArea->horizontalScrollBar()->setValue(scrollToX);
     }
     
-    // Avanzar al siguiente ciclo
     currentAnimationCycle++;
     
-    // Verificar si la animación ha terminado
     if (currentAnimationCycle > maxCycle + 1) {
         animationTimer->stop();
         cycleLabel->setText(QString("Simulación Completada - Ciclos: 0 a %1").arg(maxCycle));
         statusLabel->setText("Animación completada. Todos los eventos han sido procesados.");
         
-        // Mostrar resumen final MEJORADO
         if (waitingInfo) {
             int totalEvents = currentEvents.size();
             int totalAccessed = 0;
@@ -777,7 +719,6 @@ void SynchronizationSimulatorWidget::clearAll()
     
     syncTable->setRowCount(0);
     
-    // Clear simulation area
     QLayout* oldLayout = simulationArea->layout();
     if (oldLayout) {
         QLayoutItem* item;
@@ -788,7 +729,6 @@ void SynchronizationSimulatorWidget::clearAll()
         delete oldLayout;
     }
     
-    // Limpiar widgets hijos manualmente
     auto children = simulationArea->findChildren<QWidget*>();
     for (auto child : children) {
         child->deleteLater();

@@ -36,7 +36,7 @@ private:
     void loadActionsFromDialog();
     void runSynchronization(const QString &mechanism);
     void showSimulationEvents(const std::vector<SyncEvent>& events);
-    void setupEmptyTimeline(); // NUEVA FUNCIÓN para formato apilado
+    void setupEmptyTimeline();
     void clearAll();
     void showInfo();
     void updateInfoDisplay();

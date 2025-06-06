@@ -21,15 +21,12 @@ struct SyncEvent {
     ProcessState state;
     QColor color;
 
-    // Default constructor
     SyncEvent() : cycle(0), state(ProcessState::WAITING), color(Qt::white) {}
 
-    // Existing constructor
     SyncEvent(QString p, QString r, QString at, int c, ProcessState s, QColor col)
         : pid(p), resource(r), action_type(at), cycle(c), state(s), color(col) {}
 };
 
-// CAMBIO: ProcessSyncState -> SyncProcessState
 struct SyncProcessState {
     QString pid;
     ProcessState current_state;
@@ -37,11 +34,9 @@ struct SyncProcessState {
     int cycles_waiting;
     QColor color;
 
-    // Constructor predeterminado
     SyncProcessState() 
         : pid(""), current_state(ProcessState::WAITING), waiting_for_resource(""), cycles_waiting(0), color(Qt::white) {}
 
-    // Constructor con parámetros
     SyncProcessState(QString p, QColor c) 
         : pid(p), current_state(ProcessState::WAITING), waiting_for_resource(""), cycles_waiting(0), color(c) {}
 };
@@ -57,7 +52,7 @@ public:
 
 class MutexLock : public SynchronizationMechanism {
 private:
-    std::map<QString, QString> resource_owners; // resource -> process holding it
+    std::map<QString, QString> resource_owners;
     std::vector<Resource> resources;
 
 public:
@@ -70,8 +65,8 @@ public:
 
 class Semaphore : public SynchronizationMechanism {
 private:
-    std::map<QString, int> resource_counts; // resource -> available count
-    std::map<QString, std::vector<QString>> resource_holders; // resource -> list of processes holding it
+    std::map<QString, int> resource_counts; 
+    std::map<QString, std::vector<QString>> resource_holders; 
     std::vector<Resource> resources;
 
 public:
@@ -92,7 +87,6 @@ public:
         SynchronizationMechanism* mechanism
     );
     
-    // CAMBIO: ProcessSyncState -> SyncProcessState
     static std::vector<SyncProcessState> getProcessStates(
         const std::vector<Process>& processes,
         const std::vector<SyncEvent>& events,
@@ -103,7 +97,6 @@ public:
 class Synchronizer {
 public:
     virtual ~Synchronizer() = default;
-    // Métodos virtuales puros si es una interfaz
 };
 
 #endif
