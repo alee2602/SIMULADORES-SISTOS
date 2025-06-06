@@ -153,11 +153,12 @@ private:
     std::vector<SimulationResult> sequentialResults;
     QWidget* resultsWindow;
     QVBoxLayout* resultsWindowLayout;
-
-    // Nuevas funciones para resumen de simulación secuencial
     void showSimulationSummary();
     void createComparisonTable();
     void createIndividualResultWidget(const SimulationResult& result, QVBoxLayout* layout);
+    int selectedQuantum = 2;
+    bool agingEnabled = false;
+    int selectedAging = 5;
 };
 
 #endif

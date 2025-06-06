@@ -18,11 +18,8 @@ ProcessSimulator::ProcessSimulator(QWidget *parent)
     : QWidget(parent), syncMechanism(nullptr), currentAlgorithmIndex(0)
 {
     setupUI();
-    // No generar procesos de muestra automáticamente
-    // generateSampleProcesses();
     generateSampleResources();
     generateSampleActions();
-    // originalProcesses = processes; 
     sequentialResults.clear(); 
 }
 
@@ -141,6 +138,51 @@ void ProcessSimulator::setupAlgorithmSelection(QVBoxLayout* layout) {
 
     layout->addLayout(checkboxLayout);
 
+    // Parámetros de Quantum y Aging (visibles solo si corresponde)
+    QHBoxLayout *paramLayout = new QHBoxLayout();
+
+    QLabel *quantumLabel = new QLabel("Quantum (RR):");
+    QSpinBox *quantumSpinBox = new QSpinBox();
+    quantumSpinBox->setRange(1, 10);
+    quantumSpinBox->setValue(2);
+    quantumLabel->setVisible(false);
+    quantumSpinBox->setVisible(false);
+
+    QLabel *agingLabel = new QLabel("Aging (Priority):");
+    QSpinBox *agingSpinBox = new QSpinBox();
+    agingSpinBox->setRange(1, 10);
+    agingSpinBox->setValue(5);
+    agingLabel->setVisible(false);
+    agingSpinBox->setVisible(false);
+
+    QCheckBox *agingEnabledCheck = new QCheckBox("Habilitar envejecimiento");
+    agingEnabledCheck->setVisible(false);
+    agingSpinBox->setEnabled(false);
+
+    connect(agingEnabledCheck, &QCheckBox::toggled, agingSpinBox, &QWidget::setEnabled);
+
+    paramLayout->addWidget(quantumLabel);
+    paramLayout->addWidget(quantumSpinBox);
+    paramLayout->addSpacing(20);
+    paramLayout->addWidget(agingLabel);
+    paramLayout->addWidget(agingSpinBox);
+    paramLayout->addWidget(agingEnabledCheck);
+    layout->addLayout(paramLayout);
+
+    // Mostrar/ocultar controles según selección
+    connect(rrCheck, &QCheckBox::toggled, [quantumLabel, quantumSpinBox](bool checked){
+        quantumLabel->setVisible(checked);
+        quantumSpinBox->setVisible(checked);
+    });
+    connect(priorityCheck, &QCheckBox::toggled, [agingLabel, agingSpinBox, agingEnabledCheck](bool checked){
+        agingLabel->setVisible(checked);
+        agingSpinBox->setVisible(checked && agingEnabledCheck->isChecked());
+        agingEnabledCheck->setVisible(checked);
+    });
+    connect(agingEnabledCheck, &QCheckBox::toggled, [agingSpinBox](bool checked){
+        agingSpinBox->setVisible(checked);
+    });
+
     QPushButton* runAllBtn = createButton("Simular Algoritmos Seleccionados", "#28a745");
     QPushButton* compareBtn = createButton("Comparar Algoritmos", "#17a2b8");
     QHBoxLayout* buttonLayout = new QHBoxLayout();
@@ -152,7 +194,14 @@ void ProcessSimulator::setupAlgorithmSelection(QVBoxLayout* layout) {
     resultsLayout = new QVBoxLayout(resultsArea);
     layout->addWidget(resultsArea);
 
-    connect(runAllBtn, &QPushButton::clicked, this, &ProcessSimulator::runSelectedAlgorithms);
+    // Guardar quantum y aging seleccionados al correr simulación
+    connect(runAllBtn, &QPushButton::clicked, this, [this, quantumSpinBox, agingEnabledCheck, agingSpinBox]() {
+        // Puedes guardar los valores en variables miembro si lo necesitas
+        this->selectedQuantum = quantumSpinBox->value();
+        this->agingEnabled = agingEnabledCheck->isChecked();
+        this->selectedAging = agingSpinBox->value();
+        runSelectedAlgorithms();
+    });
     connect(compareBtn, &QPushButton::clicked, this, &ProcessSimulator::runSelectedAlgorithmsComparison);
 }
 
@@ -252,6 +301,7 @@ void ProcessSimulator::runNextAlgorithmInSequence() {
     }
 
     currentAlgorithmIndex++;
+    updateMetricsTable();
 }
 
 void ProcessSimulator::displayAlgorithmResultInList(const QString& title, 
@@ -804,35 +854,37 @@ void ProcessSimulator::createComparisonTable() {
     
     for (int i = 0; i < sequentialResults.size(); i++) {
         const auto& result = sequentialResults[i];
-        
+
         comparisonTable->setItem(i, 0, new QTableWidgetItem(result.algorithmName));
-        
+
         QTableWidgetItem* waitingItem = new QTableWidgetItem(QString::number(result.avgWaitingTime, 'f', 2));
         QTableWidgetItem* turnaroundItem = new QTableWidgetItem(QString::number(result.avgTurnaroundTime, 'f', 2));
-        
+
         // Resaltar los mejores valores
         if (result.avgWaitingTime == bestWaiting) {
             waitingItem->setBackground(QColor("#d4edda")); // Verde claro
             waitingItem->setForeground(QColor("#155724")); // Verde oscuro
         }
-        
         if (result.avgTurnaroundTime == bestTurnaround) {
-            turnaroundItem->setBackground(QColor("#d4edda")); // Verde claro
-            turnaroundItem->setForeground(QColor("#155724")); // Verde oscuro
+            turnaroundItem->setBackground(QColor("#d4edda"));
+            turnaroundItem->setForeground(QColor("#155724"));
         }
-        
+
         comparisonTable->setItem(i, 1, waitingItem);
         comparisonTable->setItem(i, 2, turnaroundItem);
-        
-        // Color de fondo por algoritmo
-        QColor rowColor;
+
+        // Color de fondo por algoritmo (asegura coincidencia exacta)
+        QColor rowColor = Qt::white;
         if (result.algorithmName == "FIFO") rowColor = QColor("#FFE4E1");
         else if (result.algorithmName == "SJF") rowColor = QColor("#E0F6FF");
         else if (result.algorithmName == "SRTF") rowColor = QColor("#F0FFF0");
-        else if (result.algorithmName == "RR") rowColor = QColor("#FFF8DC");
-        else if (result.algorithmName == "PRIORITY") rowColor = QColor("#F0E68C");
-        
-        comparisonTable->item(i, 0)->setBackground(rowColor);
+        else if (result.algorithmName == "Round Robin" || result.algorithmName == "RR") rowColor = QColor("#FFF8DC");
+        else if (result.algorithmName == "Priority" || result.algorithmName == "PRIORITY") rowColor = QColor("#F0E68C");
+
+        for (int j = 0; j < 3; ++j) {
+            if (comparisonTable->item(i, j))
+                comparisonTable->item(i, j)->setBackground(rowColor);
+        }
     }
     
     comparisonTable->resizeColumnsToContents();
@@ -1079,7 +1131,8 @@ void ProcessSimulator::displayComparisonTableOnly(const QStringList& algorithms,
         else if (algorithms[i] == "SRTF") rowColor = QColor("#F0FFF0");
         else if (algorithms[i] == "Round Robin") rowColor = QColor("#FFF8DC");
         else if (algorithms[i] == "Priority") rowColor = QColor("#F0E68C");
-        
+        else rowColor = QColor(Qt::white);
+
         for (int j = 0; j < 3; j++) {
             comparisonTable->item(i, j)->setBackground(rowColor);
         }
@@ -1133,11 +1186,38 @@ void ProcessSimulator::setupSynchronizationWidget() {
     loadLayout->addWidget(loadActionsBtn);
     loadLayout->addStretch();
     layout->addLayout(loadLayout);
+    
+    QHBoxLayout *paramLayout = new QHBoxLayout();
+    QLabel *quantumLabel = new QLabel("Quantum (RR):");
+    QSpinBox *quantumSpinBox = new QSpinBox();
+    quantumSpinBox->setRange(1, 10);
+    quantumSpinBox->setValue(2);
+
+    QLabel *agingLabel = new QLabel("Aging (Priority):");
+    QSpinBox *agingSpinBox = new QSpinBox();
+    agingSpinBox->setRange(1, 10);
+    agingSpinBox->setValue(5);
+
+    QCheckBox *agingEnabledCheck = new QCheckBox("Habilitar envejecimiento");
+    agingSpinBox->setEnabled(false);
+    connect(agingEnabledCheck, &QCheckBox::toggled, agingSpinBox, &QWidget::setEnabled);
+
+    paramLayout->addWidget(quantumLabel);
+    paramLayout->addWidget(quantumSpinBox);
+    paramLayout->addSpacing(20);
+    paramLayout->addWidget(agingLabel);
+    paramLayout->addWidget(agingSpinBox);
+    paramLayout->addWidget(agingEnabledCheck);
+    layout->addLayout(paramLayout);
     QHBoxLayout *syncBtnLayout = new QHBoxLayout();
     QPushButton *mutexBtn = createButton("Simulate Mutex", "#28a745");
     QPushButton *semaphoreBtn = createButton("Simulate Semaphore", "#17a2b8");
+    QPushButton *rrBtn = createButton("Simulate Round Robin", "#ffc107");
+    QPushButton *priorityBtn = createButton("Simulate Priority", "#f39c12");
     syncBtnLayout->addWidget(mutexBtn);
     syncBtnLayout->addWidget(semaphoreBtn);
+    syncBtnLayout->addWidget(rrBtn);
+    syncBtnLayout->addWidget(priorityBtn);
     syncBtnLayout->addStretch();
     layout->addLayout(syncBtnLayout);
 
@@ -1167,6 +1247,18 @@ void ProcessSimulator::setupSynchronizationWidget() {
     });
     connect(semaphoreBtn, &QPushButton::clicked, this, [this]() {
         runSynchronization("Semaphore");
+    });
+    connect(rrBtn, &QPushButton::clicked, this, [this, quantumSpinBox]() {
+        // Aquí puedes pasar el quantum seleccionado
+        int quantum = quantumSpinBox->value();
+        runSynchronization(QString("Round Robin (Quantum=%1)").arg(quantum));
+        // O adapta runSynchronization para aceptar quantum como parámetro
+    });
+    connect(priorityBtn, &QPushButton::clicked, this, [this, agingEnabledCheck, agingSpinBox]() {
+        bool agingEnabled = agingEnabledCheck->isChecked();
+        int agingValue = agingSpinBox->value();
+        runSynchronization(QString("Priority (Aging=%1, Enabled=%2)").arg(agingValue).arg(agingEnabled ? "Yes" : "No"));
+        // O adapta runSynchronization para aceptar aging como parámetro
     });
     connect(backBtn, &QPushButton::clicked, [this]() {
         mainStack->setCurrentWidget(menuWidget);

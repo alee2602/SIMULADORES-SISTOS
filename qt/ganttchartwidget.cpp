@@ -93,18 +93,12 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
     if (!algorithmTitle.isEmpty()) {
     painter.setFont(QFont("Arial", 16, QFont::Bold));
     painter.setPen(QColor("#2c3e50"));
-    QRect titleRect(0, 10, width(), 30);
+    QRect titleRect(0, 30, width(), 30); 
     painter.drawText(titleRect, Qt::AlignCenter, algorithmTitle);
     }
-
-    // painter.setFont(QFont("Arial", 16, QFont::Bold));
-    // painter.setPen(QColor("#2c3e50"));
-    // QRect titleRect(0, 0, width(), 35);
-    // painter.drawText(titleRect, Qt::AlignCenter, "Gantt Chart"); // <-- Elimina o comenta esta línea
-
-    // Ajusta el margen superior para dejar espacio al título
-    int margin = 60; // Antes era 40
-    int chartHeight = height() - margin - 40; // 40 margen inferior
+    
+    int margin = 60; 
+    int chartHeight = height() - margin - 40; 
     int chartWidth = width() - 2 * 40;
     int timeUnit = (maxTime > 0) ? std::max(40, std::min(80, chartWidth / maxTime)) : 40;
 
@@ -152,13 +146,15 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
 
     // --- Métricas abajo ---
     if (showMetrics && !timeline.empty()) {
-        painter.setFont(QFont("Arial", 12, QFont::Bold));
         painter.setPen(QColor("#28a745"));
-        QString metricsText = QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
-                             .arg(avgWaitingTime, 0, 'f', 2)
-                             .arg(avgTurnaroundTime, 0, 'f', 2);
-        QRect metricsRect = rect().adjusted(10, rect().height() - 30, -10, -5);
-        painter.drawText(metricsRect, Qt::AlignCenter, metricsText);
+        QFont metricsFont = painter.font();
+        metricsFont.setPointSize(13);
+        metricsFont.setBold(true);
+        painter.setFont(metricsFont);
+        painter.drawText(QRect(0, height() - 20, width(), 30), Qt::AlignHCenter | Qt::AlignTop,
+            QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
+                .arg(avgWaitingTime, 0, 'f', 2)
+                .arg(avgTurnaroundTime, 0, 'f', 2));
     }
 }
 
