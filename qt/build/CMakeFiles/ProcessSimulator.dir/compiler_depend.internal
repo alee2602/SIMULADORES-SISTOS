@@ -3039,6 +3039,8 @@ CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.o
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollBar
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollbar.h
  /usr/include/c++/11/climits
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsDropShadowEffect
+ /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicseffect.h
 
 CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o
  /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.cpp

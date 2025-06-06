@@ -21,6 +21,7 @@
 #include <QDebug>
 #include <QScrollBar>
 #include <climits>
+#include <QGraphicsDropShadowEffect>
 
 SynchronizationSimulatorWidget::SynchronizationSimulatorWidget(QStackedWidget* mainStack, QWidget* menuWidget, QWidget *parent)
     : QWidget(parent), mainStack_(mainStack), menuWidget_(menuWidget), syncMechanism(nullptr), 
@@ -643,78 +644,75 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
     int leftMargin = simulationArea->property("leftMargin").toInt();
     int topMargin = simulationArea->property("topMargin").toInt();
     int processHeight = simulationArea->property("processHeight").toInt();
-    QStringList processList = simulationArea->property("processList").toStringList();
-    
-    // Crear mapa de proceso a índice de fila
-    std::map<QString, int> processToRow;
-    for (int i = 0; i < processList.size(); ++i) {
-        processToRow[processList[i]] = i;
-    }
+    //QStringList processList = simulationArea->property("processList").toStringList();
     
     // Información del ciclo actual
     QStringList currentCycleInfo;
     int accessedCount = 0;
     int waitingCount = 0;
-    
-    // Agregar bloques con MENOS ESPACIO VERTICAL entre ellos
+
+    // NUEVO: Apilar bloques verticalmente ignorando proceso
+    int blockIndex = 0;
+    int blockSpacing = 18; // Más espacio entre bloques
+    int blockHeight = processHeight + 10; // Más alto para mejor lectura
+    int blockWidth = cycleWidth - 10;    // Bloques más anchos
+
     for (const auto& event : currentEvents) {
         if (event.cycle == currentAnimationCycle) {
-            // Calcular posición horizontal (eje X)
             int xPos = leftMargin + currentAnimationCycle * cycleWidth;
-            
-            // Calcular posición vertical (fila del proceso) - SIN ESPACIADO ADICIONAL
-            int processRow = processToRow[event.pid];
-            int yPos = topMargin + processRow * processHeight + 5; // Reducido margen superior
-            
-            // Crear bloque del evento 
+            int yPos = topMargin + blockIndex * (blockHeight + blockSpacing);
+
             QLabel* eventBlock = new QLabel(simulationArea);
-            eventBlock->setObjectName(QString("eventBlock_c%1_p%2").arg(currentAnimationCycle).arg(event.pid));
-            
-            // Formato de texto como en la imagen de ejemplo
-            QString eventText = QString("<center><b>%1</b><br>%2<br>%3</center>")
-                               .arg(event.pid)          // ID del proceso (P1, P2)
-                               .arg(event.action_type)  // WRITE, READ
-                               .arg(event.resource);    // R1, etc
-            
+            eventBlock->setObjectName(QString("eventBlock_c%1_idx%2").arg(currentAnimationCycle).arg(blockIndex));
+            // Usa HTML simple, fuente grande y alto fijo
+            QString eventText = QString(
+                "<div style='text-align:center;'>"
+                "<span style='font-size:20px;font-weight:bold;'>%1</span><br>"
+                "<span style='font-size:16px;'>%2</span><br>"
+                "<span style='font-size:15px;'>%3</span>"
+                "</div>"
+            ).arg(event.pid).arg(event.action_type).arg(event.resource);
             eventBlock->setText(eventText);
             eventBlock->setAlignment(Qt::AlignCenter);
             eventBlock->setWordWrap(true);
-            
-            // Colores según estado (como en la imagen)
+
             QString bgColor, borderColor, textColor;
             if (event.state == ProcessState::ACCESSED) {
-                bgColor = "#27ae60";      // Verde para ACCESSED
+                bgColor = "#43e97b";
                 borderColor = "#1e8449";
-                textColor = "white";
+                textColor = "#1b2e1b";
                 accessedCount++;
                 currentCycleInfo.append(QString("%1:✓%2(%3)").arg(event.pid, event.resource, event.action_type));
             } else {
-                bgColor = "#e67e22";      // Naranja para WAITING
+                bgColor = "#f7971e";
                 borderColor = "#d35400";
-                textColor = "white";
+                textColor = "#4d2e00";
                 waitingCount++;
                 currentCycleInfo.append(QString("%1:⏳%2(%3)").arg(event.pid, event.resource, event.action_type));
             }
-            
+
             eventBlock->setStyleSheet(QString(
-                "background: %1; "
-                "border: 2px solid %2; "
-                "border-radius: 8px; " 
-                "font-weight: bold; "
-                "font-size: 12px; "
-                "color: %3; "
-                "padding: 4px;"
-            ).arg(bgColor, borderColor, textColor));
-            
-            // Bloques de tamaño ajustado para evitar espacios vacíos
-            int blockWidth = cycleWidth - 20;
-            int blockHeight = processHeight - 15;  // Un poco menos de margen para hacer bloques más grandes
-            eventBlock->setGeometry(xPos + 10, yPos + 5, blockWidth, blockHeight);  // +5 para centrar mejor
+                "background: %1;"
+                "border: 2px solid %2;"
+                "border-radius: 18px;"
+                "font-size: 15px;"
+                "color: %3;"
+                "padding: 18px 12px 18px 12px;"
+                "min-height: %4px;"
+                "max-width: %5px;"
+            ).arg(bgColor, borderColor, textColor).arg(blockHeight).arg(blockWidth));
+
+            // Sombra real solo si quieres (opcional)
+            QGraphicsDropShadowEffect* shadow = new QGraphicsDropShadowEffect(eventBlock);
+            shadow->setBlurRadius(16);
+            shadow->setColor(QColor(0,0,0,60));
+            shadow->setOffset(0, 6);
+            eventBlock->setGraphicsEffect(shadow);
+
+            eventBlock->setGeometry(xPos + 5, yPos + 5, blockWidth, blockHeight);
             eventBlock->show();
-            
-            qDebug() << "Bloque compacto:" << event.pid << event.action_type 
-                     << (event.state == ProcessState::ACCESSED ? "ACCESSED" : "WAITING") 
-                     << "en ciclo" << currentAnimationCycle << "posición" << xPos << yPos;
+
+            blockIndex++;
         }
     }
     
@@ -734,13 +732,9 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
     // SCROLL AUTOMÁTICO MEJORADO
     QScrollArea* scrollArea = qobject_cast<QScrollArea*>(simulationArea->parentWidget());
     if (scrollArea && currentAnimationCycle > 0) {
-        int cycleWidth = simulationArea->property("cycleWidth").toInt();
-        int leftMargin = simulationArea->property("leftMargin").toInt();
         int scrollToX = leftMargin + currentAnimationCycle * cycleWidth - scrollArea->width() / 2;
         scrollToX = std::max(0, std::min(scrollToX, simulationArea->width() - scrollArea->width()));
         scrollArea->horizontalScrollBar()->setValue(scrollToX);
-        
-        qDebug() << "Auto-scroll a X:" << scrollToX << "para ciclo" << currentAnimationCycle;
     }
     
     // Avanzar al siguiente ciclo

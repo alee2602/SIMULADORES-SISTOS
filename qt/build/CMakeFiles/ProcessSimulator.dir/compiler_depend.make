@@ -3031,7 +3031,9 @@ CMakeFiles/ProcessSimulator.dir/synchronizationsimulator.cpp.o: ../synchronizati
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qdebug.h \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollBar \
   /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollbar.h \
-  /usr/include/c++/11/climits
+  /usr/include/c++/11/climits \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsDropShadowEffect \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicseffect.h
 
 CMakeFiles/ProcessSimulator.dir/synchronizer.cpp.o: ../synchronizer.cpp \
   /usr/include/stdc-predef.h \
@@ -3888,6 +3890,8 @@ ProcessSimulator_autogen/mocs_compilation.cpp:
 
 /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h:
 
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgraphicseffect.h:
+
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qpoint.h:
 
 /usr/include/c++/11/bits/nested_exception.h:
@@ -3917,6 +3921,8 @@ ProcessSimulator_autogen/mocs_compilation.cpp:
 /usr/include/c++/11/bits/functional_hash.h:
 
 /usr/include/x86_64-linux-gnu/qt6/QtCore/qcalendar.h:
+
+/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QGraphicsDropShadowEffect:
 
 /usr/include/c++/11/bits/invoke.h:
 
