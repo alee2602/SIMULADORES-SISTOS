@@ -184,40 +184,177 @@ void SynchronizationSimulatorWidget::showSimulationEvents(const std::vector<Sync
             delete item->widget();
             delete item;
         }
+        delete oldLayout;
     }
 
-    // Agrupa eventos por ciclo
-    QMap<int, QList<const SyncEvent*>> eventsByCycle;
-    for (const auto& ev : events) {
-        eventsByCycle[ev.cycle].append(&ev);
+    // Crear nuevo layout para la simulación
+    QVBoxLayout* mainLayout = new QVBoxLayout(simulationArea);
+    mainLayout->setSpacing(2);
+    mainLayout->setContentsMargins(8, 8, 8, 8);
+
+    if (events.empty()) {
+        mainLayout->addWidget(new QLabel("No hay eventos para mostrar"));
+        return;
     }
 
-    QVBoxLayout* simLayout = qobject_cast<QVBoxLayout*>(simulationArea->layout());
-    if (!simLayout) return;
+    // Encontrar el número máximo de ciclos y procesos únicos
+    int maxCycle = 0;
+    QSet<QString> uniqueProcesses;
 
-    for (auto it = eventsByCycle.begin(); it != eventsByCycle.end(); ++it) {
-        int cycle = it.key();
-        const auto& evList = it.value();
+    for (const auto& event : events) {
+        maxCycle = std::max(maxCycle, event.cycle);
+        uniqueProcesses.insert(event.pid);
+    }
 
-        QHBoxLayout* row = new QHBoxLayout;
-        QLabel* cycleLabel = new QLabel(QString::number(cycle));
-        cycleLabel->setFixedWidth(24);
-        cycleLabel->setAlignment(Qt::AlignCenter);
-        row->addWidget(cycleLabel);
+    QStringList processList = uniqueProcesses.values();
+    std::sort(processList.begin(), processList.end());
 
-        for (const auto* ev : evList) {
-            QLabel* proc = new QLabel(QString("%1<br>%2 %3").arg(ev->pid, ev->action_type, ev->resource));
-            proc->setAlignment(Qt::AlignCenter);
-            proc->setMinimumSize(70, 40);
-            proc->setStyleSheet(QString(
-                "background: %1; color: #222; border-radius: 8px; border: 1px solid #bbb; font-weight: bold;"
-            ).arg(ev->action_type == "READ" ? "#b6f7b6" : "#ffd580"));
-            row->addWidget(proc);
+    // Crear estructura de datos para organizar eventos
+    // [proceso][ciclo] = evento
+    QMap<QString, QMap<int, SyncEvent>> processEvents;
+
+    for (const auto& event : events) {
+        // Solo mostrar eventos ACCESSED para la visualización principal
+        if (event.state == ProcessState::ACCESSED) {
+            processEvents[event.pid].insert(event.cycle, event);
         }
-        row->addStretch();
-        QWidget* rowWidget = new QWidget;
-        rowWidget->setLayout(row);
-        simLayout->addWidget(rowWidget);
     }
-    simLayout->addStretch();
+
+    // Crear encabezado con números de ciclo
+    QHBoxLayout* headerLayout = new QHBoxLayout();
+
+    // Espacio para la columna de procesos
+    QLabel* cornerLabel = new QLabel("");
+    cornerLabel->setFixedWidth(60);
+    cornerLabel->setStyleSheet("border: 1px solid #ddd; background: #f5f5f5; font-weight: bold;");
+    headerLayout->addWidget(cornerLabel);
+
+    // Números de ciclo como encabezados
+    for (int cycle = 0; cycle <= maxCycle; cycle++) {
+        QLabel* cycleLabel = new QLabel(QString::number(cycle));
+        cycleLabel->setFixedWidth(80);
+        cycleLabel->setFixedHeight(30);
+        cycleLabel->setAlignment(Qt::AlignCenter);
+        cycleLabel->setStyleSheet(
+            "border: 1px solid #ddd; "
+            "background: #6fa8dc; "
+            "color: white; "
+            "font-weight: bold; "
+            "font-size: 12px;"
+        );
+        headerLayout->addWidget(cycleLabel);
+    }
+    headerLayout->addStretch();
+
+    QWidget* headerWidget = new QWidget();
+    headerWidget->setLayout(headerLayout);
+    mainLayout->addWidget(headerWidget);
+
+    // Crear filas para cada proceso
+    for (const QString& processId : processList) {
+        QHBoxLayout* rowLayout = new QHBoxLayout();
+        rowLayout->setSpacing(0);
+
+        // Etiqueta del proceso
+        QLabel* processLabel = new QLabel(processId);
+        processLabel->setFixedWidth(60);
+        processLabel->setFixedHeight(40);
+        processLabel->setAlignment(Qt::AlignCenter);
+
+        // Obtener color del proceso de los eventos
+        QColor processColor = Qt::lightGray;
+        for (const auto& event : events) {
+            if (event.pid == processId) {
+                processColor = event.color;
+                break;
+            }
+        }
+
+        processLabel->setStyleSheet(QString(
+            "border: 1px solid #ddd; "
+            "background: %1; "
+            "font-weight: bold; "
+            "font-size: 11px; "
+            "color: #333;"
+        ).arg(processColor.name()));
+
+        rowLayout->addWidget(processLabel);
+
+        // Celdas para cada ciclo
+        for (int cycle = 0; cycle <= maxCycle; cycle++) {
+            QLabel* cellLabel = new QLabel();
+            cellLabel->setFixedWidth(80);
+            cellLabel->setFixedHeight(40);
+            cellLabel->setAlignment(Qt::AlignCenter);
+
+            if (processEvents[processId].contains(cycle)) {
+                const SyncEvent& event = processEvents[processId][cycle];
+
+                // Texto del evento
+                QString eventText = QString("%1\n%2").arg(event.action_type, event.resource);
+                cellLabel->setText(eventText);
+
+                // Color según el tipo de acción
+                QString bgColor = (event.action_type == "READ") ? "#b6f7b6" : "#ffd580";
+
+                cellLabel->setStyleSheet(QString(
+                    "border: 1px solid #ddd; "
+                    "background: %1; "
+                    "font-weight: bold; "
+                    "font-size: 10px; "
+                    "color: #222; "
+                    "border-radius: 4px;"
+                ).arg(bgColor));
+            } else {
+                // Celda vacía
+                cellLabel->setStyleSheet(
+                    "border: 1px solid #ddd; "
+                    "background: white;"
+                );
+            }
+
+            rowLayout->addWidget(cellLabel);
+        }
+
+        rowLayout->addStretch();
+
+        QWidget* rowWidget = new QWidget();
+        rowWidget->setLayout(rowLayout);
+        mainLayout->addWidget(rowWidget);
+    }
+
+    // Agregar información adicional sobre procesos en espera
+    QLabel* waitingInfo = new QLabel();
+    QString waitingText = "<b>Estados de espera:</b><br>";
+
+    QMap<int, QStringList> waitingByCycle;
+    for (const auto& event : events) {
+        if (event.state == ProcessState::WAITING) {
+            waitingByCycle[event.cycle].append(
+                QString("%1 esperando %2 (%3)").arg(event.pid, event.resource, event.action_type)
+            );
+        }
+    }
+
+    if (!waitingByCycle.isEmpty()) {
+        for (auto it = waitingByCycle.begin(); it != waitingByCycle.end(); ++it) {
+            waitingText += QString("Ciclo %1: %2<br>").arg(it.key()).arg(it.value().join(", "));
+        }
+    } else {
+        waitingText += "No hay procesos en espera.";
+    }
+
+    waitingInfo->setText(waitingText);
+    waitingInfo->setStyleSheet(
+        "background: #fff3cd; "
+        "border: 1px solid #ffeaa7; "
+        "border-radius: 4px; "
+        "padding: 8px; "
+        "font-size: 11px; "
+        "margin-top: 10px;"
+    );
+    waitingInfo->setWordWrap(true);
+    mainLayout->addWidget(waitingInfo);
+
+    mainLayout->addStretch();
 }

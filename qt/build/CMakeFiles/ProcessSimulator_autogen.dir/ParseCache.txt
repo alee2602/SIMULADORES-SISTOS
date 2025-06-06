@@ -844,7 +844,6 @@
 /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/processsimulator.cpp
 /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/ganttchartwidget.cpp
 /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/loader.cpp
-/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.cpp
 /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizationsimulator.h
  mmc:Q_OBJECT
  mdp:/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizationsimulator.h
@@ -1267,3 +1266,4 @@
  mdp:/usr/include/x86_64-linux-gnu/sys/types.h
  mdp:/usr/lib/gcc/x86_64-linux-gnu/11/include/stdarg.h
  mdp:/usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h
+/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/scheduler.cpp

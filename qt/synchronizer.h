@@ -21,7 +21,11 @@ struct SyncEvent {
     int cycle;
     ProcessState state;
     QColor color;
-    
+
+    // Default constructor
+    SyncEvent() : cycle(0), state(ProcessState::WAITING), color(Qt::white) {}
+
+    // Existing constructor
     SyncEvent(QString p, QString r, QString at, int c, ProcessState s, QColor col)
         : pid(p), resource(r), action_type(at), cycle(c), state(s), color(col) {}
 };
