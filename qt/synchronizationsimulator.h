@@ -2,7 +2,7 @@
 #include <QWidget>
 #include <QTableWidget>
 #include <vector>
-
+#include "synchronizer.h" 
 
 class SynchronizationMechanism;
 
@@ -18,10 +18,12 @@ private:
     void loadResourcesFromDialog();
     void loadActionsFromDialog();
     void runSynchronization(const QString &mechanism);
+    void showSimulationEvents(const std::vector<SyncEvent>& events); // <-- CAMBIA AQUÍ
 
     QTableWidget *syncTable;
     std::vector<Resource> resources;
     std::vector<Action> actions;
     std::vector<Process> processes;
     SynchronizationMechanism *syncMechanism;
+    QWidget* simulationArea; 
 };

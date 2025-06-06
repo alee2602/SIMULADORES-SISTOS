@@ -108,6 +108,13 @@ void SynchronizationSimulatorWidget::setupUI()
     syncTable->setMaximumHeight(180);
 
     layout->addWidget(syncTable);
+    simulationArea = new QWidget(this);
+    simulationArea->setMinimumHeight(180);
+    simulationArea->setStyleSheet("background: #fff; border-radius: 8px; border: 1px solid #e3f0fc;");
+    QVBoxLayout* simLayout = new QVBoxLayout(simulationArea);
+    simLayout->setSpacing(8);
+    simLayout->setContentsMargins(8, 8, 8, 8);
+    layout->addWidget(simulationArea);
 
     // Conexiones
     connect(loadProcBtn, &QPushButton::clicked, this, &SynchronizationSimulatorWidget::loadProcessesFromDialog);
@@ -165,4 +172,52 @@ void SynchronizationSimulatorWidget::runSynchronization(const QString &mechanism
         syncTable->setItem(i, 3, new QTableWidgetItem(event.action_type));
         syncTable->setItem(i, 4, new QTableWidgetItem(QString::number(event.cycle)));
     }
+    showSimulationEvents(events);
+}
+
+void SynchronizationSimulatorWidget::showSimulationEvents(const std::vector<SyncEvent>& events) {
+    // Limpia el área
+    QLayout* oldLayout = simulationArea->layout();
+    if (oldLayout) {
+        QLayoutItem* item;
+        while ((item = oldLayout->takeAt(0)) != nullptr) {
+            delete item->widget();
+            delete item;
+        }
+    }
+
+    // Agrupa eventos por ciclo
+    QMap<int, QList<const SyncEvent*>> eventsByCycle;
+    for (const auto& ev : events) {
+        eventsByCycle[ev.cycle].append(&ev);
+    }
+
+    QVBoxLayout* simLayout = qobject_cast<QVBoxLayout*>(simulationArea->layout());
+    if (!simLayout) return;
+
+    for (auto it = eventsByCycle.begin(); it != eventsByCycle.end(); ++it) {
+        int cycle = it.key();
+        const auto& evList = it.value();
+
+        QHBoxLayout* row = new QHBoxLayout;
+        QLabel* cycleLabel = new QLabel(QString::number(cycle));
+        cycleLabel->setFixedWidth(24);
+        cycleLabel->setAlignment(Qt::AlignCenter);
+        row->addWidget(cycleLabel);
+
+        for (const auto* ev : evList) {
+            QLabel* proc = new QLabel(QString("%1<br>%2 %3").arg(ev->pid, ev->action_type, ev->resource));
+            proc->setAlignment(Qt::AlignCenter);
+            proc->setMinimumSize(70, 40);
+            proc->setStyleSheet(QString(
+                "background: %1; color: #222; border-radius: 8px; border: 1px solid #bbb; font-weight: bold;"
+            ).arg(ev->action_type == "READ" ? "#b6f7b6" : "#ffd580"));
+            row->addWidget(proc);
+        }
+        row->addStretch();
+        QWidget* rowWidget = new QWidget;
+        rowWidget->setLayout(row);
+        simLayout->addWidget(rowWidget);
+    }
+    simLayout->addStretch();
 }

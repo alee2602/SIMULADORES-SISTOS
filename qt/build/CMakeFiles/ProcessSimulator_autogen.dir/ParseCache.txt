@@ -849,6 +849,8 @@
  mmc:Q_OBJECT
  mdp:/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizationsimulator.h
  mdp:/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/moc_predefs.h
+ mdp:/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/synchronizer.h
+ mdp:/mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/utils.h
  mdp:/usr/include/alloca.h
  mdp:/usr/include/asm-generic/errno-base.h
  mdp:/usr/include/asm-generic/errno.h
@@ -878,6 +880,7 @@
  mdp:/usr/include/c++/11/bits/cpp_type_traits.h
  mdp:/usr/include/c++/11/bits/cxxabi_forced.h
  mdp:/usr/include/c++/11/bits/cxxabi_init_exception.h
+ mdp:/usr/include/c++/11/bits/deque.tcc
  mdp:/usr/include/c++/11/bits/enable_special_members.h
  mdp:/usr/include/c++/11/bits/erase_if.h
  mdp:/usr/include/c++/11/bits/exception.h
@@ -925,6 +928,7 @@
  mdp:/usr/include/c++/11/bits/stl_algobase.h
  mdp:/usr/include/c++/11/bits/stl_bvector.h
  mdp:/usr/include/c++/11/bits/stl_construct.h
+ mdp:/usr/include/c++/11/bits/stl_deque.h
  mdp:/usr/include/c++/11/bits/stl_function.h
  mdp:/usr/include/c++/11/bits/stl_heap.h
  mdp:/usr/include/c++/11/bits/stl_iterator.h
@@ -935,6 +939,7 @@
  mdp:/usr/include/c++/11/bits/stl_multimap.h
  mdp:/usr/include/c++/11/bits/stl_numeric.h
  mdp:/usr/include/c++/11/bits/stl_pair.h
+ mdp:/usr/include/c++/11/bits/stl_queue.h
  mdp:/usr/include/c++/11/bits/stl_raw_storage_iter.h
  mdp:/usr/include/c++/11/bits/stl_relops.h
  mdp:/usr/include/c++/11/bits/stl_tempbuf.h
@@ -966,6 +971,7 @@
  mdp:/usr/include/c++/11/cwctype
  mdp:/usr/include/c++/11/debug/assertions.h
  mdp:/usr/include/c++/11/debug/debug.h
+ mdp:/usr/include/c++/11/deque
  mdp:/usr/include/c++/11/exception
  mdp:/usr/include/c++/11/ext/aligned_buffer.h
  mdp:/usr/include/c++/11/ext/alloc_traits.h
@@ -993,6 +999,7 @@
  mdp:/usr/include/c++/11/pstl/glue_algorithm_defs.h
  mdp:/usr/include/c++/11/pstl/glue_memory_defs.h
  mdp:/usr/include/c++/11/pstl/glue_numeric_defs.h
+ mdp:/usr/include/c++/11/queue
  mdp:/usr/include/c++/11/stdexcept
  mdp:/usr/include/c++/11/streambuf
  mdp:/usr/include/c++/11/string
@@ -1125,6 +1132,7 @@
  mdp:/usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h
  mdp:/usr/include/x86_64-linux-gnu/gnu/stubs-64.h
  mdp:/usr/include/x86_64-linux-gnu/gnu/stubs.h
+ mdp:/usr/include/x86_64-linux-gnu/qt6/QtCore/QString
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtCore/qabstractitemmodel.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtCore/qalgorithms.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtCore/qanystringview.h
@@ -1207,6 +1215,7 @@
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtCore/qvariant.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtCore/qvarlengtharray.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtCore/qversiontagging.h
+ mdp:/usr/include/x86_64-linux-gnu/qt6/QtGui/QColor
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtGui/qbitmap.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtGui/qbrush.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtGui/qcolor.h
@@ -1230,6 +1239,7 @@
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtGui/qtransform.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtGui/qvalidator.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtGui/qwindowdefs.h
+ mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHeaderView
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTableWidget
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractitemdelegate.h
@@ -1238,6 +1248,7 @@
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractslider.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractspinbox.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h
+ mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qheaderview.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qrubberband.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qsizepolicy.h
  mdp:/usr/include/x86_64-linux-gnu/qt6/QtWidgets/qslider.h
