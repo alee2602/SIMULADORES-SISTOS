@@ -70,8 +70,11 @@ public:
 
 class Semaphore : public SynchronizationMechanism {
 private:
-    std::map<QString, int> resource_counts; 
-    std::map<QString, std::vector<QString>> resource_holders; 
+    std::map<QString, int> resource_counts;           // Cupos disponibles
+    std::map<QString, std::vector<QString>> resource_holders; // Quién tiene el recurso
+    std::map<QString, int> max_counts;                // Contador máximo original
+    std::map<QString, QString> current_writers;       //  Escritor activo por recurso
+    std::map<QString, std::vector<QString>> current_readers; //  Lectores activos
     std::vector<Resource> resources;
 
 public:
@@ -81,6 +84,9 @@ public:
     bool isAvailable(const QString& resource) const override;
     void resetResources() override;
     int getAvailableCount(const QString& resource) const;
+    
+    bool hasActiveWriter(const QString& resource) const;
+    int getActiveReaders(const QString& resource) const;
 };
 
 class SynchronizationSimulator {

@@ -48,11 +48,34 @@ Semaphore::Semaphore(const std::vector<Resource>& res) : resources(res) {
 }
 
 bool Semaphore::tryAcquire(const QString& resource, const QString& pid, const QString& action_type) {
-    if (resource_counts[resource] > 0) {
-        resource_counts[resource]--;
+    if (action_type == "WRITE") {
+        // No puede acceder si hay otro escritor o lectores activos
+        if (current_writers.find(resource) != current_writers.end() || 
+            !current_readers[resource].empty()) {
+            return false; 
+        }
+        current_writers[resource] = pid;
         resource_holders[resource].push_back(pid);
+        resource_counts[resource] = 0; // Bloquea todos los cupos
         return true;
     }
+    else if (action_type == "READ") {
+        // Puede compartir con otros lectores
+        //  No puede acceder si hay un escritor activo
+        if (current_writers.find(resource) != current_writers.end()) {
+            return false; // Hay escritor, debe esperar
+        }
+        
+        // Puede leer si hay cupos disponibles
+        if (resource_counts[resource] > 0) {
+            resource_counts[resource]--;
+            current_readers[resource].push_back(pid);
+            resource_holders[resource].push_back(pid);
+            return true;
+        }
+        return false; // No hay cupos para lectores
+    }
+    
     return false;
 }
 
@@ -61,22 +84,43 @@ void Semaphore::release(const QString& resource, const QString& pid) {
     auto it = std::find(holders.begin(), holders.end(), pid);
     if (it != holders.end()) {
         holders.erase(it);
-        resource_counts[resource]++;
+    }
+    
+    // Si era escritor
+    if (current_writers.find(resource) != current_writers.end() && 
+        current_writers[resource] == pid) {
+        current_writers.erase(resource); // Quitar escritor
+        resource_counts[resource] = max_counts[resource]; // Restaurar todos los cupos
+        return;
+    }
+    
+    // Si era lector 
+    auto& readers = current_readers[resource];
+    auto reader_it = std::find(readers.begin(), readers.end(), pid);
+    if (reader_it != readers.end()) {
+        readers.erase(reader_it); // Quitar lector
+        resource_counts[resource]++; // Liberar un cupo
     }
 }
 
 bool Semaphore::isAvailable(const QString& resource) const {
-    auto it = resource_counts.find(resource);
-    return (it != resource_counts.end() && it->second > 0);
+    // Disponible si no hay escritor Y hay cupos para lectores
+    return (current_writers.find(resource) == current_writers.end()) && 
+            (resource_counts.at(resource) > 0);
 }
 
 void Semaphore::resetResources() {
     resource_counts.clear();
     resource_holders.clear();
+    max_counts.clear();          
+    current_writers.clear();     
+    current_readers.clear();     
     
     for (const auto& resource : resources) {
         resource_counts[resource.name] = resource.count;
+        max_counts[resource.name] = resource.count; 
         resource_holders[resource.name] = std::vector<QString>();
+        current_readers[resource.name] = std::vector<QString>(); 
     }
 }
 
@@ -84,6 +128,19 @@ int Semaphore::getAvailableCount(const QString& resource) const {
     auto it = resource_counts.find(resource);
     return (it != resource_counts.end()) ? it->second : 0;
 }
+
+bool Semaphore::hasActiveWriter(const QString& resource) const {
+    return current_writers.find(resource) != current_writers.end();
+}
+
+int Semaphore::getActiveReaders(const QString& resource) const {
+    auto it = current_readers.find(resource);
+    return (it != current_readers.end()) ? it->second.size() : 0;
+}
+
+// ================================
+// SIMULADOR
+// ================================
 
 std::vector<SyncEvent> SynchronizationSimulator::simulateSynchronization(
     const std::vector<Process>& processes,
