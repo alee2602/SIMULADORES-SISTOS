@@ -742,9 +742,7 @@ void ProcessSimulator::showSimulationSummary(QWidget* menuWidget_) {
     resultsWindow->show();
 }
 
-// 4. Función para crear tabla de comparación
 void ProcessSimulator::createComparisonTable() {
-    // Limpiar widgets previos del layout
     QLayoutItem* item;
     while ((item = resultsWindowLayout->takeAt(0)) != nullptr) {
         if (item->widget()) item->widget()->deleteLater();
@@ -779,10 +777,9 @@ void ProcessSimulator::createComparisonTable() {
         QTableWidgetItem* waitingItem = new QTableWidgetItem(QString::number(result.avgWaitingTime, 'f', 2));
         QTableWidgetItem* turnaroundItem = new QTableWidgetItem(QString::number(result.avgTurnaroundTime, 'f', 2));
 
-        // Resaltar los mejores valores
         if (result.avgWaitingTime == bestWaiting) {
-            waitingItem->setBackground(QColor("#d4edda")); // Verde claro
-            waitingItem->setForeground(QColor("#155724")); // Verde oscuro
+            waitingItem->setBackground(QColor("#d4edda")); 
+            waitingItem->setForeground(QColor("#155724")); 
         }
         if (result.avgTurnaroundTime == bestTurnaround) {
             turnaroundItem->setBackground(QColor("#d4edda"));
@@ -792,7 +789,6 @@ void ProcessSimulator::createComparisonTable() {
         comparisonTable->setItem(i, 1, waitingItem);
         comparisonTable->setItem(i, 2, turnaroundItem);
 
-        // Color de fondo por algoritmo (asegura coincidencia exacta)
         QColor rowColor = Qt::white;
         if (result.algorithmName == "FIFO") rowColor = QColor("#FFE4E1");
         else if (result.algorithmName == "SJF") rowColor = QColor("#E0F6FF");
@@ -853,11 +849,10 @@ void ProcessSimulator::createIndividualResultWidget(const SimulationResult& resu
     chartScroll->setWidgetResizable(false); // <-- Importante para scroll horizontal
     chartScroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     chartScroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    chartScroll->setFixedHeight(240); // Un poco más que el chart
+    chartScroll->setFixedHeight(240);
 
     frameLayout->addWidget(chartScroll);
 
-    // Mostrar métricas
     QLabel* summary = new QLabel(QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
         .arg(result.avgWaitingTime, 0, 'f', 2)
         .arg(result.avgTurnaroundTime, 0, 'f', 2));
@@ -922,14 +917,12 @@ void ProcessSimulator::runSelectedAlgorithmsComparison() {
     algorithmTimelines.clear();
     algorithmNames.clear();
     std::vector<Process> originalProcessesCopy = originalProcesses;
-    
-    // Verificar que hay procesos cargados
+
     if (originalProcessesCopy.empty()) {
         QMessageBox::warning(this, "No hay procesos", "Por favor carga procesos antes de comparar algoritmos.");
         return;
     }
-    
-    // Recopilar algoritmos seleccionados y sus métricas
+
     QStringList selectedAlgs;
     std::vector<double> waitingTimes;
     std::vector<double> turnaroundTimes;

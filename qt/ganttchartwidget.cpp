@@ -155,7 +155,7 @@ QScrollArea* GanttChartWidget::createScrollArea() {
     ganttScrollArea->setWidget(this);
     ganttScrollArea->setWidgetResizable(false);
     ganttScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-    ganttScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn); // Cambia a AlwaysOn
+    ganttScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn); 
     ganttScrollArea->setMinimumHeight(220);
     ganttScrollArea->setMinimumWidth(800);
     ganttScrollArea->setStyleSheet(
@@ -204,5 +204,5 @@ void GanttChartWidget::setMetrics(double avgWaiting, double avgTurnaround) {
     avgTurnaroundTime = avgTurnaround;
     showMetrics = true;
     updateSize(); 
-    update();      // redibuja
+    update();  
 }
