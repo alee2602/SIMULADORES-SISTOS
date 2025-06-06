@@ -1,7 +1,7 @@
 CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o: \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/mocs_compilation.cpp \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/mocs_compilation.cpp \
  /usr/include/stdc-predef.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_ganttchartwidget.cpp \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_ganttchartwidget.cpp \
  /usr/include/c++/11/memory /usr/include/c++/11/bits/stl_algobase.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \
@@ -117,7 +117,7 @@ CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o:
  /usr/include/c++/11/backward/auto_ptr.h \
  /usr/include/c++/11/pstl/glue_memory_defs.h \
  /usr/include/c++/11/pstl/execution_defs.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../ganttchartwidget.h \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../ganttchartwidget.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qwidget.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtwidgetsglobal.h \
@@ -322,14 +322,14 @@ CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o:
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qcolor.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qstring.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../utils.h \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../utils.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QScrollArea \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qscrollarea.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractscrollarea.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qwidget.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../processsimulator.h \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_processsimulator.cpp \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../processsimulator.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QStackedWidget \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qstackedwidget.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTableWidget \
@@ -379,21 +379,21 @@ CMakeFiles/ProcessSimulator.dir/ProcessSimulator_autogen/mocs_compilation.cpp.o:
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlayoutitem.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qboxlayout.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgridlayout.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../scheduler.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../GanttChartWidget.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../synchronizer.h \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../scheduler.h \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../GanttChartWidget.h \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../synchronizer.h \
  /usr/include/c++/11/queue /usr/include/c++/11/deque \
  /usr/include/c++/11/bits/stl_deque.h /usr/include/c++/11/bits/deque.tcc \
  /usr/include/c++/11/bits/stl_queue.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHeaderView \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qheaderview.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../loader.h \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../loader.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextcursor.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextformat.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qpen.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/qtextoption.h \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_synchronizationsimulator.cpp \
- /mnt/c/Users/Ale/OneDrive\ -\ UVG/Escritorio/Cuarto\ Año/Semestre\ 1/Sistos/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../synchronizationsimulator.h \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/moc_synchronizationsimulator.cpp \
+ /mnt/c/Users/rebe1/OneDrive/Documentos/GitHub/SIMULADORES-SISTOS/qt/build/ProcessSimulator_autogen/EWIEGA46WW/../../../synchronizationsimulator.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QComboBox \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qcombobox.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QTextEdit \

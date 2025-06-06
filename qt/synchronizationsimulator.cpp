@@ -507,9 +507,9 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     
     int leftMargin = 80;
     int rightMargin = 50;
-    int topMargin = 80;
     int bottomMargin = 80;
     int cycleWidth = 120;
+    int topMargin = 80;
     int processHeight = 80;
     int axisHeight = 50;
 
@@ -517,10 +517,6 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     
     int totalWidth = leftMargin + (maxCycle + 2) * cycleWidth + rightMargin;
     int totalHeight = topMargin + numProcesses * processHeight + axisHeight + bottomMargin + 40;
-    
-    qDebug() << "Timeline COMPACTO: Ciclos 0 a" << maxCycle 
-             << "| Procesos:" << numProcesses
-             << "| Tamaño TOTAL:" << totalWidth << "x" << totalHeight;
 
     simulationArea->setFixedSize(totalWidth, totalHeight);
     QLabel* titleLabel = new QLabel("Timeline de Sincronización", simulationArea);
@@ -534,21 +530,34 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setGeometry(0, 10, totalWidth, 30);
     titleLabel->show();
-    
-    int axisY = topMargin + numProcesses * processHeight;
+
+    int numBlocksMax = 0;
+    for (int cycle = 0; cycle <= maxCycle; ++cycle) {
+        int count = 0;
+        for (const auto& event : currentEvents) {
+            if (event.cycle == cycle) count++;
+        }
+        numBlocksMax = std::max(numBlocksMax, count);
+    }
+    int blockHeight = 60;
+    int blockSpacing = 18;
+    int axisY = topMargin + numBlocksMax * (blockHeight + blockSpacing) + 20;
+
     QLabel* axisLine = new QLabel(simulationArea);
     axisLine->setStyleSheet("background: #2c3e50;");
     axisLine->setGeometry(leftMargin, axisY, (maxCycle + 1) * cycleWidth, 3);
     axisLine->show();
-    
+
+    simulationArea->setProperty("axisY", axisY);
+
     for (int cycle = 0; cycle <= maxCycle; ++cycle) {
         int xPos = leftMargin + cycle * cycleWidth;
-        
+
         QLabel* tick = new QLabel(simulationArea);
         tick->setStyleSheet("background: #2c3e50;");
         tick->setGeometry(xPos, axisY, 2, 10);
         tick->show();
-        
+
         QLabel* numberLabel = new QLabel(QString::number(cycle), simulationArea);
         numberLabel->setStyleSheet(
             "color: #2c3e50; "
@@ -573,7 +582,7 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
     waitingInfo->setStyleSheet("background:#fff3cd;border:1px solid #ffc107;border-radius:4px;padding:5px;font-size:11px;");
     waitingInfo->setWordWrap(true);
     int infoWidth = std::min(800, totalWidth - 40);
-    waitingInfo->setGeometry(80, totalHeight - 50, totalWidth - 160, 40);
+    waitingInfo->setGeometry(80, axisY + 40, totalWidth - 160, 40);
     waitingInfo->show();
     
     simulationArea->setProperty("minCycle", minCycle);
@@ -590,27 +599,38 @@ void SynchronizationSimulatorWidget::setupEmptyTimeline()
 void SynchronizationSimulatorWidget::nextAnimationStep()
 {
     cycleLabel->setText(QString("Ciclo: %1").arg(currentAnimationCycle));
-    
+
     int minCycle = simulationArea->property("minCycle").toInt();
     int maxCycle = simulationArea->property("maxCycle").toInt();
     int cycleWidth = simulationArea->property("cycleWidth").toInt();
     int leftMargin = simulationArea->property("leftMargin").toInt();
     int topMargin = simulationArea->property("topMargin").toInt();
     int processHeight = simulationArea->property("processHeight").toInt();
-    
+
+    int blockWidth = 110; 
+
     QStringList currentCycleInfo;
     int accessedCount = 0;
     int waitingCount = 0;
 
     int blockIndex = 0;
     int blockSpacing = 18;
-    int blockWidth = 100;
     int blockHeight = 60;
+    int numBlocksMax = 0;
+    // Calcula el máximo de bloques en un ciclo
+    for (int cycle = 0; cycle <= maxCycle; ++cycle) {
+        int count = 0;
+        for (const auto& event : currentEvents) {
+            if (event.cycle == cycle) count++;
+        }
+        numBlocksMax = std::max(numBlocksMax, count);
+    }
+    int axisY = topMargin + numBlocksMax * (blockHeight + blockSpacing) + 20; // 20px extra de margen
 
     for (const auto& event : currentEvents) {
         if (event.cycle == currentAnimationCycle) {
             int xPos = leftMargin + currentAnimationCycle * cycleWidth + (cycleWidth - blockWidth) / 2;
-            int yPos = topMargin + blockIndex * (blockHeight + blockSpacing);
+            int yPos = topMargin + blockIndex * (blockHeight + blockSpacing); // Empieza debajo de la barra
 
             QLabel* eventBlock = new QLabel(simulationArea);
             eventBlock->setObjectName(QString("eventBlock_c%1_idx%2").arg(currentAnimationCycle).arg(blockIndex));
@@ -700,6 +720,7 @@ void SynchronizationSimulatorWidget::nextAnimationStep()
                 else totalWaiting++;
             }
             
+            waitingInfo->setGeometry(80, simulationArea->property("axisY").toInt() + 40, simulationArea->width() - 160, 40);
             waitingInfo->setText(QString(
                 "<b>Simulación Completada:</b> %1 eventos procesados | "
                 " %2 accedidos | %3 esperando | "
