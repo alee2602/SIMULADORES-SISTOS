@@ -270,14 +270,20 @@ void ProcessSimulator::runNextAlgorithmInSequence() {
         totalWait += p.waiting_time;
         totalTurnaround += (p.finish_time - p.arrival_time);
     }
+    double totalCompletion = 0;
+    for (const auto& process : processes) {
+        totalCompletion += process.finish_time;
+    }
     double avgWaiting = processes.empty() ? 0 : totalWait / processes.size();
     double avgTurnaround = processes.empty() ? 0 : totalTurnaround / processes.size();
+    double avgCompletion = processes.empty() ? 0 : totalCompletion / processes.size(); // Nuevo cálculo
 
     if (metricsLabelBelowGantt) {
         metricsLabelBelowGantt->setText(
-            QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
+            QString("Avg Waiting Time: %1 | Avg Turnaround Time: %2 | Avg Completion Time: %3")
                 .arg(avgWaiting, 0, 'f', 2)
                 .arg(avgTurnaround, 0, 'f', 2)
+                .arg(avgCompletion, 0, 'f', 2)
         );
     }
 
@@ -285,11 +291,11 @@ void ProcessSimulator::runNextAlgorithmInSequence() {
     result.algorithmName = algorithmName;
     result.avgWaitingTime = avgWaiting;
     result.avgTurnaroundTime = avgTurnaround;
+    result.avgCompletionTime = avgCompletion; 
     result.timeline = timeline;
     result.processResults = processes;
     sequentialResults.push_back(result);
 
-    // Puedes dejar la animación si quieres
     if (mainGanttChart) {
         mainGanttChart->setComparisonMode(false);
         mainGanttChart->setTimeline(timeline);
@@ -303,21 +309,19 @@ void ProcessSimulator::runNextAlgorithmInSequence() {
 void ProcessSimulator::displayAlgorithmResultInList(const QString& title, 
                                                 const std::vector<ExecutionSlice>& timeline, 
                                                 const std::vector<Process>& processResults) {
-    // Limpiar resultados previos antes de mostrar el nuevo
+
     QLayoutItem* item;
     while ((item = resultsLayout->takeAt(0)) != nullptr) {
         delete item->widget();
         delete item;
     }
     
-    // Crear contenedor para este resultado
     QFrame* resultFrame = new QFrame();
     resultFrame->setFrameStyle(QFrame::Box);
     resultFrame->setStyleSheet("QFrame { border: 2px solid #e9ecef; border-radius: 8px; margin: 5px; padding: 10px; background-color: white; }");
     
     QVBoxLayout* frameLayout = new QVBoxLayout(resultFrame);
 
-    // Header con título del algoritmo
     QLabel* header = new QLabel(title);
     header->setFont(QFont("Arial", 16, QFont::Bold));
     header->setStyleSheet("color: #2c3e50; margin-bottom: 10px;");
@@ -329,7 +333,6 @@ void ProcessSimulator::displayAlgorithmResultInList(const QString& title,
     chart->setFixedHeight(220);
     frameLayout->addWidget(chart);
 
-    // Calcular y mostrar métricas
     double totalWaiting = 0;
     double totalTurnaround = 0;
     for (const auto& process : processResults) {
@@ -337,12 +340,18 @@ void ProcessSimulator::displayAlgorithmResultInList(const QString& title,
         totalTurnaround += (process.finish_time - process.arrival_time);
     }
 
+    double totalCompletion = 0;
+    for (const auto& process : processResults) {
+        totalCompletion += process.finish_time;
+    }
     double avgWaiting = processResults.empty() ? 0 : totalWaiting / processResults.size();
     double avgTurnaround = processResults.empty() ? 0 : totalTurnaround / processResults.size();
+    double avgCompletion = processResults.empty() ? 0 : totalCompletion / processResults.size();
 
-    QLabel* summary = new QLabel(QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
+    QLabel* summary = new QLabel(QString("Avg Waiting Time: %1 | Avg Turnaround Time: %2 | Avg Completion Time: %3")
     .arg(avgWaiting, 0, 'f', 2)
-    .arg(avgTurnaround, 0, 'f', 2));
+    .arg(avgTurnaround, 0, 'f', 2)
+    .arg(avgCompletion, 0, 'f', 2));
     summary->setFont(QFont("Arial", 12, QFont::Bold));
     summary->setStyleSheet("color: #28a745; margin-top: 5px;");
     summary->setAlignment(Qt::AlignCenter);
@@ -375,17 +384,14 @@ void ProcessSimulator::updateMetricsTable()
         metricsTable->setItem(i, 0, new QTableWidgetItem(processes[i].pid));
         metricsTable->setItem(i, 1, new QTableWidgetItem(QString::number(processes[i].start_time)));
         metricsTable->setItem(i, 2, new QTableWidgetItem(QString::number(processes[i].finish_time)));
-        metricsTable->setItem(i, 3, new QTableWidgetItem(QString::number(processes[i].waiting_time)));
+        metricsTable->setItem(i, 3, new QTableWidgetItem(QString::number(processes[i].finish_time))); // Completion Time
+        metricsTable->setItem(i, 4, new QTableWidgetItem(QString::number(processes[i].waiting_time)));
         totalWaiting += processes[i].waiting_time;
         totalTurnaround += (processes[i].finish_time - processes[i].arrival_time);
     }
     double avgWaiting = totalWaiting / processes.size();
     double avgTurnaround = totalTurnaround / processes.size();
-    
-    // MODIFICACIÓN: No mostrar las métricas en statusLabel, sino dentro del Gantt
-    // statusLabel->setText(QString("Average Waiting Time: %1 | Average Turnaround Time: %2").arg(avgWaiting, 0, 'f', 2).arg(avgTurnaround, 0, 'f', 2));
-    
-    // En su lugar, actualizar las métricas en el Gantt chart
+
     if (mainGanttChart) {
         mainGanttChart->setMetrics(avgWaiting, avgTurnaround);
     }
@@ -398,7 +404,7 @@ void ProcessSimulator::loadProcessesFromDialog()
         return;
 
     processes = loadProcesses(fileName);
-    originalProcesses = processes; // Guardar copia original
+    originalProcesses = processes; 
     updateProcessTable();
     statusLabel->setText(QString("Loaded %1 processes from file").arg(processes.size()));
 
@@ -554,9 +560,10 @@ void ProcessSimulator::setupSchedulingWidget(QWidget* menuWidget_)
     setupTableStyle(processTable);
 
     metricsTable = new QTableWidget();
-    metricsTable->setColumnCount(4);
-    metricsTable->setHorizontalHeaderLabels({"PID", "Start Time", "Finish Time", "Waiting Time"});
+    metricsTable->setColumnCount(5);
+    metricsTable->setHorizontalHeaderLabels({"PID", "Start Time", "Finish Time", "Completion Time", "Waiting Time"});
     setupTableStyle(metricsTable);
+    metricsTable->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     tablesLayout->addWidget(processTable);
     tablesLayout->addWidget(metricsTable);
@@ -659,19 +666,26 @@ void ProcessSimulator::simulateNextAlgorithm() {
         totalWait += p.waiting_time;
         totalTurnaround += (p.finish_time - p.arrival_time);
     }
+    double totalCompletion = 0;
+    for (const auto& process : processes) {
+        totalCompletion += process.finish_time;
+    }
 
     double avgWaiting = totalWait / processes.size();
     double avgTurnaround = totalTurnaround / processes.size();
+    double avgCompletion = avgTurnaround; // El mismo valor en este contexto
 
-    metricsLabel->setText(QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
+    metricsLabel->setText(QString("Avg Waiting Time: %1 | Avg Turnaround Time: %2 | Avg Completion Time: %3")
         .arg(avgWaiting, 0, 'f', 2)
-        .arg(avgTurnaround, 0, 'f', 2));
+        .arg(avgTurnaround, 0, 'f', 2)
+        .arg(avgCompletion, 0, 'f', 2));
 
     // Guardar resultado para el resumen
     SimulationResult result;
     result.algorithmName = config.name;
     result.avgWaitingTime = avgWaiting;
     result.avgTurnaroundTime = avgTurnaround;
+    result.avgCompletionTime = avgCompletion;
     result.timeline = timeline;
     result.processResults = processes;
     sequentialResults.push_back(result);
@@ -757,8 +771,8 @@ void ProcessSimulator::createComparisonTable() {
     
     QTableWidget* comparisonTable = new QTableWidget();
     comparisonTable->setRowCount(sequentialResults.size());
-    comparisonTable->setColumnCount(3);
-    comparisonTable->setHorizontalHeaderLabels({"Algoritmo", "Tiempo Promedio de Espera", "Tiempo Promedio de Retorno"});
+    comparisonTable->setColumnCount(4); // Cambiado a 4 columnas
+    comparisonTable->setHorizontalHeaderLabels({"Algoritmo", "Tiempo Promedio de Espera", "Tiempo Promedio de Retorno", "Tiempo Promedio de Finalización"});
     setupTableStyle(comparisonTable);
     
     double bestWaiting = std::numeric_limits<double>::max();
@@ -776,6 +790,7 @@ void ProcessSimulator::createComparisonTable() {
 
         QTableWidgetItem* waitingItem = new QTableWidgetItem(QString::number(result.avgWaitingTime, 'f', 2));
         QTableWidgetItem* turnaroundItem = new QTableWidgetItem(QString::number(result.avgTurnaroundTime, 'f', 2));
+        QTableWidgetItem* completionItem = new QTableWidgetItem(QString::number(result.avgCompletionTime, 'f', 2)); // Nuevo item
 
         if (result.avgWaitingTime == bestWaiting) {
             waitingItem->setBackground(QColor("#d4edda")); 
@@ -788,6 +803,7 @@ void ProcessSimulator::createComparisonTable() {
 
         comparisonTable->setItem(i, 1, waitingItem);
         comparisonTable->setItem(i, 2, turnaroundItem);
+        comparisonTable->setItem(i, 3, completionItem); // Agregar item de finalización
 
         QColor rowColor = Qt::white;
         if (result.algorithmName == "FIFO") rowColor = QColor("#FFE4E1");
@@ -796,7 +812,7 @@ void ProcessSimulator::createComparisonTable() {
         else if (result.algorithmName == "Round Robin" || result.algorithmName == "RR") rowColor = QColor("#FFF8DC");
         else if (result.algorithmName == "Priority" || result.algorithmName == "PRIORITY") rowColor = QColor("#F0E68C");
 
-        for (int j = 0; j < 3; ++j) {
+        for (int j = 0; j < 4; ++j) {
             if (comparisonTable->item(i, j))
                 comparisonTable->item(i, j)->setBackground(rowColor);
         }
@@ -853,9 +869,10 @@ void ProcessSimulator::createIndividualResultWidget(const SimulationResult& resu
 
     frameLayout->addWidget(chartScroll);
 
-    QLabel* summary = new QLabel(QString("Avg Waiting Time: %1 | Avg Completion Time: %2")
+    QLabel* summary = new QLabel(QString("Avg Waiting Time: %1 | Avg Turnaround Time: %2 | Avg Completion Time: %3")
         .arg(result.avgWaitingTime, 0, 'f', 2)
-        .arg(result.avgTurnaroundTime, 0, 'f', 2));
+        .arg(result.avgTurnaroundTime, 0, 'f', 2)
+        .arg(result.avgCompletionTime, 0, 'f', 2));
     summary->setFont(QFont("Arial", 12, QFont::Bold));
     summary->setStyleSheet("color: #28a745; margin-top: 5px;");
     summary->setAlignment(Qt::AlignCenter);
@@ -1027,8 +1044,8 @@ void ProcessSimulator::displayComparisonTableOnly(const QStringList& algorithms,
 
     QTableWidget* comparisonTable = new QTableWidget();
     comparisonTable->setRowCount(algorithms.size());
-    comparisonTable->setColumnCount(3);
-    comparisonTable->setHorizontalHeaderLabels({"Algoritmo", "Tiempo Promedio de Espera", "Tiempo Promedio de Retorno"});
+    comparisonTable->setColumnCount(4); // Cambiado a 4 columnas
+    comparisonTable->setHorizontalHeaderLabels({"Algoritmo", "Tiempo Promedio de Espera", "Tiempo Promedio de Retorno", "Tiempo Promedio de Finalización"});
     setupTableStyle(comparisonTable);
 
     for (int i = 0; i < algorithms.size(); i++) {
@@ -1045,7 +1062,7 @@ void ProcessSimulator::displayComparisonTableOnly(const QStringList& algorithms,
         else if (algorithms[i] == "Priority") rowColor = QColor("#F0E68C");
         else rowColor = QColor(Qt::white);
 
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < 4; j++) {
             comparisonTable->item(i, j)->setBackground(rowColor);
         }
     }

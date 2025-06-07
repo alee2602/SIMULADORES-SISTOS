@@ -139,8 +139,8 @@ void GanttChartWidget::paintEvent(QPaintEvent* event) {
             painter.drawRect(rect);
             if (width > 20) {
                 painter.setPen(Qt::white);
-                painter.setFont(QFont("Arial", 12, QFont::Bold));
-                painter.drawText(rect, Qt::AlignLeft, slice.pid);
+                painter.setFont(QFont("Arial", 16, QFont::Bold)); 
+                painter.drawText(rect, Qt::AlignCenter, slice.pid); 
             }
         }
     }

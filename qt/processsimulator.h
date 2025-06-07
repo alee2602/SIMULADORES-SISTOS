@@ -146,6 +146,7 @@ private:
         QString algorithmName;
         double avgWaitingTime;
         double avgTurnaroundTime;
+        double avgCompletionTime;
         std::vector<ExecutionSlice> timeline;
         std::vector<Process> processResults;
     };

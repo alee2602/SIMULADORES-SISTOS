@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
     QWidget *menu = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout(menu);
     layout->setSpacing(20);
-    layout->setContentsMargins(50, 30, 50, 30);
+    layout->setContentsMargins(250, 120, 50, 30);
 
     QLabel *title = new QLabel("PROCESS SIMULATOR");
     title->setAlignment(Qt::AlignCenter);
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]) {
     subtitle->setStyleSheet("color: #6c757d; margin: 10px;");
 
     QVBoxLayout *buttonLayout = new QVBoxLayout();
-    buttonLayout->setSpacing(25);
+    buttonLayout->setSpacing(70); 
     buttonLayout->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 
     QPushButton *btnSched = createMenuButton(
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
         mainStack->setCurrentWidget(syncSim);
     });
 
-    menu->setFixedSize(1200, 600);
+    menu->setFixedSize(1200, 800);
     mainStack->setFixedSize(1400, 1000);
     mainStack->show();
 
