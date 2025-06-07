@@ -403,12 +403,17 @@ void ProcessSimulator::loadProcessesFromDialog()
     if (fileName.isEmpty())
         return;
 
+    QFileInfo fileInfo(fileName);
+    if (fileInfo.fileName() != "processes.txt") {
+        QMessageBox::warning(this, "Nombre de archivo inválido", "Solo se permite cargar archivos llamados exactamente 'processes.txt'.");
+        return;
+    }
+
     processes = loadProcesses(fileName);
     originalProcesses = processes; 
     updateProcessTable();
     statusLabel->setText(QString("Loaded %1 processes from file").arg(processes.size()));
 
-    // Limpiar cualquier simulación previa
     if (mainGanttChart) {
         mainGanttChart->setTimeline(std::vector<ExecutionSlice>());
     }
@@ -440,11 +445,11 @@ void ProcessSimulator::setupMultiSelectionWidget() {
     layout->addWidget(title);
 
     // Checkboxes de algoritmos
-    fifoCheckMulti = createStyledCheckBox("FIFO", "#FFE4E1");        // Rosa pastel
-    sjfCheckMulti = createStyledCheckBox("SJF", "#E0F6FF");          // Azul pastel
-    srtfCheckMulti = createStyledCheckBox("SRTF", "#F0FFF0");        // Verde pastel
-    rrCheckMulti = createStyledCheckBox("Round Robin", "#FFF8DC");    // Amarillo pastel
-    priorityCheckMulti = createStyledCheckBox("Priority", "#F0E68C"); // Dorado pastel
+    fifoCheckMulti = createStyledCheckBox("FIFO", "#FFE4E1");        
+    sjfCheckMulti = createStyledCheckBox("SJF", "#E0F6FF");          
+    srtfCheckMulti = createStyledCheckBox("SRTF", "#F0FFF0");       
+    rrCheckMulti = createStyledCheckBox("Round Robin", "#FFF8DC");    
+    priorityCheckMulti = createStyledCheckBox("Priority", "#F0E68C"); 
 
     QHBoxLayout *checksLayout = new QHBoxLayout();
     checksLayout->addWidget(fifoCheckMulti);
